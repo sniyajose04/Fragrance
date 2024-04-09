@@ -1,0 +1,78 @@
+<%- include('../user/userLayout/header') %>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .form-container {
+        max-width: 400px; /* Limit width */
+        border: 1px solid #ccc; /* Add border */
+        padding: 20px; /* Add padding */
+        margin: auto; /* Center horizontally */
+    }
+
+    .form-container form {
+        margin-bottom: 20px; /* Add space below the form */
+    }
+
+    .form-container input[type="text"] {
+        width: calc(100% - 20px); /* Adjust width of input box */
+        padding: 10px; /* Add padding */
+    }
+
+    .timer-container {
+        border-top: 1px solid #ccc; /* Add border */
+        padding-top: 20px; /* Add space from the form */
+        margin-top: 20px; /* Add space from the form */
+        text-align: center; /* Center the timer text */
+    }
+</style>
+
+
+
+<div class="form-container offset-lg-3">
+    <h1>OTP Verification</h1>
+    <% if(locals.message){ %>
+    <h6 class="text-danger"><%= message %></h6>
+    <% } %>
+    <form id="otpForm" method="post" action="/verifyOtp">
+        <div class="form-group" >
+            <input type="text" required="" name="otp" placeholder="Enter OTP">
+        </div>
+        <div class="text-center" >
+            <button id="verifyButton" type="submit">Verify OTP</button>
+        </div>
+    </form>
+    <div class="text-center">
+        <p>Time left: <span id="timer">60</span> seconds</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let timeLeft = 60;
+        const countdownElement = document.getElementById('timer');
+
+        function updateTimer() {
+            countdownElement.textContent = timeLeft;
+            if (timeLeft === 0) {
+                document.getElementById('otpForm').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent form submission
+                });
+                document.getElementById('verifyButton').disabled = true; // Disable verify button
+            } else {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+
+        updateTimer();
+    });
+
+    
+</script>

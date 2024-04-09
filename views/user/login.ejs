@@ -1,0 +1,73 @@
+<%- include('../user/userLayout/header') %>
+    <section class="pt-150 pb-150">
+        <div class="container offset-lg-3">
+            <div class="row">
+                <div class="col-lg-10 m-auto ">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div
+                                class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
+                                <div class="padding_eight_all bg-white">
+                                    <div class="heading_s1 text-center">
+                                        <h3 class="mb-30">Login</h3>
+                                    </div>
+                                    <form method="post" action="/login" id="form">
+                                        <div class="form-group">
+                                            <input type="text" name="email" placeholder="Your Email" id="email">
+                                            <span class="text-danger" id="email_error"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" name="password" id="password" placeholder="Password">
+                                            <span class="text-danger" id="password_error"></span>
+                                        </div>
+                                        <div class="login_footer form-group">
+                                            <a class="text-muted" href="/forgotPassword">Forgot password?</a>
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <button type="submit" class="btn btn-success">Log in</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+
+        const email = document.getElementById('email')
+        const password = document.getElementById('password')
+        const form = document.getElementById('form')
+
+        const email_error = document.getElementById('email_error')
+        const password_error = document.getElementById('password_error')
+
+        var email_check = /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
+         var pass_check = /^(?=.[a-z])(?=.[A-Z]).{8,}$/;
+
+        form.addEventListener('submit', (e) => {
+
+            if (!email.value.match(email_check)) {
+                e.preventDefault();
+                email_error.innerHTML = "Valid Email is required";
+            } else {
+                email_error.innerHTML = "";
+            }
+
+            if (password.value.trim() === '') {
+                e.preventDefault();
+                password_error.innerHTML = "Enter the password";
+            // } else if (!password.value.match(pass_check)) {
+            //     e.preventDefault();
+            //     password_error.innerHTML = "Enter the correct password";
+            } else {
+                password_error.innerHTML = "";
+            }
+
+        })
+
+    </script>
+    <%- include('../user/userLayout/footer') %>
