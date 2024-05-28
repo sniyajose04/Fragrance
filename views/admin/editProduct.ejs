@@ -18,7 +18,7 @@
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item ">
+                <li class="menu-item active ">
                     <a class="menu-link" href="/admin/product"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
@@ -31,11 +31,29 @@
                     </a>
 
                 </li>
-                <li class="menu-item active">
+                <li class="menu-item ">
                     <a class="menu-link" href="/admin/Userlist"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Users</span>
                     </a>
 
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/orderlist"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">order</span>
+                    </a>
+
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/couponList"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Coupon</span>
+                    </a>
+                    
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/offerList"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Offers</span>
+                    </a>
+                    
                 </li>
 
         </nav>
@@ -44,17 +62,7 @@
         <header class="main-header navbar">
             <div class="col-search">
                 <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i
-                                class="material-icons md-search"></i></button>
-                    </div>
-                    <datalist id="search_terms">
-                        <option value="Products">
-                        <option value="New orders">
-                        <option value="Apple iphone">
-                        <option value="Ahmed Hassan">
-                    </datalist>
+                   
                 </form>
             </div>
             <div class="col-nav">
@@ -64,7 +72,7 @@
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
                             <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
+                           
                         </a>
                     </li>
                     <li class="nav-item">
@@ -75,20 +83,7 @@
                         <a href="#" class="requestfullscreen nav-link btn-icon"><i
                                 class="material-icons md-cast"></i></a>
                     </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
-                            aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/admin-assets/imgs/theme/flag-us.png"
-                                    alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-fr.png"
-                                    alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-jp.png"
-                                    alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-cn.png"
-                                    alt="Français">中国人</a>
-                        </div>
-                    </li>
+                    
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
                             aria-expanded="false"> <img class="img-xs rounded-circle"
@@ -111,36 +106,41 @@
                 </ul>
             </div>
         </header>
+       
         <section class="content-main">
+            
+
             <div class="row">
                 <div class="col-9">
                     <div class="content-header">
                         <h2 class="content-title">Edit Product</h2>
-
+                        
                     </div>
+                   
                 </div>
                 <div class="col-lg-6">
+                    
                     <div class="card mb-4">
 
                         <div class="card-body">
-                            <form method="POST" action="/admin/updateProduct?id=<%= Product._id %>">
-
+                            <form method="POST" action="/admin/updateProduct?id=<%= product._id %>">
+                                
                                 <div class="mb-4">
                                     <label for="product_title" class="form-label">product_title</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="producttitle"
-                                        name="product_title" value="<%= Product.producttitle %>">
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_title"
+                                        name="product_title" value="<%= product.product_title %>">
 
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Full description</label>
                                     <textarea placeholder="Type here" class="form-control" rows="4" name="Description"
-                                        id="Description"><%= Product.Description %></textarea>
+                                        id="Description"><%= product.Description %></textarea>
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="Stock" class="form-label">Stock</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="stock"
-                                        name="Stock" value="<%= Product.Stock %>">
+                                        name="Stock" value="<%= product.Stock %>">
 
                                 </div>
 
@@ -152,7 +152,7 @@
                                             <div class="row gx-2">
                                                 <input placeholder="$" type="text" class="form-control"
                                                     id="regularPrice" name="regularPrice"
-                                                    value="<%= Product.Originalprice %>">
+                                                    value="<%= product.regularPrice %>">
 
                                             </div>
                                         </div>
@@ -161,7 +161,7 @@
                                             <div class="row gx-2">
                                                 <input placeholder="$" type="text" class="form-control"
                                                     id="promotionalPrice" name="promotionalPrice"
-                                                    value="<%= Product.Saleprice %>">
+                                                    value="<%= product.promotionalPrice %>">
 
                                             </div>
                                         </div>
@@ -171,59 +171,56 @@
 
                                 <div class="col-sm-6 mb-3">
                                     <label class="form-label">Category</label>
-                                    <select class="form-select" name="category">
+                                    
+                                    <select class="form-select" name="category" id="category">
                                         <option value="" disabled selected>Select Category</option>
-                                        <option value="1">Floral</option>
-                                        <option value="2">Woody</option>
-                                        <option value="3">Oriental</option>
-                                        <option value="4">Fruity</option>
-                                        <option value="5">Aquatic</option>
-                                        <option value="6">Fresh</option>
-
+                                        <% category.forEach(cat=> { %>
+                                            <option value="<%= cat._id %>">
+                                                <%= cat.name %>
+                                            </option>
+                                            <% }); %>
                                     </select>
                                 </div>
                                 
                                
                         </div>
+                        <button type="submit" class="btn btn-primary btn-sm rounded">Update Product</button>
                         </form>
 
                         
 
                     </div>
-                    <div>
-
-                        <button type="submit" class="btn btn-primary btn-sm rounded">Update Product</button>
-                    </div>
+                   
 
                     
-
+                   
                 </div>
                 <div class="col-lg-3">
                     <div class="card mb-4">
                         <div class="card-header">
                             <h4>Media</h4>
                         </div>
-
+                
                         <div class="card-body">
-
-                            <div class="input-upload">
-                                <img src="admin-assets/imgs/theme/upload.svg" alt="">
-                                <input class="form-control" type="file">
-                            </div>
-                        </div>
-                    </div> <!-- card end// -->
-                    <div class="text-center">
-
-                        <button type="submit" class="btn btn-primary btn-sm rounded-pill">Crop</button>
-                        <button type="submit" class="btn btn-primary btn-sm rounded-pill">Delete</button>
+                            <% product.images.forEach(image => { %>
+                                <div class="input-upload">
+                                    <img src="/productImages/<%= image.filename %>" alt="">
+                                    
+                                    
+                                </div>
+                            <% }); %>
+                        </div> 
                     </div>
                 </div>
+                
             </div>
           
             
             </div>
         </div>
+      
             </div>
+            
         </section>
 
 

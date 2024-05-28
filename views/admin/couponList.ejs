@@ -1,0 +1,410 @@
+<%- include('./adminLayout/header') %>
+
+    <body>
+        <div class="screen-overlay"></div>
+        <aside class="navbar-aside" id="offcanvas_aside">
+            <div class="aside-top">
+                <a href="index.html" class="brand-wrap">
+                    <img src="/admin-assets/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
+                </a>
+                <div>
+                    <button class="btn btn-icon btn-aside-minimize"> <i
+                            class="text-muted material-icons md-menu_open"></i> </button>
+                </div>
+            </div>
+            <nav>
+                <ul class="menu-aside">
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/adminpanel"> <i class="icon material-icons md-home"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item  ">
+                        <a class="menu-link" href="/admin/product"> <i class="icon material-icons md-shopping_bag"></i>
+                            <span class="text">Products</span>
+                        </a>
+                    </li>
+
+                    <li class="menu-item  ">
+                        <a class="menu-link" href="/admin/categorylist"> <i class="icon material-icons md-store"></i>
+                            <span class="text">Category</span>
+                        </a>
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/Userlist"> <i class="icon material-icons md-add_box"></i>
+                            <span class="text">User</span>
+                        </a>
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/orderlist"> <i class="icon material-icons md-add_box"></i>
+                            <span class="text">Order</span>
+                        </a>
+
+                    </li>
+                    <li class="menu-item active">
+                        <a class="menu-link" href="/admin/couponList"> <i
+                                class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Coupon</span>
+                        </a>
+
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/offerList"> <i
+                                class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Offers</span>
+                        </a>
+
+                    </li>
+
+            </nav>
+        </aside>
+        <main class="main-wrap">
+            <header class="main-header navbar">
+                <div class="col-search">
+
+                </div>
+                <div class="col-nav">
+                    <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                            class="material-icons md-apps"></i> </button>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon" href="#">
+                                <i class="material-icons md-notifications animation-shake"></i>
+
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon darkmode" href="#"> <i
+                                    class="material-icons md-nights_stay"></i> </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="requestfullscreen nav-link btn-icon"><i
+                                    class="material-icons md-cast"></i></a>
+                        </li>
+
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
+                                aria-expanded="false"> <img class="img-xs rounded-circle"
+                                    src="/admin-assets/imgs/people/avatar2.jpg" alt="User"></a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit
+                                    Profile</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account
+                                    Settings</a>
+                                <a class="dropdown-item" href="#"><i
+                                        class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help
+                                    center</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="#"><i
+                                        class="material-icons md-exit_to_app"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <section class="content-main">
+                <div class="content-header">
+                    <div>
+                        <h2 class="content-title card-title">Coupon List </h2>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="card mb-4">
+
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Coupon name</th>
+                                                <th>Discount</th>
+                                                <th>Min Amount</th>
+                                                <th>Starting Date</th>
+                                                <th>Ending Date</th>
+                                                <th class="text-end"> Action </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <%if(locals.coupons){%>
+                                                <% for( let i=0; i < coupons.length; i++ ) { %>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            <%= coupons[i].name %>
+                                                        </td>
+                                                        <td>
+                                                            <%= coupons[i].discount %>
+                                                        </td>
+                                                        <td>
+                                                            <%= coupons[i].minpurchaseamount %>
+                                                        </td>
+                                                        <td>
+                                                            <%= new Date(coupons[i].start).toLocaleDateString() %>
+                                                        </td>
+                                                        <td>
+                                                            <%= new Date(coupons[i].end).toLocaleDateString() %>
+                                                        </td>
+
+                                                        <td class="text-end">
+
+                                                            <a onclick="deleteCoupon('<%= coupons[i]._id %>')"
+                                                                class="btn btn-info">Delete</a>
+
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                                        <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="mb-3">Add Coupon</h5>
+                                <form action="/admin/couponList" method="post">
+
+                                    <div class="mb-4">
+                                        <label for="order_id" class="form-label">Coupon name</label>
+                                        <input type="text" placeholder="Type here" class="form-control" id="name"
+                                            name="name">
+                                        <span class="text-danger" id="nameError"></span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="order_customer" class="form-label">Discount</label>
+                                        <input type="text" placeholder="Type here" class="form-control" id="discount"
+                                            name="discount">
+                                        <span class="text-danger" id="discountError"></span>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="order_total" class="form-label">Min Amount</label>
+                                        <input type="text" placeholder="Type here" class="form-control"
+                                            id="minpurchaseamount" name="minpurchaseamount">
+                                        <span class="text-danger" id="minpurchaseamountError"></span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="order_created_date" class="form-label">Starting Date</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control" id="start" name="start">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-calendar"></i>
+                                          
+                                            </span>
+                                        </div>
+                                        <span class="text-danger" id="startError"></span>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="order_modified_date" class="form-label">Ending Date</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control" id="end" name="end">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-calendar"></i>
+                                               
+                                            </span>
+                                        </div>
+                                        <span class="text-danger" id="endError"></span>
+                                    </div>
+
+                                    <div class="d-grid">
+                                        <button id="btn" class="btn btn-primary">Create coupon</button>
+                                        
+                                    </div>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+
+            </section>
+           
+
+            <script>
+                document.getElementById('name').addEventListener('input', function () {
+                    validateName();
+                });
+
+                document.getElementById('discount').addEventListener('input', function () {
+                    validateDiscount();
+                });
+
+                document.getElementById('minpurchaseamount').addEventListener('input', function () {
+                    validateMinPurchaseAmount();
+                });
+
+                document.getElementById('start').addEventListener('change', function () {
+                    validateDates();
+                });
+
+                document.getElementById('end').addEventListener('change', function () {
+                    validateDates();
+                });
+
+                document.getElementById('btn').addEventListener('click', function (event) {
+                    if (!validateForm()) {
+                        event.preventDefault();
+                    }
+                });
+
+                function validateForm() {
+                    const isValid = validateDates() && validateName() && validateDiscount() && validateMinPurchaseAmount();
+                    if (!isValid) {
+                        event.preventDefault();
+                    }
+                    return isValid;
+                }
+
+
+                function validateName() {
+                    const name = document.getElementById('name').value.trim();
+                    const namePattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+                    if (name === '') {
+                        document.getElementById('nameError').textContent = 'Coupon name is required';
+                        return false;
+                    } else if (!namePattern.test(name)) {
+                        document.getElementById('nameError').textContent = 'Coupon name must contain at least one uppercase letter, one lowercase letter, and one number';
+                        return false;
+                    } else {
+                        document.getElementById('nameError').textContent = '';
+                        return true;
+                    }
+                }
+
+                function validateDiscount() {
+                    const discount = document.getElementById('discount').value.trim();
+                    if (discount === '') {
+                        document.getElementById('discountError').textContent = 'Discount is required';
+                        return false;
+                    } else if (isNaN(discount) || Number(discount) <= 0) {
+                        document.getElementById('discountError').textContent = 'Discount must be a positive number';
+                        return false;
+                    } else {
+                        document.getElementById('discountError').textContent = '';
+                        return true;
+                    }
+                }
+
+                function validateMinPurchaseAmount() {
+                    const minpurchaseamount = document.getElementById('minpurchaseamount').value.trim();
+                    const discount = document.getElementById('discount').value.trim();
+                    if (minpurchaseamount === '') {
+                        document.getElementById('minpurchaseamountError').textContent = 'Min purchase amount is required';
+                        return false;
+                    } else if (isNaN(minpurchaseamount) || Number(minpurchaseamount) <= 0) {
+                        document.getElementById('minpurchaseamountError').textContent = 'Min purchase amount must be a positive number';
+                        return false;
+                    } else if (discount !== '' && Number(minpurchaseamount) < Number(discount)) {
+                        document.getElementById('minpurchaseamountError').textContent = 'Min purchase amount cannot be less than the discount';
+                        return false;
+                    } else {
+                        document.getElementById('minpurchaseamountError').textContent = '';
+                        return true;
+                    }
+                }
+
+                function validateForm() {
+                    const validName = validateName();
+                    const validDiscount = validateDiscount();
+                    const validMinPurchaseAmount = validateMinPurchaseAmount();
+                    const validDates = validateDates();
+
+                    return validName && validDiscount && validMinPurchaseAmount && validDates;
+                }
+
+                function validateDates() {
+                    const startInput = document.getElementById('start');
+                    const endInput = document.getElementById('end');
+                    const startDate = new Date(startInput.value);
+                    const endDate = new Date(endInput.value);
+                    const currentDate = new Date();
+
+
+                    document.getElementById('startError').textContent = '';
+                    document.getElementById('endError').textContent = '';
+
+
+                    if (startDate < currentDate) {
+                        document.getElementById('startError').textContent = 'Start date must be today or a future date';
+                        return false;
+                    }
+
+
+                    if (endDate <= currentDate) {
+                        document.getElementById('endError').textContent = 'End date must be after today';
+                        return false;
+                    }
+
+
+                    if (endDate <= startDate) {
+                        document.getElementById('endError').textContent = 'End date must be after start date';
+                        return false;
+                    }
+
+                    return true;
+                }
+            </script>
+
+
+
+<script>
+    function deleteCoupon(couponid) {
+        Swal.fire({
+            title: "Are you sure you want to delete this coupon?",
+            text: "This action cannot be undone!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/admin/deleteCoupon?id=${couponid}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'The coupon has been deleted.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                window.location.href = `/admin/couponList`;
+                            });
+                        } else {
+                            console.error('Failed to delete coupon:', response.statusText);
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Failed to delete the coupon.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting coupon:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'There was an error deleting the coupon.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+            }
+        });
+    }
+    </script>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+            <%- include('./adminLayout/header') %>

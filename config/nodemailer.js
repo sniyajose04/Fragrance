@@ -2,12 +2,12 @@ const nodemailer = require('nodemailer');
 
 const sendVerifyMail = async (name, email, otp) => {
     try {
-        // Create a Nodemailer transporter using SMTP settings
+      console.log(otp,'hgdhjfghjs');
         const transporter = nodemailer.createTransport({
-          service: 'Gmail', // Use your email service provider here
+          service: 'Gmail', 
           auth: {
-            user: 'mhdrizwanpkd@gmail.com', // Your email address
-            pass: 'sgzmnhpoginjuwat' // Your email password
+            user: 'mhdrizwanpkd@gmail.com', 
+            pass: 'sgzmnhpoginjuwat' 
     
           }
         });
@@ -16,8 +16,8 @@ const sendVerifyMail = async (name, email, otp) => {
  const mailOptions = {
     from: 'mhdrizwanpkd@gmail.com', // Sender address
     to: email, // Recipient address
-    subject: 'OTP Verification', // Subject line
-    text: `Your OTP for verification is: ${otp}` // Plain text body
+    subject: 'OTP Verification', 
+    text: `Your OTP for verification is: ${otp}` 
   };
 
   // Send the email

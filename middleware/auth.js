@@ -2,6 +2,7 @@ const User = require('../models/userModels')
 
 const isLogin = async(req,res,next)=>{
     try {
+        console.log('userId',req.session.user_id);
         if(req.session.user_id){
           next()
         }else{

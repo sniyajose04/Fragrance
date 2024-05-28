@@ -1,0 +1,133 @@
+<%- include('./adminLayout/header') %>
+    <div class="screen-overlay"></div>
+   
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Sales Report </h2>
+                  
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="card mb-4">
+                        <header class="card-header">
+
+                            <form action="/admin/dateFilter" method="post">
+                            <div class="row gx-3">
+                                <%if(locals.start && locals.end){%>
+                                    <div class="col-lg-2 col-md-3 col-6 ">
+                                        From :<br><input type="date" name="startDate" value="<%=start%>">
+                                    </div>
+                                    <div class="col-lg-2 col-md-3 col-6">
+                                        To : <br><input type="date" name="endDate" value="<%=end%>">
+                                    </div>
+                                    <%}else{%>
+                                        <div class="col-lg-2 col-md-3 col-6 ">
+                                            From : <br><input type="date" name="startDate" >
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-6">
+                                            To : <br><input type="date" name="endDate">
+                                        </div>
+                                        <%}%>
+                               
+                                <div class="col-lg-2 col-md-3 col-6">
+                                    <button href="#" type="submit" class="btn btn-md rounded font-sm">Filter Out</button>
+                                </div>
+                               
+                            </div>
+                        </form>
+
+                        
+
+                        </header> <!-- card-header end// -->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Customer name</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th class="text-end"> Action </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%for(i=0;i<orders.length;i++){%>
+
+                                            <tr>
+                                                <td><%= orders[i].orderId ? 'ORD#' + orders[i].orderId : 'N/A' %></td>
+                                                <td><b><%= orders[i].userId && orders[i].userId.name ? orders[i].userId.name : 'N/A' %></b></td>
+                                                <td> ₹<%= orders[i].totalAmount ? orders[i].totalAmount : 'N/A' %></td>
+                                                <% if (orders[i].orderStatus == 'Cancelled' || orders[i].orderStatus == 'Returned') { %>
+                                                    <td><span class="text-danger"><%= orders[i].orderStatus %></span></td>
+                                                <% } else { %>
+                                                    <td><span class="text-success"><%= orders[i].orderStatus %></span></td>
+                                                <% } %>
+                                                <td><%= orders[i].orderDate.toLocaleString() ? orders[i].orderDate.toLocaleString() : 'N/A' %></td>
+                                                <td class="text-end">
+                                                    <a href="/admin/orderDetail?orderId=<%= orders[i]._id %>" class="btn btn-md rounded font-sm">Detail</a>
+                                                </td>
+                                            </tr>
+                                            
+                                      
+                                        <%}%>
+
+                                    </tbody>
+                                </table>
+                            </div> <!-- table-responsive //end -->
+                        </div> <!-- card-body end// -->
+                    </div> <!-- card end// -->
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-secondary print ms-2" id="printScreen" >Download &nbsp; Report &nbsp;&nbsp;<i class="icon material-icons md-print"></i></button><br><br>
+                    <script>
+                        const printid=document.getElementById('printScreen')
+                        printid.addEventListener('click',function(){
+                            window.print()
+                        })
+                    </script>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-3">Report</h5>
+                            <form>
+                                <div class="mb-4">
+                                    <label for="order_id" class="">Total no: of Orders</label><br><br>
+                                    <h5 class="text-center"><%=totalOrders%></h5>
+                                    <!-- <input type="text" value="<%=totalOrders%>" class="form-control" id="order_id"> -->
+                                </div>
+                                <div class="mb-4">
+                                    <label for="order_customer" class=" ">Total no: of Customers</label><br><br>
+                                    <h5 class="text-center"><%=totalCustomers%></h5>
+                                    <!-- <input type="text" value="<%=totalCustomers%>" class="form-control" id="order_customer"> -->
+                                </div>
+                                <div class="mb-4">
+                                    <label for="order_total" class="">No: of online Payments</label><br><br>
+                                    <h5 class="text-center"><%=onlinePayments%></h5>
+                                    <!-- <input type="text" value="<%=onlinePayments%>" class="form-control" id="order_total"> -->
+                                </div>
+                                <div class="mb-4">
+                                    <label for="order_created_date" class="">No: of Cash on Delivery</label><br><br>
+                                    <h5 class="text-center"><%=cashOnDelivery%></h5>
+                                    <!-- <input type="text" value="<%=cashOnDelivery%>" class="form-control" id="order_created_date"> -->
+                                </div>
+                                <div class="mb-4">
+                                    <label for="order_modified_date" class=" ">No: of orders Cancelled</label><br><br>
+                                    <h5 class="text-center"><%=orderCancelled%></h5>
+                                    <!-- <input type="text" value="<%=orderCancelled%>" class="form-control" id="order_modified_date"> -->
+                                </div>
+                                <div class="mb-4">
+                                    <label for="order_customer_1" class="text-center">Total transaction</label><br><br>
+                                    <h5 class="text-center"> ₹<%=totalTransaction.toFixed(2)%></h5>
+                                    <!-- <input type="text" value="<%=totalTransaction%>" class="form-control" id="order_customer_1"> -->
+                                </div>
+                            </form>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+           
+        </section> 
+        <%- include('./adminLayout/footer') %>

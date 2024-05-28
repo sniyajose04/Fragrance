@@ -8,7 +8,8 @@
                 <img src="/admin-assets/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
             </a>
             <div>
-                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
             </div>
         </div>
         <nav>
@@ -18,8 +19,8 @@
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                
-                <li class="menu-item ">
+
+                <li class="menu-item active">
                     <a class="menu-link" href="/admin/product"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
@@ -31,10 +32,27 @@
                     </a>
                 </li>
 
-                <li class="menu-item  active">
+                <li class="menu-item  ">
                     <a class="menu-link" href="/admin/category"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Users</span>
                     </a>
+                </li>
+                <li class="menu-item  ">
+                    <a class="menu-link" href="/admin/orderlist"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">order</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/couponList"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Coupon</span>
+                    </a>
+                    
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/offerList"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Offers</span>
+                    </a>
+                    
                 </li>
 
         </nav>
@@ -43,17 +61,8 @@
         <header class="main-header navbar">
             <div class="col-search">
                 <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i
-                                class="material-icons md-search"></i></button>
-                    </div>
-                    <datalist id="search_terms">
-                        <option value="Products">
-                        <option value="New orders">
-                        <option value="Apple iphone">
-                        <option value="Ahmed Hassan">
-                    </datalist>
+                   
+                   
                 </form>
             </div>
             <div class="col-nav">
@@ -63,7 +72,7 @@
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
                             <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
+                           
                         </a>
                     </li>
                     <li class="nav-item">
@@ -74,20 +83,7 @@
                         <a href="#" class="requestfullscreen nav-link btn-icon"><i
                                 class="material-icons md-cast"></i></a>
                     </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
-                            aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/admin-assets/imgs/theme/flag-us.png"
-                                    alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-fr.png"
-                                    alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-jp.png"
-                                    alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-cn.png"
-                                    alt="Français">中国人</a>
-                        </div>
-                    </li>
+                    
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
                             aria-expanded="false"> <img class="img-xs rounded-circle"
@@ -115,26 +111,29 @@
                 <div class="col-9">
                     <div class="content-header">
                         <h2 class="content-title">Add New Product</h2>
-                        
+
                         <div>
-                            <button type="submit" class="btn btn-primary btn-sm rounded" onclick=" return validateForm()">Add Product</button>
+                            <button type="submit" class="btn btn-primary btn-sm rounded"
+                                onclick=" return validateForm()">Add Product</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="card mb-4">
-                        
                         <div class="card-body">
-                            <form method="POST" action="/admin/productAdd" id="productForm" enctype="multipart/form-data">
+                            <form method="POST" action="/admin/productAdd" id="productForm"
+                                enctype="multipart/form-data">
                                 <div class="mb-4">
                                     <label for="product_title" class="form-label">Product title</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="producttitle" name="product_title">
+                                    <input type="text" placeholder="Type here" class="form-control" id="producttitle"
+                                        name="product_title">
                                     <span class="text-danger" id="product_titleError"></span>
                                 </div>
 
                                 <div class="mb-4">
                                     <label class="form-label">Full description</label>
-                                    <textarea placeholder="Type here" class="form-control" rows="4" id="Description" name="Description"></textarea>
+                                    <textarea placeholder="Type here" class="form-control" rows="4" id="Description"
+                                        name="Description"></textarea>
                                     <span class="text-danger" id="DescriptionError"></span>
                                 </div>
 
@@ -150,7 +149,8 @@
                                         <div class="mb-4">
                                             <label class="form-label">Regular price</label>
                                             <div class="row gx-2">
-                                                <input placeholder="$" type="text" class="form-control" id="regularPrice" name="regularPrice" >
+                                                <input placeholder="$" type="text" class="form-control"
+                                                    id="regularPrice" name="regularPrice">
                                                 <span class="text-danger" id="regularPriceError"></span>
                                             </div>
                                         </div>
@@ -159,132 +159,175 @@
                                     <div class="col-lg-4">
                                         <div class="mb-4">
                                             <label class="form-label">Promotional price</label>
-                                            <input placeholder="$" type="text" class="form-control" id="promotionalPrice" name="promotionalPrice">
+                                            <input placeholder="$" type="text" class="form-control"
+                                                id="promotionalPrice" name="promotionalPrice">
                                             <span class="text-danger" id="promotionalPriceError"></span>
                                         </div>
-                                    </div>                                    
+                                    </div>
                                 </div>
 
                                 <div class="col-sm-6 mb-3">
                                     <label class="form-label">Category</label>
-                                    <select class="form-select" name="category" id="category" > 
+                                    <select class="form-select" name="category" id="category">
                                         <option value="" disabled selected>Select Category</option>
-                                        <option value="1">Floral</option>
-                                        <option value="2">Woody</option>
-                                        <option value="3">Oriental</option>
-                                        <option value="4">Fruity</option>
-                                        <option value="5">Aquatic</option>
-                                        <option value="6">Fresh</option>
+                                        <% category.forEach(cat=> { %>
+                                            <option value="<%= cat._id %>">
+                                                <%= cat.name %>
+                                            </option>
+                                            <% }); %>
                                     </select>
                                     <span class="text-danger" id="CategoryError"></span>
                                 </div>
-                                
-                            
+
+
                         </div>
                     </div>
-                    
+
                 </div>
-               
+
                 <div class="col-lg-3">
                     <div class="card mb-4">
-                      <div class="card-header">
-                        <h4>Media</h4>
-                      </div>
-                      <div class="card-body">
-                        <div class="input-upload">
-                          <input class="form-control" type="file" id="images" name="images" multiple accept="image/*">
-                          <span class="text-danger" id="imageError"></span>
+                        <div class="card-header">
+                            <h4>Media</h4>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                    </form>
+                        <div class="card-body">
+                            <div class="input-upload">
+                          
+                                <input type="file" id="images" name="images" multiple accept="image/*" onchange="previewImages(event)">
+                                <span class="text-danger" id="imageError"></span>
+                            </div>
+                            <div id="imagePreview"></div>
+                        </div>
                     </div>
                 </div>
-                
-               
             </div>
-           
+
         </section>
+
+
+                <script>
+                    async function previewImages(event) {
+                        var previewArea = document.getElementById('imagePreview');
+                        previewArea.innerHTML = ''; // Clear previous preview
+                
+                var files = event.target.files;
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var reader = new FileReader();
         
-       
+                    reader.onload = async function(e) {
+                        var imageContainer = document.createElement('div');
+                        imageContainer.className = 'image-container';
         
+                        var image = document.createElement('img');
+                        image.src = e.target.result;
+        
+                        // Set image width and height for better display
+                        image.style.width = '100px';
+                        image.style.height = 'auto';
+        
+                        image.className = 'preview-image';
+                        imageContainer.appendChild(image);
+        
+                        var deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.className = 'btn btn-danger btn-sm mt-2';
+                        deleteButton.onclick = function() {
+                            deleteImage(imageContainer);
+                        };
+                        imageContainer.appendChild(deleteButton);
+        
+                        previewArea.appendChild(imageContainer);
+                    };
+        
+                    reader.readAsDataURL(file);
+                }
+            }
+        
+            function deleteImage(imageContainer) {
+                imageContainer.remove();
+               
+            }
+                </script>
+
+
         <script>
-    function validateForm() {
-    
-    var producttitle = document.getElementById("producttitle");
-    var Description = document.getElementById("Description");
-    var regularPrice = document.getElementById("regularPrice");
-    var promotionalPrice = document.getElementById("promotionalPrice");
-    var stock = document.getElementById("stock");
-    var category = document.getElementById("category");
-    var productForm = document.getElementById("productForm");
-    var images = document.getElementById("images")
+            function validateForm() {
 
-    let producttitleError = document.getElementById('product_titleError');
-    let DescriptionError = document.getElementById('DescriptionError');
-    let regularPriceError = document.getElementById('regularPriceError');
-    let promotionalPriceError = document.getElementById('promotionalPriceError');
-    let StockError = document.getElementById('StockError');
-    let CategoryError = document.getElementById("CategoryError");
-    let imageError = document.getElementById("imageError") 
+                var producttitle = document.getElementById("producttitle");
+                var Description = document.getElementById("Description");
+                var regularPrice = document.getElementById("regularPrice");
+                var promotionalPrice = document.getElementById("promotionalPrice");
+                var stock = document.getElementById("stock");
+                var category = document.getElementById("category");
+                var productForm = document.getElementById("productForm");
+                var images = document.getElementById("images")
 
-    if (producttitle.value.trim() === '' || producttitle.value === 'null') {
-        producttitleError.innerHTML = "productName is required";
-    } else {
-        producttitleError.innerHTML = "";
-    }
+                let producttitleError = document.getElementById('product_titleError');
+                let DescriptionError = document.getElementById('DescriptionError');
+                let regularPriceError = document.getElementById('regularPriceError');
+                let promotionalPriceError = document.getElementById('promotionalPriceError');
+                let StockError = document.getElementById('StockError');
+                let CategoryError = document.getElementById("CategoryError");
+                let imageError = document.getElementById("imageError")
 
-    if (Description.value.trim() === '') {
-        DescriptionError.innerHTML = "Description is required";
-    } else if (Description.value.trim().length <= 20) {
-        DescriptionError.innerHTML = "Description should be more than 20 characters";
-    } else {
-        DescriptionError.innerHTML = "";
-    }
+                if (producttitle.value.trim() === '' || producttitle.value === 'null') {
+                    producttitleError.innerHTML = "productName is required";
+                } else {
+                    producttitleError.innerHTML = "";
+                }
 
-    if (stock.value.trim() === '') {
-        StockError.innerHTML = "Stock quantity is required";
-    } else if (isNaN(stock.value.trim()) || stock.value.trim() <= 0) {
-        StockError.innerHTML = "Invalid stock quantity";
-    } else {
-        StockError.innerHTML = "";
-    }
+                if (Description.value.trim() === '') {
+                    DescriptionError.innerHTML = "Description is required";
+                } else if (Description.value.trim().length <= 20) {
+                    DescriptionError.innerHTML = "Description should be more than 20 characters";
+                } else {
+                    DescriptionError.innerHTML = "";
+                }
 
-    if (regularPrice.value.trim() === '') {
-        regularPriceError.innerHTML = "regularPrice is required";
-    } else if (isNaN(regularPrice.value.trim()) || regularPrice.value.trim() <= 0) {
-        regularPriceError.innerHTML = "Invalid regularPrice";
-    } else {
-        regularPriceError.innerHTML = "";
-    }
+                if (stock.value.trim() === '') {
+                    StockError.innerHTML = "Stock quantity is required";
+                } else if (isNaN(stock.value.trim()) || stock.value.trim() <= 0) {
+                    StockError.innerHTML = "Invalid stock quantity";
+                } else {
+                    StockError.innerHTML = "";
+                }
 
-    if (promotionalPrice.value.trim() === '') {
-        promotionalPriceError.innerHTML = "promotionalPrice is required";
-    } else if (isNaN(promotionalPrice.value.trim()) || promotionalPrice.value.trim() <= 0) {
-        promotionalPriceError.innerHTML = "Invalid promotionalPrice";
-    } else {
-        promotionalPriceError.innerHTML = "";
-    }
+                if (regularPrice.value.trim() === '') {
+                    regularPriceError.innerHTML = "regularPrice is required";
+                } else if (isNaN(regularPrice.value.trim()) || regularPrice.value.trim() <= 0) {
+                    regularPriceError.innerHTML = "Invalid regularPrice";
+                } else {
+                    regularPriceError.innerHTML = "";
+                }
 
-    if (category.value.trim() === '') {
-        CategoryError.innerHTML = "Please select a category";
-    } else {
-        CategoryError.innerHTML = "";
-    }
+                if (promotionalPrice.value.trim() === '') {
+                    promotionalPriceError.innerHTML = "promotionalPrice is required";
+                } else if (isNaN(promotionalPrice.value.trim()) || promotionalPrice.value.trim() <= 0) {
+                    promotionalPriceError.innerHTML = "Invalid promotionalPrice";
+                } else {
+                    promotionalPriceError.innerHTML = "";
+                }
 
-    if (images.files.length === 0) {
-    imageError.innerHTML = "Please upload an image";
-}
+                if (category.value.trim() === '') {
+                    CategoryError.innerHTML = "Please select a category";
+                } else {
+                    CategoryError.innerHTML = "";
+                }
+
+                if (images.files.length === 0) {
+                    imageError.innerHTML = "Please upload an image";
+                } else {
+                    imageError.innerHTML = "";
+                }
 
 
-    // Submit the form if all validations pass
-    if (producttitleError.innerHTML === "" && DescriptionError.innerHTML === "" && regularPriceError.innerHTML === "" && promotionalPriceError.innerHTML === "" && StockError.innerHTML === "" && CategoryError.innerHTML === "" && imageError.innerHTML === "") {
-        productForm.submit();
-    }
-}
-console.log('form validated')
+                // Submit the form if all validations pass
+                if (producttitleError.innerHTML === "" && DescriptionError.innerHTML === "" && regularPriceError.innerHTML === "" && promotionalPriceError.innerHTML === "" && StockError.innerHTML === "" && CategoryError.innerHTML === "" && imageError.innerHTML === "") {
+                    productForm.submit();
+                }
+            }
+            console.log('form validated')
         </script>
-        
+
         <%- include('./adminLayout/footer') %>
-        

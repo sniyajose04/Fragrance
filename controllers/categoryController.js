@@ -1,4 +1,4 @@
-const categoryModel = require('../models/categoryModel')
+
 const Category = require('../models/categoryModel')
 
 const addCategoryPage = async (req, res) => {
@@ -11,11 +11,17 @@ const addCategoryPage = async (req, res) => {
 
 const categoryDetail = async (req, res) => {
     try {
-        const categoryData = await Category.find()
-        res.render('categorylist', { Category: categoryData })
+        const page = parseInt(req.query.page) || 1; 
+        const pageSize = 5; 
+        const skip = (page - 1) * pageSize;
+            const totalCategories = await Category.countDocuments();  
+            const totalPages = Math.ceil(totalCategories / pageSize);
+            const categoryData = await Category.find().skip(skip).limit(pageSize);          
+      
+        res.render('categorylist', { Category: categoryData, totalPages: totalPages, currentPage: page  })
     } catch (error) {
         console.log(error)
-    }
+    }   
 }
 
 const addcategory = async (req, res) => {
@@ -25,7 +31,7 @@ const addcategory = async (req, res) => {
         console.log(req.body);
         
         if (existingCategory) {
-            // Pass the error message and other form data to the view
+            
             return res.render("addcategory", { errorMessage: "Category already exists", name, is_list, description });
         }
 
@@ -94,7 +100,7 @@ const updateCategory = async (req, res) => {
     try {
         const categoryId = req.query.id;
         console.log(req.body);
-        const { name ,is_list,description} = req.body; // Assuming the input field name is "categoryName"
+        const { name ,is_list,description} = req.body; 
 
         const updatedCategory = await Category.findByIdAndUpdate(categoryId, { name,is_list,description }, { new: true });
 
@@ -102,7 +108,7 @@ const updateCategory = async (req, res) => {
             return res.status(404).send('Category not found');
         }
 
-        res.redirect('/admin/categorylist'); // Redirect to a page displaying all categories or any other appropriate page
+        res.redirect('/admin/categorylist');
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');

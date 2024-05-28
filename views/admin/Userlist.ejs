@@ -17,7 +17,7 @@
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item  active">
+                <li class="menu-item  ">
                     <a class="menu-link" href="/admin/product"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
@@ -28,28 +28,36 @@
                         <span class="text">Category</span>
                     </a>
                 </li>
-                <li class="menu-item ">
+                <li class="menu-item active">
                     <a class="menu-link" href="/admin/Userlist"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">User</span>
                     </a>
                 </li>
-
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/orderlist"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Order</span>
+                    </a>
+                   
+                </li> 
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/couponList"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Coupon</span>
+                    </a>
+                    
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/offerList"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Offers</span>
+                    </a>
+                    
+                </li>
         </nav>
     </aside>
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
                 <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i
-                                class="material-icons md-search"></i></button>
-                    </div>
-                    <datalist id="search_terms">
-                        <option value="Products">
-                        <option value="New orders">
-
-                    </datalist>
+                    
                 </form>
             </div>
             <div class="col-nav">
@@ -59,7 +67,7 @@
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
                             <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
+                            
                         </a>
                     </li>
                     <li class="nav-item">
@@ -70,20 +78,7 @@
                         <a href="#" class="requestfullscreen nav-link btn-icon"><i
                                 class="material-icons md-cast"></i></a>
                     </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
-                            aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/admin-assets/imgs/theme/flag-us.png"
-                                    alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-fr.png"
-                                    alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-jp.png"
-                                    alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-cn.png"
-                                    alt="Français">中国人</a>
-                        </div>
-                    </li>
+                    
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
                             aria-expanded="false"> <img class="img-xs rounded-circle"
@@ -113,7 +108,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="myTable">
                                     <thead>
                                         <tr>
                                             <th class="text-center">
@@ -181,18 +176,7 @@
                     
                 </div> 
             </div> 
-            <div class="pagination-area mt-30 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <% for (let i = 1; i <= totalPages; i++) { %>
-                            <li class="page-item <%= currentPage == i ? 'active' : '' %>">
-                                <a class="page-link" href="/admin/Userlist?page=<%= i %>"><%= i %></a>
-                            </li>
-                        <% } %>
-                    </ul>
-                </nav>
-            </div>
-        </section>
+            
 
 
         <script>
@@ -290,11 +274,9 @@
                                 }
                             })
                             .then(data => {
-                                // Check if the operation was successful
+                               
                                 if (data.success) {
-                                    // Show success message
-
-                                    // Reload the page after 2 seconds
+                                   
                                     if (data.block == false) {
                                         const status = document.getElementById(`status` + index)
                                         const blockId = document.getElementById(`blockId` + index)
@@ -333,7 +315,12 @@
             }
         </script>
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    
+        <script>
+        let table = new DataTable('#myTable');
+        </script>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <%- include('./adminLayout/footer') %>

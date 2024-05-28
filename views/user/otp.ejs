@@ -62,7 +62,7 @@
             countdownElement.textContent = timeLeft;
             if (timeLeft === 0) {
                 document.getElementById('otpForm').addEventListener('submit', function(event) {
-                    event.preventDefault(); // Prevent form submission
+                    event.preventDefault(); 
                 });
                 document.getElementById('verifyButton').disabled = true; // Disable verify button
             } else {

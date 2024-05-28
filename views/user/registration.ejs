@@ -52,13 +52,6 @@
                                         </div>
 
                                     </form>
-                                    <div class="divider-text-center mt-15 mb-15">
-                                        <span> or</span>
-                                    </div>
-                                    <ul class="btn-login list_none text-center mb-15">
-                                        <li><a href="#" class="btn btn-facebook hover-up mb-lg-0 mb-sm-4">Login With Facebook</a></li>
-                                        <li><a href="#" class="btn btn-google hover-up">Login With Google</a></li>
-                                    </ul>
 
                                     <div class="text-muted text-center">Already have an account? <a href="#">Login in
                                             now</a></div>
@@ -90,9 +83,9 @@
         form.addEventListener('submit', (e) => {
 
             var email_check = /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
-            var mno_check = /^[0-9]{10}$/;
+            var mno_check = /^\d{10}$/;
             // var pass_check = /^(?=.[a-z])(?=.[A-Z]).{8,}$/;
-
+            var phoneNumber = mno.value.trim();
 
             if (username.value.trim() === '' || username.value === 'null') {
 
@@ -113,31 +106,33 @@
                 email_error.innerHTML = "";
             }
 
+
             if (password.value.trim() === '') {
                 e.preventDefault();
                 password_error.innerHTML = "Enter the password";
-            // } else if (!password.value.match(pass_check)) {
-            //     password_error.innerHTML = "enter password with 8 characters";
-            } else if (password.value === 'password') {
+            } else if (confirmpassword.value.trim() === '') {
                 e.preventDefault();
-                password_error.innerHTML = "Password cannot be 'password'";
+                confirmpassword_error.innerHTML = "Please confirm your password";
             } else if (confirmpassword.value !== password.value) {
                 e.preventDefault();
                 confirmpassword_error.innerHTML = "Passwords do not match";
             } else {
+
+                password_error.innerHTML = "";
                 confirmpassword_error.innerHTML = "";
             }
 
 
-            if (!mno.value.match(mno_check)) {
 
+            if (phoneNumber === '0000000000') {
+                mno_error.innerHTML = "Please enter a valid phone number other than all zeros";
+            } else if (!phoneNumber.match(mno_check)) {
                 e.preventDefault();
                 mno_error.innerHTML = "Please enter a valid 10-digit phone number";
-
             } else {
                 mno_error.innerHTML = "";
             }
-        })
+        });
     </script>
 
     <% - include('../user/userLayout/footer') %>

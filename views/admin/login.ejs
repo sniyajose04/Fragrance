@@ -11,7 +11,7 @@
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
                             <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
+                           
                         </a>
                     </li>
                     <li class="nav-item">
@@ -22,20 +22,7 @@
                         <a href="#" class="requestfullscreen nav-link btn-icon"><i
                                 class="material-icons md-cast"></i></a>
                     </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
-                            aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/admin-assets/imgs/theme/flag-us.png"
-                                    alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-fr.png"
-                                    alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-jp.png"
-                                    alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-cn.png"
-                                    alt="Français">中国人</a>
-                        </div>
-                    </li>
+                    
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
                             aria-expanded="false"> <img class="img-xs rounded-circle"
@@ -62,63 +49,70 @@
             <div class="card mx-auto card-login">
                 <div class="card-body">
                     <h4 class="card-title mb-4 text-center">LOGIN</h4>
-                    <form method="POST" action="/admin" id="form">
-                        
+                    <form method="POST" action="/admin" id="form" onsubmit="validateForm(event)">
                         <div class="mb-3">
-                            <input class="form-control" name="email" placeholder="email" type="text" id="email">
+                            <input class="form-control" name="email" placeholder="Email" type="text" id="email">
                             <span class="text-danger" id="email_error"></span>
-                        </div> <!-- form-group// -->
+                        </div>
                         <div class="mb-3">
                             <input class="form-control" placeholder="Password" name="password" type="password" id="Password">
                             <span class="text-danger" id="password_error"></span>
-                        </div> <!-- form-group// -->
+                        </div> 
                         <div class="mb-3">
-                            <!-- <a href="#" class="float-end font-sm text-muted">Forgot password?</a> -->
                             <label class="form-check">
-                                <input type="checkbox" class="form-check-input" checked="">
+                                <input type="checkbox" class="form-check-input">
                                 <span class="form-check-label">Remember</span>
                             </label>
-                        </div> <!-- form-group form-check .// -->
+                        </div> 
                         <div class="mb-4">
-                            <button type="submit" class="btn btn-primary w-100"> Login </button>
-                        </div> <!-- form-group// -->
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                        </div>
                     </form>
                     
                 </div>
             </div>
         </section>
-        <!-- <script>
-            const email = document.getElementById('email')
-        const password = document.getElementById('password')
-        const form = document.getElementById('form')
-
-        const email_error = document.getElementById('email_error')
-        const password_error = document.getElementById('password_error')
-
-        var email_check = /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
-        var pass_check = /^(?=.[a-z])(?=.[A-Z]).{8,}$/;
-
-        form.addEventListener('submit', (e) => {
-
-            if (!email.value.match(email_check)) {
-                e.preventDefault();
-                email_error.innerHTML = "Valid Email is required";
-            } else {
-                email_error.innerHTML = "";
-            }
-
-            if (password.value.trim() === '') {
-                e.preventDefault();
-                password_error.innerHTML = "Enter the password";
-            } else if (!password.value.match(pass_check)) {
-                e.preventDefault();
-                password_error.innerHTML = "Enter the correct password";
-            } else {
-                password_error.innerHTML = "";
-            }
-
-        })
-
-                </script> -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const emailField = document.getElementById('email');
+                const passwordField = document.getElementById('Password');
+                const emailError = document.getElementById('email_error');
+                const passwordError = document.getElementById('password_error');
+    
+                function validateEmail() {
+                    const email = emailField.value;
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailPattern.test(email)) {
+                        emailError.textContent = 'Please enter a valid email address.';
+                    } else {
+                        emailError.textContent = '';
+                    }
+                }
+    
+                function validatePassword() {
+                    const password = passwordField.value;
+                    if (password.trim() === '') {
+                        passwordError.textContent = 'Please enter a password.';
+                    } else {
+                        passwordError.textContent = '';
+                    }
+                }
+    
+                emailField.addEventListener('input', validateEmail);
+                emailField.addEventListener('blur', validateEmail);
+    
+                passwordField.addEventListener('input', validatePassword);
+                passwordField.addEventListener('blur', validatePassword);
+    
+                document.getElementById('form').addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    validateEmail();
+                    validatePassword();
+                    if (emailError.textContent === '' && passwordError.textContent === '') {
+                        document.getElementById('form').submit();
+                    }
+                });
+            });
+        </script>
 
         <%- include('./adminLayout/footer') %>
