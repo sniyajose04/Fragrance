@@ -37,7 +37,16 @@ const userSchema = new mongoose.Schema({
     type:mongoose.Types.ObjectId,
     ref: "Offer",
     
-    }
-});
+    },
+    // referralCode: {
+    //     type: String,
+    //     default: RandomReferralCode,
+    //     unique: true, 
+    //   },
+    //   userReferred: [{
+    //     type: String,
+    //   }]
+      });
+      
 
 module.exports = mongoose.model('UserDetials',userSchema);

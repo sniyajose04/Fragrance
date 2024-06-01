@@ -9,25 +9,17 @@ const Order = require('../models/orderModel')
 
 const adminDashboard = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const pageSize = 6;
-        const skip = (page - 1) * pageSize;
-        const orderCount = await Order.countDocuments({});
-        const totalPages = Math.ceil(orderCount / pageSize);
-
         const user = await User.find({});
         const product = await Product.find({});
         const category = await Category.find({});
-        const order = await Order.find({}).populate('address').skip(skip).limit(pageSize);
-
+        const order = await Order.find({}).populate('address');
         let totalTransaction = 0;
         order.forEach((item) => {
             if (item.totalAmount !== undefined && item.totalAmount !== null) {
                 totalTransaction += parseFloat(item.totalAmount);
             }
         });
-
-        const orderData = await Order.aggregate([
+        const monthlyOrderData = await Order.aggregate([
             { $unwind: '$products' },
             {
                 $group: {
@@ -38,8 +30,7 @@ const adminDashboard = async (req, res) => {
             },
             { $sort: { '_id.month': 1 } }
         ]);
-
-        const userData = await User.aggregate([
+        const monthlyUserData = await User.aggregate([
             {
                 $group: {
                     _id: { $month: '$date' },
@@ -48,74 +39,65 @@ const adminDashboard = async (req, res) => {
             },
             { $sort: { '_id': 1 } }
         ]);
-
-        const orderStats = await Order.aggregate([
-            { $unwind: '$products' },
-            {
-                $lookup: {
-                    from: 'product',
-                    localField: 'products.productId',
-                    foreignField: '_id',
-                    as: 'productInfo'
-                }
-            },
-            { $unwind: '$productInfo' },
-            {
-                $lookup: {
-                    from: 'category',
-                    localField: 'productInfo.categoryId',
-                    foreignField: '_id',
-                    as: 'categoryInfo'
-                }
-            },
-            { $unwind: '$categoryInfo' },
-            {
-                $group: {
-                    _id: '$categoryInfo._id',
-                    categoryName: { $first: '$categoryInfo.categoryName' },
-                    orderCount: { $sum: 1 }
-                }
-            }
-        ]);
-
-        const categoryNames = JSON.stringify(orderStats.map(stat => stat.categoryName));
-        const orderCounts = JSON.stringify(orderStats.map(stat => stat.orderCount));
-
         const monthlyData = Array.from({ length: 12 }, (_, index) => {
-            const monthOrderData = orderData.find(item => item._id.month === index + 1) || { totalOrders: 0, totalProducts: 0 };
-            const monthUserData = userData.find(item => item._id === index + 1) || { totalRegister: 0 };
+            const monthOrderData = monthlyOrderData.find(item => item._id.month === index + 1) || { totalOrders: 0, totalProducts: 0 };
+            const monthUserData = monthlyUserData.find(item => item._id === index + 1) || { totalRegister: 0 };
             return {
                 totalOrders: monthOrderData.totalOrders,
                 totalProducts: monthOrderData.totalProducts,
                 totalRegister: monthUserData.totalRegister
             };
         });
-
+        const yearlyOrderData = await Order.aggregate([
+            { $unwind: '$products' },
+            {
+                $group: {
+                    _id: { year: { $year: '$orderDate' } },
+                    totalOrders: { $sum: 1 },
+                    totalProducts: { $sum: '$products.quantity' },
+                }
+            },
+            { $sort: { '_id.year': 1 } }
+        ]);
+        const yearlyUserData = await User.aggregate([
+            {
+                $group: {
+                    _id: { $year: '$date' },
+                    totalRegister: { $sum: 1 },
+                }
+            },
+            { $sort: { '_id': 1 } }
+        ]);
+        const yearlyData = yearlyOrderData.map((item, index) => ({
+            totalOrders: item.totalOrders,
+            totalProducts: item.totalProducts,
+            totalRegister: yearlyUserData[index] ? yearlyUserData[index].totalRegister : 0
+        }));
         const totalOrdersJson = JSON.stringify(monthlyData.map(item => item.totalOrders));
         const totalProductsJson = JSON.stringify(monthlyData.map(item => item.totalProducts));
         const totalRegisterJson = JSON.stringify(monthlyData.map(item => item.totalRegister));
-        console.log(totalOrdersJson,totalProductsJson);
+        
+        const totalOrdersYearlyJson = JSON.stringify(yearlyData.map(item => item.totalOrders));
+        const totalProductsYearlyJson = JSON.stringify(yearlyData.map(item => item.totalProducts));
+        const totalRegisterYearlyJson = JSON.stringify(yearlyData.map(item => item.totalRegister));
         res.render('adminpanel', {
             user,
             product,
             category,
             order,
-            currentPage: page,
-            totalPages,
             totalTransaction,
             totalOrdersJson,
             totalProductsJson,
             totalRegisterJson,
-            categoryNames,
-            orderCounts
+            totalOrdersYearlyJson,
+            totalProductsYearlyJson,
+            totalRegisterYearlyJson
         });
-
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 };
-
 
 
 const adminlogin = async (req, res) => {
@@ -126,17 +108,15 @@ const adminlogin = async (req, res) => {
     }
 };
 
+
 const verifyadmin = async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
-
         const userdata = await Admin.findOne({ email: email });
-
         if (userdata) {
             if (userdata.is_admin) {
                 const passwordMatch = await bcrypt.compare(password, userdata.password);
-
                 if (passwordMatch){
                     req.session.admin_id = userdata._id;
                     res.redirect('/admin/adminpanel');
@@ -149,7 +129,6 @@ const verifyadmin = async (req, res) => {
         } else {
             return res.render('login', { message: "Email is incorrect" });
         }
-
     } catch (error) {
         console.error("Error in verifyadmin:", error);
         res.status(500).send("Internal Server Error");
@@ -160,9 +139,7 @@ const verifyadmin = async (req, res) => {
 
 const userDetail = async (req, res) => {
     try {
-        
         const userdata = await Admin.find({ is_admin: false })
-
         res.render('Userlist', { userdata })
     } catch (error) {
         console.log(error)
@@ -219,10 +196,8 @@ const salesReport = async (req, res) => {
                     $lte: new Date(req.query.endDate)
                 }
             }).populate('userId').sort({ orderDate: -1 });
-
             let totalTransaction = 0;
             let totalOrders = 0;
-
             const userData = await Order.distinct('userId', {
                 orderDate: {
                     $gte: new Date(req.query.startDate),
@@ -233,7 +208,6 @@ const salesReport = async (req, res) => {
             let onlinePayments = 0;
             let cashOnDelivery = 0;
             let orderCancelled = 0;
-
             orders.forEach((item) => {
                 if (item.totalAmount !== undefined && item.totalAmount !== null) {
                     totalTransaction += parseFloat(item.totalAmount);
@@ -248,7 +222,6 @@ const salesReport = async (req, res) => {
                     orderCancelled++;
                 }
             });
-
             res.render('salesReport', {
                 orders,
                 totalCustomers,
@@ -264,13 +237,11 @@ const salesReport = async (req, res) => {
             const orders = await Order.find({}).populate('userId').sort({ orderDate: -1 });
             let totalTransaction = 0;
             let totalOrders = 0;
-
             const userData = await Order.distinct('userId');
             let totalCustomers = userData.length;
             let onlinePayments = 0;
             let cashOnDelivery = 0;
             let orderCancelled = 0;
-
             orders.forEach((item) => {
                 if (item.totalAmount !== undefined && item.totalAmount !== null) {
                     totalTransaction += parseFloat(item.totalAmount);
@@ -285,7 +256,6 @@ const salesReport = async (req, res) => {
                     orderCancelled++;
                 }
             });
-
             res.render('salesReport', {
                 orders,
                 totalCustomers,
@@ -306,7 +276,6 @@ const salesReport = async (req, res) => {
 
 const dateFilter = async (req, res) => {
     try {
-       
         const startDate = req.body.startDate
         console.log('startDate',startDate)
         const endDate = req.body.endDate
@@ -317,6 +286,8 @@ const dateFilter = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
+
+
 module.exports = {
     adminDashboard,
     adminlogin,

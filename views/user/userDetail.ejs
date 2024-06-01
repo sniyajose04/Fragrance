@@ -42,7 +42,7 @@
                         </div>
                         <div class="header-action-2">
                             <div class="header-action-icon-2">
-                                <a href="shop-wishlist.html">
+                                <a href="/wishlist">
                                     <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
 
                                 </a>
@@ -173,10 +173,10 @@
                                                 role="tab" aria-controls="orders" aria-selected="false"><i
                                                     class="fi-rs-shopping-bag mr-10"></i>Orders</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <!-- <li class="nav-item">
                                             <a class="nav-link" href="page-login-register.html"><i
                                                     class="fi-rs-sign-out mr-10"></i>Logout</a>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </div>
                             </div>
@@ -198,6 +198,14 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md">
+                                            <article class="box m-3 bg-light d-flex">
+                                              <h5>Referral Code </h5> : <h5>
+                                                <%=user.referralCode%>
+                                              </h5>
+                                            </article>
+                                         
+                                          </div> 
                                         <% } %>
 
                                             <div class="tab-pane fade" id="account-detail" role="tabpanel"
@@ -618,6 +626,7 @@
                                                                         <th>Order</th>
                                                                         <th>Date</th>
                                                                         <th>Total</th>
+                                                                        <th>Order status</th>
                                                                         <th>Items</th>
                                                                         <th>Status</th>
 
@@ -640,6 +649,9 @@
 
                                                                                 <td>
                                                                                     <%= order[i].totalAmount%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%= order[i].orderStatus%>
                                                                                 </td>
                                                                                 <td>
                                                                                     <%=items%>

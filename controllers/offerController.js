@@ -4,12 +4,9 @@ const Category = require('../models/categoryModel')
 
 const offerList = async (req, res) => {
   try {
-
     const offer = await Offer.find({}).populate('category')
     const category = await Category.find({ is_list: true })
-
     res.render('offerList', { offer, category });
-
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -20,63 +17,44 @@ const offerList = async (req, res) => {
 const addOffers = async (req, res) => {
   try {
     const { category, discount, start, end } = req.body;
-
-
-    const product = await Product.find().populate("Category");
-
-    const existingOffer = await Offer.findOne({ category: category });
-
+    console.log('Request Body:', req.body);
+    const offerCategory = await Category.findOne({ name: category.trim() });
+    console.log('offerCategory:', offerCategory);
+    const existingOffer = await Offer.findOne({ category: offerCategory._id });
+    console.log('existingOffer:', existingOffer);
     if (existingOffer) {
-
-      return res.status(500).send('Offer already added in this category')
-    } else {
-      const offerData = await Offer.create({
-        category: category,
-        discount: discount,
-
-        start: start,
-        end: end
-      })
-      res.status(200).json({ msg: "success" })
+      return res.status(400).send('Offer already added in this category');
     }
-    const offerCategory = await Category.findOne({ name: category })
-
-    const offer = await Offer.findOne({ category: category });
-
-
-
-    const offerProducts = await Product.find({
-
-      productCategory: offerCategory.id
+    const offerData = await Offer.create({
+      category: offerCategory._id,
+      discount: discount,
+      start: start,
+      end: end
     });
-
-
+    console.log('offerData:', offerData);
+    const offerProducts = await Product.find({ productCategory: offerCategory._id });
+    console.log('offerProducts:', offerProducts);
     for (const product of offerProducts) {
-
       const offerPrice = Math.floor(product.regularPrice * (1 - discount / 100));
-
-
       product.offerPrice = offerPrice;
       product.discountApplied = true;
-      offerAmount = product.regularPrice - product.offerPrice;
-
-
-
+      console.log('offerPrice:', offerPrice);
       await product.save();
-
     }
-
-
+    // res.status(200).json({ message: 'Offer created successfully' });
+    res.redirect('/admin/offerList')
   } catch (error) {
-    console.error(error);
+    console.error('Error creating offer:', error);
     res.status(500).send('Internal Server Error');
   }
-}
+};
+
+
+
 
 const deleteOffer = async (req, res) => {
   try {
     const id = req.query.id;
-   
     const offerData = await Offer.findById(id);
     if (!offerData) {
       console.error('Offer not found');
@@ -93,7 +71,6 @@ const deleteOffer = async (req, res) => {
       product.discountApplied = false;
       await product.save();
     }
-
     await Offer.findByIdAndDelete(id);
     res.status(200).send('Offer deleted successfully');
   } catch (error) {

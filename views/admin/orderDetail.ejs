@@ -141,6 +141,8 @@
                                     <option>Shipped</option>
                                     <option>Cancelled</option>
                                     <option>Returned</option>
+                                    <option>Return Processing</option>
+                                    <option>Payment Pending</option>
                                     <option>Delivered</option>
                                 </select>   
                                 <button class="btn btn-primary" onclick="changestatus('<%=orderData._id%>','<%= orderData.orderStatus%>')" >Save</button>
@@ -273,14 +275,7 @@
                                                         </tr>
                                         </tbody>
                                     </table>
-                                    <div class="h-25 pt-4">
-                                        <% if (orderData.orderStatus=='Order Placed' || orderData.orderStatus=='Shipped'
-                                            ) { %>
-                                            <button class="btn btn-danger"
-                                                onclick="confirmCancelOrder('<%= orderData._id %>')">Cancel
-                                                Order</button>
-                                            <% } %>
-                                    </div>
+                                    
                                     <br>
                                 </div>
                                 <a class="btn btn-primary" href="/admin/orderlist">View order list</a>
@@ -302,40 +297,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-        <script>
-            function confirmCancelOrder(orderId) {
-    // Use SweetAlert to confirm cancellation
-    Swal.fire({
-        title: "Are you sure?",
-        text: "Once cancelled, you will not be able to recover this order!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, cancel it!",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // If confirmed, call the cancelorder route
-            fetch(`/admin/cancelorder?OID=${orderId}`, {
-                method: "GET",
-            })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                // Reload the page or update UI if needed
-                location.reload();
-            })
-            .catch((error) => {
-                console.error("There was a problem with your fetch operation:", error);
-            });
-        }
-    });
-}
-        </script>
+        
         <script>
     function changestatus(orderID, currentStatus) {
        

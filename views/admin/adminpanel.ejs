@@ -167,75 +167,128 @@
                 </div>
                 <% } %>
             </div>
+
             
             <div class="row">
                 <div class="col-xl-8 col-lg-12">
                     <div class="card mb-4">
                         <article class="card-body">
                             <h5 class="card-title">Sale statistics</h5>
+                            <div>
+                                <label for="filter">Filter:</label>
+                                <select id="filter" onchange="updateChart()">
+                                    <option value="monthly">Monthly</option>
+                                    <option value="yearly">Yearly</option>
+                                </select>
+                            </div>
                             <canvas id="myChart1" height="120px"></canvas>
                         </article>
                     </div>
-                   
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-    window.onload = () => {
-        
-        const totalOrdersJson = <%=totalOrdersJson%> 
-        const totalProductsJson = <%=totalProductsJson%>
-        const totalRegisterJson = <%=totalRegisterJson%>
-
-      
-        console.log(totalOrdersJson, totalProductsJson, totalRegisterJson);
-
-        var ctx = document.getElementById('myChart1').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'line', 
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [
-                    {
-                        label: 'Users',
-                        tension: 0.3,
-                        fill: true,
-                        backgroundColor: 'rgba(44, 120, 220, 0.2)',
-                        borderColor: 'rgba(44, 120, 220)',
-                        data: totalRegisterJson 
-                    },
-                    {
-                        label: 'Products',
-                        tension: 0.3,
-                        fill: true,
-                        backgroundColor: 'rgba(4, 209, 130, 0.2)',
-                        borderColor: 'rgb(4, 209, 130)',
-                        data: totalProductsJson 
-                    },
-                    {
-                        label: 'Orders',
-                        tension: 0.3,
-                        fill: true,
-                        backgroundColor: 'rgba(255, 200, 230, 0.2)', 
-                        borderColor: 'rgb(255, 200, 230)', 
-                        data: totalOrdersJson 
-                    }
-                ]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        labels: {
-                            usePointStyle: true,
-                        },
+                </div>
+            </div>
+            
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            
+            <script>
+                window.onload = () => {
+                    const totalOrdersJson = <%=totalOrdersJson%>;
+                    const totalProductsJson = <%=totalProductsJson%>;
+                    const totalRegisterJson = <%=totalRegisterJson%>;
+            
+                    const totalOrdersYearlyJson = <%=totalOrdersYearlyJson%>;
+                    const totalProductsYearlyJson = <%=totalProductsYearlyJson%>;
+                    const totalRegisterYearlyJson = <%=totalRegisterYearlyJson%>;
+            
+                    console.log(totalOrdersJson, totalProductsJson, totalRegisterJson);
+                    console.log(totalOrdersYearlyJson, totalProductsYearlyJson, totalRegisterYearlyJson);
+            
+                    const monthlyData = {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        datasets: [
+                            {
+                                label: 'Users',
+                                tension: 0.3,
+                                fill: true,
+                                backgroundColor: 'rgba(44, 120, 220, 0.2)',
+                                borderColor: 'rgba(44, 120, 220)',
+                                data: totalRegisterJson
+                            },
+                            {
+                                label: 'Products',
+                                tension: 0.3,
+                                fill: true,
+                                backgroundColor: 'rgba(4, 209, 130, 0.2)',
+                                borderColor: 'rgb(4, 209, 130)',
+                                data: totalProductsJson
+                            },
+                            {
+                                label: 'Orders',
+                                tension: 0.3,
+                                fill: true,
+                                backgroundColor: 'rgba(255, 200, 230, 0.2)', 
+                                borderColor: 'rgb(255, 200, 230)', 
+                                data: totalOrdersJson
+                            }
+                        ]
+                    };
+            
+                    const yearlyData = {
+                        labels: totalOrdersYearlyJson.map((_, index) => `Year ${index + 1}`),
+                        datasets: [
+                            {
+                                label: 'Users',
+                                tension: 0.3,
+                                fill: true,
+                                backgroundColor: 'rgba(44, 120, 220, 0.2)',
+                                borderColor: 'rgba(44, 120, 220)',
+                                data: totalRegisterYearlyJson
+                            },
+                            {
+                                label: 'Products',
+                                tension: 0.3,
+                                fill: true,
+                                backgroundColor: 'rgba(4, 209, 130, 0.2)',
+                                borderColor: 'rgb(4, 209, 130)',
+                                data: totalProductsYearlyJson
+                            },
+                            {
+                                label: 'Orders',
+                                tension: 0.3,
+                                fill: true,
+                                backgroundColor: 'rgba(255, 200, 230, 0.2)', 
+                                borderColor: 'rgb(255, 200, 230)', 
+                                data: totalOrdersYearlyJson
+                            }
+                        ]
+                    };
+            
+                    var ctx = document.getElementById('myChart1').getContext('2d');
+                    var chart = new Chart(ctx, {
+                        type: 'line', 
+                        data: monthlyData,
+                        options: {
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        usePointStyle: true,
+                                    },
+                                }
+                            }
+                        }
+                    });
+            
+                    window.updateChart = function() {
+                        const filter = document.getElementById('filter').value;
+                        if (filter === 'yearly') {
+                            chart.data = yearlyData;
+                        } else {
+                            chart.data = monthlyData;
+                        }
+                        chart.update();
                     }
                 }
-            }
-        });
-    }
-</script>
-
-
-                </div>
+            </script>
+            
                 <!-- <div class="col-xl-4 col-lg-12">
                     <div class="card mb-4">
                         <article class="card-body">
@@ -357,25 +410,54 @@
                                     </tr>
                                     <% } %>
                                 </tbody>
+                                
                             </table>
                             <% } %>
                         </div>
+                        
                     </div> <!-- table-responsive end// -->
+                    
                 </div>
                 
             </div>
-            
-            <div class="pagination-area mt-30 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <% for (let i = 1; i <= totalPages; i++) { %>
-                            <li class="page-item <%= currentPage == i ? 'active' : '' %>">
-                                <a class="page-link" href="/admin/adminpanel?page=<%= i %>"><%= i %></a>
-                            </li>
-                        <% } %>
-                    </ul>
-                </nav>
+<div class="row">
+            <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                       
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Top Selling Category</h6>
+                            <% for (let i = 0; i < Math.min(5, category.length); i++) { %>
+                                <li>
+                                    <a>
+                                        <%= category[i].name %>
+                                    </a>
+                                </li>
+                            <% } %>
+                        </div>
+                    </article>
+                </div>
             </div>
+            
+            <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                       
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Top Selling Product</h6>
+                            <% for (let i = 0; i < Math.min(5, product.length); i++) { %>
+                                <li>
+                                    <a>
+                                        <%= product[i].product_title %>
+                                    </a>
+                                </li>
+                            <% } %>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            
+           </div> 
             
         </section> <!-- content-main end// -->
         

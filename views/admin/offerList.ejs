@@ -149,8 +149,6 @@
                                                             <%= new Date(offer[i].end).toLocaleString() %>
                                                         </td>
 
-
-
                                                         <td class="text-end">
 
                                                             <a onclick="deleteOffer('<%= offer[i]._id %>')"
@@ -175,21 +173,18 @@
                                         <select id="category" name="category" class="form-control">
                                             <option value="">Select a Category</option>
                                             <% for (let i=0; i < category.length; i++) { %>
-                                                <option value="<%= category[i]._id %>">
+                                                <option value="<%= category[i].name %>">
                                                     <%= category[i].name %>
                                                 </option>
-                                                <% } %>
+                                            <% } %>
                                         </select>
                                         <span class="text-danger" id="categoryError"></span>
                                     </div>
-
                                     <div class="mb-4">
                                         <label for="discount" class="form-label">Discount</label>
-                                        <input type="text" placeholder="Type here" class="form-control" id="discount"
-                                            name="discount">
+                                        <input type="text" placeholder="Type here" class="form-control" id="discount" name="discount">
                                         <span class="text-danger" id="discountError"></span>
                                     </div>
-
                                     <div class="mb-4">
                                         <label for="start" class="form-label">From</label>
                                         <div class="input-group">
@@ -200,7 +195,6 @@
                                         </div>
                                         <span class="text-danger" id="startError"></span>
                                     </div>
-
                                     <div class="mb-4">
                                         <label for="end" class="form-label">To</label>
                                         <div class="input-group">
@@ -211,7 +205,6 @@
                                         </div>
                                         <span class="text-danger" id="endError"></span>
                                     </div>
-
                                     <div class="d-grid">
                                         <button id="btn" class="btn btn-primary">Create offer</button>
                                     </div>

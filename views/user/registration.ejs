@@ -46,6 +46,16 @@
                                             <span style="color: red;" id="confirmpassword_error"></span>
                                         </div>
 
+                                        <div class="form-group">
+                                            <label for="referral-toggle"></label>
+                                            <a class="btn btn-link" id="referral-toggle">Do you have a referral code?</a>
+                                        </div>
+                                        
+                                        <div class="form-group" id="referral-code-group" style="display: <%= referral ? 'block' : 'none' %>;">
+                                            <label for="referralCode">Enter the referral code</label>
+                                            <input type="text" class="form-control" name="referralCode" id="referralCode" value="<%= referral %>" <%= referral ? 'readonly' : '' %>>
+                                        </div>
+
                                         <div class="form-group text-center">
                                             <button type="submit" class="btn btn-fill-out btn-block hover-up ">Submit
                                             </button>
@@ -133,6 +143,24 @@
                 mno_error.innerHTML = "";
             }
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+    const referralToggle = document.getElementById('referral-toggle');
+    const referralCodeGroup = document.getElementById('referral-code-group');
+
+    // Check if referral code is not null, then display the referral code group
+    if ("<%= referral %>" !== "") {
+      referralCodeGroup.style.display = 'block';
+    }
+
+    referralToggle.addEventListener('click', function () {
+      if (referralCodeGroup.style.display === 'none') {
+        referralCodeGroup.style.display = 'block';
+      } else {
+        referralCodeGroup.style.display = 'none';
+      }
+    });
+  });
     </script>
 
     <% - include('../user/userLayout/footer') %>

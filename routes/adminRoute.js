@@ -45,7 +45,6 @@ admin_route.patch('/Unlist/:id',categoryController.Unlist)
 //ORDER
 admin_route.get('/orderlist',isLogout,orderController.orderList)
 admin_route.get('/orderDetail',isLogout,orderController.orderDetail)
-admin_route.get('/cancelorder',isLogout,orderController.cancelOrder)
 admin_route.post('/orderdetailchange',isLogout,orderController.orderDetailChange)
 
 

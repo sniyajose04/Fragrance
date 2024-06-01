@@ -1,20 +1,26 @@
 const User = require('../models/userModels');
-const Address =require('../models/addressModel');
+const Address = require('../models/addressModel');
+const Cart = require('../models/cartModel');
+const Product = require('../models/productModel');
 const Order = require('../models/orderModel')
 const Wallet = require('../models/walletModel')
+const { orderIdGenerate } = require('../helpers/orderGenerator')
+const Razorpay=require('razorpay')
+const crypto = require('crypto')
+require('dotenv').config()
+var instance = new Razorpay({
+    key_id: process.env.KEYID,
+    key_secret: process.env.KEYSECRET,
+  });
+
 
 const userDetailPage = async (req, res) => {
     try {
-       console.log('userii',req.session.user_id);
         const addresses = await Address.find({ userId: req.session.user_id });
-
         const user = await User.findOne({ _id: req.session.user_id });
-
-        const order = await Order.find({userId: req.session.user_id});
-
-        const wallet = await Wallet.findOne({user: req.session.user_id})
-
-        res.render('userDetail', { user, addresses ,order,wallet});
+        const order = await Order.find({ userId: req.session.user_id });
+        const wallet = await Wallet.findOne({ user: req.session.user_id })
+        res.render('userDetail', { user, addresses, order, wallet });
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Internal Server Error');
@@ -23,13 +29,11 @@ const userDetailPage = async (req, res) => {
 
 
 const userPassword = async (req, res) => {
-    const userId = req.session.user_id; 
+    const userId = req.session.user_id;
     const currentPassword = req.body.password;
     const newPassword = req.body.npassword;
     const confirmNewPassword = req.body.cpassword;
-
     try {
-       
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
@@ -52,12 +56,11 @@ const userPassword = async (req, res) => {
 }
 
 
-const saveAddress = async(req,res)=>{
+const saveAddress = async (req, res) => {
     try {
-        const{addressType,name,housename,street,city,district,state,pincode,phonenumber,altPhone}=req.body
-        console.log(req.body)
+        const { addressType, name, housename, street, city, district, state, pincode, phonenumber, altPhone } = req.body
         const newAddress = new Address({
-            userId:req.session.user_id,
+            userId: req.session.user_id,
             addressType,
             name,
             housename,
@@ -67,12 +70,11 @@ const saveAddress = async(req,res)=>{
             state,
             pincode,
             phonenumber,
-            altPhone  
+            altPhone
         })
-console.log('hfbhgs',newAddress)
+        console.log('hfbhgs', newAddress)
         const result = await newAddress.save();
-        console.log(result)
-      res.status(200).send('success')
+        res.status(200).send('success')
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Internal Server Error');
@@ -90,11 +92,9 @@ const orderDetailPage = async (req, res) => {
                 model: 'Product'  // Ensure the correct model name
             })
             .populate('address');
-
         if (!order) {
             return res.status(404).send('Order not found');
         }
-
         res.render('orderDetail', { order });
     } catch (error) {
         console.log(error.message);
@@ -102,51 +102,32 @@ const orderDetailPage = async (req, res) => {
     }
 };
 
+
 const orderCancel = async (req, res) => {
     try {
         const orderId = req.query.id;
-        console.log('orderId', orderId);
         const { reason, productId } = req.body;
-        console.log('req.body', req.body);
-
         let order = await Order.findOne({ _id: orderId })
             .populate('userId')
             .populate('address')
             .populate('products.productId');
-        
-        console.log('order', order);
-
         if (!order) {
             return res.status(404).json({ error: 'Order not found' });
         }
-
         let totalAmount = order.totalAmount;
-        console.log('totalAmount', totalAmount);
-
         const product = order.products.find(
             (item) => item.productId._id.toString() === productId
         );
-
         console.log('product', product);
-
         if (!product) {
             return res.status(404).json({ error: 'Product not found in order' });
         }
-
         const couponData = order.coupon ? await Coupon.findById(order.coupon) : null;
-        console.log('couponData', couponData);
-
         const discount = couponData ? (couponData.discount / 100) : 0;
-        console.log('discount',discount
-
-        )
         const refundAmount = product.productId.promotionalPrice * product.quantity * (1 - discount);
-console.log('refundAmount',refundAmount)
-console.log("vszgfys",order.orderStatus)
         if (order.orderStatus === "Order Placed" || order.orderStatus === "Delivered") {
             if (order.paymentMethod === "Wallet" || order.paymentMethod === "Online Payment") {
                 const walletData = await Wallet.findOne({ user: order.userId._id });
-console.log('walletData',walletData)
                 if (walletData) {
                     walletData.walletBalance += refundAmount;
                     walletData.transaction.push({
@@ -162,22 +143,18 @@ console.log('walletData',walletData)
                     });
                     await wallet.save();
                 }
-
                 order.paymentStatus = "Refunded";
             } else {
                 order.paymentStatus = "Declined";
             }
-
             order.orderStatus = (order.orderStatus === "Order Placed") ? "Cancelled" : "Returned";
             if (order.orderStatus === "Cancelled") {
                 order.cancelReason = reason;
             } else {
                 order.returnReason = reason;
             }
-
             totalAmount -= refundAmount;
         }
-
         await Order.findByIdAndUpdate(
             orderId,
             {
@@ -192,7 +169,6 @@ console.log('walletData',walletData)
             },
             { new: true }
         );
-
         return res.status(200).json({ message: "Order cancelled successfully" });
     } catch (error) {
         console.error(error);
@@ -201,49 +177,30 @@ console.log('walletData',walletData)
 };
 
 
-// const editAddress = async (req, res) => {
-//     try {
-//         console.log("asdfghjkl");
-//         const userId = req.session.user_id; 
-//         const addressData = await Address.findOne({ userId });
+const repaymentPage = async(req,res)=>{
+    try {
+        const orderId = req.query._id
+        const order = await Order.findOne(orderId).populate({
+            path: 'products.productId',
+            model: 'Product'  
+        })
+        const userId = req.session.user_id;
+        const userData = await User.findById(userId)
+        const addressData = await Address.find({ userId: userId })
+        res.render('repayment',{order,addressData,userData})
+    } catch (error) {
+        console.error(error);
+      
+    }
+}
 
-//         if (!addressData) {
-//             return res.status(404).json({ message: "Address not found for this user" });
-//         }
-// console.log("req.body",req.body)
-    
-//         addressData.addressType = req.body.addressType;
-
-//         addressData.name = req.body.name;
-//         addressData.housename = req.body.housename;
-//         addressData.street = req.body.street;
-//         addressData.city = req.body.city;
-//         addressData.district = req.body.district;
-//         addressData.state = req.body.state;
-//         addressData.pincode = req.body.pincode;
-//         addressData.phonenumber = req.body.phonenumber;
-//         addressData.altPhone = req.body.altPhone;
-
-       
-//         await addressData.save();
-
-//         res.status(200).json({ message: "Address updated successfully", addressData });
-//     } catch (err) {
-//         console.error("Error editing address:", err);
-//         res.status(500).json({ message: "Internal server error" });
-//     }
-// };
-
-
-
-    
 
 module.exports = {
     userDetailPage,
     userPassword,
     saveAddress,
-    // editAddress,
-     orderDetailPage,
-     orderCancel
-    
+    orderDetailPage,
+    orderCancel,
+    repaymentPage,
+   
 }

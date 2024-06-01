@@ -13,7 +13,6 @@ const offerController = require("../controllers/offerController")
 const { isLogin,isLogout,blockeduser} = require("../middleware/auth")
 
 
-
 user_route.set('views','./views/user');
 
 user_route.get('/',blockeduser,usercontroller.renderhome)
@@ -44,7 +43,6 @@ user_route.get('/userDetail',isLogin,profileController.userDetailPage)
 user_route.post('/userDetail',isLogin,profileController.userPassword)
 user_route.post('/saveAddress',isLogin,profileController.saveAddress)
 // user_route.get('/editaddress',isLogin,profileController.editAddress)
-
 user_route.get('/orderdetail',isLogin,profileController.orderDetailPage)
 user_route.post('/ordercancel',isLogin,profileController.orderCancel)
 
@@ -52,13 +50,14 @@ user_route.post('/ordercancel',isLogin,profileController.orderCancel)
 
 
 user_route.get('/checkOut',isLogin,checkoutController.checkOutPage)
-user_route.post('/placeOrder',isLogin,checkoutController.placeorder)
+user_route.post('/placeOrder',isLogin,checkoutController.placeOrder)
 user_route.post('/onlineplaceorder',isLogin,checkoutController.onlinePlaceOrder)
-user_route.post('/onlinepaymentfailed',isLogin,checkoutController.onlinePaymentFailed)
+user_route.post('/onlinepaymentfailedd',isLogin,checkoutController.onlinePaymentFailed)
 user_route.post('/verifypayment',isLogin,checkoutController.verifyRazorpayPayment)
+user_route.get('/repayment',isLogin,checkoutController.repaymentPage)
 user_route.get('/orderSuccess',isLogin,checkoutController.orderSuccess)
 user_route.post('/applycoupon',isLogin,checkoutController.applyCoupon)
-
+user_route.post('/checkoutsaveaddress',isLogin,checkoutController.checkoutSaveAddress)
 
 
 user_route.get('/productDetail',isLogin,productdetailController.productDetail )

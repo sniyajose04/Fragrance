@@ -3,10 +3,7 @@ const User = require('../models/userModels')
 
 const couponList = async (req, res) => {
     try {
-        
         const coupons = await Coupon.find({ isList: true });
-       
-
         res.render('couponlist', { coupons });
     } catch (error) {
         console.error(error);
@@ -17,10 +14,8 @@ const couponList = async (req, res) => {
 
 const addCoupons = async (req, res) => {
     try {
-
         const { name, discount, minpurchaseamount, start, end } = req.body;
         console.log(req.body)
-
         const data = {
             couponName: name,
             startDate: new Date(start + 'T00:00:00'),
@@ -36,8 +31,6 @@ const addCoupons = async (req, res) => {
             start: data.startDate,
             end: data.endDate
         });
-
-
         console.log('couponData:', couponData);
         res.redirect('/admin/couponlist')
     } catch (error) {
@@ -45,6 +38,7 @@ const addCoupons = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
+
 
 const deleteCoupon = async (req, res) => {
     try {
@@ -56,12 +50,9 @@ const deleteCoupon = async (req, res) => {
         console.log('coupon  not found')
      return res.status(404).send('coupon not found')
        }
-
        await Coupon.findByIdAndDelete(id);
        console.log('Coupon deleted successfully');
-   
        res.status(200).send('Coupon deleted successfully');
-
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
