@@ -38,14 +38,13 @@ const userSchema = new mongoose.Schema({
     ref: "Offer",
     
     },
-    // referralCode: {
-    //     type: String,
-    //     default: RandomReferralCode,
-    //     unique: true, 
-    //   },
-    //   userReferred: [{
-    //     type: String,
-    //   }]
+    referralCode: {
+        type: String,
+        unique: true, 
+      },
+      userReferred: [{
+        type: String,
+      }]
       });
       
 

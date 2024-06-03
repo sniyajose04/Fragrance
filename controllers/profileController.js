@@ -4,28 +4,53 @@ const Cart = require('../models/cartModel');
 const Product = require('../models/productModel');
 const Order = require('../models/orderModel')
 const Wallet = require('../models/walletModel')
-const { orderIdGenerate } = require('../helpers/orderGenerator')
-const Razorpay=require('razorpay')
-const crypto = require('crypto')
-require('dotenv').config()
-var instance = new Razorpay({
-    key_id: process.env.KEYID,
-    key_secret: process.env.KEYSECRET,
-  });
-
 
 const userDetailPage = async (req, res) => {
     try {
         const addresses = await Address.find({ userId: req.session.user_id });
         const user = await User.findOne({ _id: req.session.user_id });
         const order = await Order.find({ userId: req.session.user_id });
-        const wallet = await Wallet.findOne({ user: req.session.user_id })
-        res.render('userDetail', { user, addresses, order, wallet });
+        const wallet = await Wallet.findOne({ user: req.session.user_id });
+
+        // Check if user has an existing referral code
+        let referralCode = user.referralCode;
+        if (!referralCode) {
+            // Generate a new referral code if it doesn't exist
+            referralCode = await generateUniqueReferralCode();
+            user.referralCode = referralCode;
+            await user.save();
+        }
+
+        res.render('userDetail', { user, addresses, order, wallet, referralCode });
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Internal Server Error');
     }
 }
+
+// Generate unique referral code function
+async function generateUniqueReferralCode() {
+    const RandomReferralCode = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const codeLength = 6;
+        let referralCode = '';
+        for (let i = 0; i < codeLength; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            referralCode += characters.charAt(randomIndex);
+        }
+        return referralCode;
+    }
+
+    let newReferralCode;
+    let referralExists;
+    do {
+        newReferralCode = RandomReferralCode();
+        referralExists = await User.findOne({ referralCode: newReferralCode });
+    } while (referralExists);
+
+    return newReferralCode;
+}
+
 
 
 const userPassword = async (req, res) => {
