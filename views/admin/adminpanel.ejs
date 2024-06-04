@@ -178,7 +178,7 @@
                                 <label for="filter">Filter:</label>
                                 <select id="filter" onchange="updateChart()">
                                     <option value="monthly">Monthly</option>
-                                    <option value="yearly">Yearly</option>
+                                    <option value="weekly">Weekly</option>
                                 </select>
                             </div>
                             <canvas id="myChart1" height="120px"></canvas>
@@ -186,7 +186,7 @@
                     </div>
                 </div>
             </div>
-            
+        
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             
             <script>
@@ -194,14 +194,14 @@
                     const totalOrdersJson = <%=totalOrdersJson%>;
                     const totalProductsJson = <%=totalProductsJson%>;
                     const totalRegisterJson = <%=totalRegisterJson%>;
-            
-                    const totalOrdersYearlyJson = <%=totalOrdersYearlyJson%>;
-                    const totalProductsYearlyJson = <%=totalProductsYearlyJson%>;
-                    const totalRegisterYearlyJson = <%=totalRegisterYearlyJson%>;
-            
+        
+                    const totalOrdersWeeklyJson = <%=totalOrdersWeeklyJson%>;
+                    const totalProductsWeeklyJson = <%=totalProductsWeeklyJson%>;
+                    const totalRegisterWeeklyJson = <%=totalRegisterWeeklyJson%>;
+        
                     console.log(totalOrdersJson, totalProductsJson, totalRegisterJson);
-                    console.log(totalOrdersYearlyJson, totalProductsYearlyJson, totalRegisterYearlyJson);
-            
+                    console.log(totalOrdersWeeklyJson, totalProductsWeeklyJson, totalRegisterWeeklyJson);
+        
                     const monthlyData = {
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                         datasets: [
@@ -231,9 +231,9 @@
                             }
                         ]
                     };
-            
-                    const yearlyData = {
-                        labels: totalOrdersYearlyJson.map((_, index) => `Year ${index + 1}`),
+        
+                    const weeklyData = {
+                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10', 'Week 11', 'Week 12', 'Week 13', 'Week 14', 'Week 15', 'Week 16', 'Week 17', 'Week 18', 'Week 19', 'Week 20', 'Week 21', 'Week 22', 'Week 23', 'Week 24', 'Week 25', 'Week 26', 'Week 27', 'Week 28', 'Week 29', 'Week 30', 'Week 31', 'Week 32', 'Week 33', 'Week 34', 'Week 35', 'Week 36', 'Week 37', 'Week 38', 'Week 39', 'Week 40', 'Week 41', 'Week 42', 'Week 43', 'Week 44', 'Week 45', 'Week 46', 'Week 47', 'Week 48', 'Week 49', 'Week 50', 'Week 51', 'Week 52'],
                         datasets: [
                             {
                                 label: 'Users',
@@ -241,7 +241,7 @@
                                 fill: true,
                                 backgroundColor: 'rgba(44, 120, 220, 0.2)',
                                 borderColor: 'rgba(44, 120, 220)',
-                                data: totalRegisterYearlyJson
+                                data: totalRegisterWeeklyJson
                             },
                             {
                                 label: 'Products',
@@ -249,7 +249,7 @@
                                 fill: true,
                                 backgroundColor: 'rgba(4, 209, 130, 0.2)',
                                 borderColor: 'rgb(4, 209, 130)',
-                                data: totalProductsYearlyJson
+                                data: totalProductsWeeklyJson
                             },
                             {
                                 label: 'Orders',
@@ -257,11 +257,11 @@
                                 fill: true,
                                 backgroundColor: 'rgba(255, 200, 230, 0.2)', 
                                 borderColor: 'rgb(255, 200, 230)', 
-                                data: totalOrdersYearlyJson
+                                data: totalOrdersWeeklyJson
                             }
                         ]
                     };
-            
+        
                     var ctx = document.getElementById('myChart1').getContext('2d');
                     var chart = new Chart(ctx, {
                         type: 'line', 
@@ -276,11 +276,11 @@
                             }
                         }
                     });
-            
+        
                     window.updateChart = function() {
                         const filter = document.getElementById('filter').value;
-                        if (filter === 'yearly') {
-                            chart.data = yearlyData;
+                        if (filter === 'weekly') {
+                            chart.data = weeklyData;
                         } else {
                             chart.data = monthlyData;
                         }

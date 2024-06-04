@@ -321,36 +321,35 @@
                 }
 
                 function validateDates() {
-                    const startInput = document.getElementById('start');
-                    const endInput = document.getElementById('end');
-                    const startDate = new Date(startInput.value);
-                    const endDate = new Date(endInput.value);
-                    const currentDate = new Date();
+    const startInput = document.getElementById('start');
+    const endInput = document.getElementById('end');
+    const startDate = new Date(startInput.value);
+    const endDate = new Date(endInput.value);
+    const currentDate = new Date();
 
+    // Reset error messages
+    document.getElementById('startError').textContent = '';
+    document.getElementById('endError').textContent = '';
 
-                    document.getElementById('startError').textContent = '';
-                    document.getElementById('endError').textContent = '';
+    // Allow start date to be the current date
+    if (startDate.setHours(0, 0, 0, 0) < currentDate.setHours(0, 0, 0, 0)) {
+        document.getElementById('startError').textContent = 'Start date must be today or a future date';
+        return false;
+    }
 
+    if (endDate.setHours(0, 0, 0, 0) <= currentDate.setHours(0, 0, 0, 0)) {
+        document.getElementById('endError').textContent = 'End date must be after today';
+        return false;
+    }
 
-                    if (startDate < currentDate) {
-                        document.getElementById('startError').textContent = 'Start date must be today or a future date';
-                        return false;
-                    }
+    if (endDate <= startDate) {
+        document.getElementById('endError').textContent = 'End date must be after start date';
+        return false;
+    }
 
+    return true;
+}
 
-                    if (endDate <= currentDate) {
-                        document.getElementById('endError').textContent = 'End date must be after today';
-                        return false;
-                    }
-
-
-                    if (endDate <= startDate) {
-                        document.getElementById('endError').textContent = 'End date must be after start date';
-                        return false;
-                    }
-
-                    return true;
-                }
             </script>
 
 

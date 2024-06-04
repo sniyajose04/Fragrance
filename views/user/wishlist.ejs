@@ -433,10 +433,10 @@
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            // Redirect to the endpoint to remove the product from the wishlist
+           
             window.location.href = '/removeWishlistProduct?id=' + productId;
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-            // Show cancellation message
+          
             Swal.fire(
                 "Cancelled",
                 "Your item is safe :)",

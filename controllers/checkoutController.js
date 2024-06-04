@@ -39,16 +39,19 @@ const placeOrder = async (req, res) => {
         console.log('userId:', userId);
         const { addressId, totalAmount, paymentMethod } = req.body;
         console.log(req.body);
+        
         const userCart = await Cart.findOne({ userId: userId }).populate('products.productId');
         if (!userCart || !userCart.products.length) {
             console.error("Cart is empty.");
             return res.status(404).json({ error: "Cart is empty" });
         }
+
         const orderProducts = userCart.products.map(productItem => ({
             productId: productItem.productId._id,
             quantity: productItem.quantity,
         }));
         console.log('orderProducts:', orderProducts);
+
         const order = new Order({
             orderId: orderIdGenerate(),
             userId: userId,
@@ -57,20 +60,20 @@ const placeOrder = async (req, res) => {
             paymentMethod: paymentMethod,
             products: orderProducts,
         });
-        console.log('order:', order)
+        console.log('order:', order);
+
         if (paymentMethod === 'cash on delivery') {
             if (totalAmount > 1000) {
-                console.log("COD is not possible on orders above 1000")
-                 res.json({ message: "COD is not possible on orders above 1000" });
+                console.log("COD is not possible on orders above 1000");
+                return res.json({ message: "COD is not possible on orders above 1000" });
             } else {
-               
-        order.paymentMethod = "cash on delivery";
-        order.paymentStatus = "Pending";
-        await order.save();
-        if (orderStatus === "Payment pending") {
-            console.log("Order status is pending payment. Cart update skipped.");
-            return;
+                order.paymentStatus = "Pending";
+            }
         }
+
+        await order.save();
+        console.log("Order saved successfully");
+
         for (let i = 0; i < userCart.products.length; i++) {
             let item = userCart.products[i];
             const product = await Product.findById(item.productId);
@@ -81,7 +84,8 @@ const placeOrder = async (req, res) => {
                 console.error(`Product with ID ${item.productId} not found.`);
             }
         }
-        const result = await Cart.updateOne(
+
+        await Cart.updateOne(
             { userId: userId },
             {
                 $unset: {
@@ -89,17 +93,15 @@ const placeOrder = async (req, res) => {
                 },
             }
         );
-    
-        if (result.nModified === 0) { // Assuming `nModified` is the correct property to check for updates
-            console.error("Failed to update cart.");
-        }
+
         res.status(200).json({ message: "Order placed successfully" });
-    }}
+
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ error: "Internal Server Error" });
     }
-}
+};
+
 
 
 const onlinePlaceOrder = async (req, res) => {

@@ -19,6 +19,8 @@ const adminDashboard = async (req, res) => {
                 totalTransaction += parseFloat(item.totalAmount);
             }
         });
+
+       
         const monthlyOrderData = await Order.aggregate([
             { $unwind: '$products' },
             {
@@ -48,38 +50,79 @@ const adminDashboard = async (req, res) => {
                 totalRegister: monthUserData.totalRegister
             };
         });
-        const yearlyOrderData = await Order.aggregate([
+
+        
+        // const yearlyOrderData = await Order.aggregate([
+        //     { $unwind: '$products' },
+        //     {
+        //         $group: {
+        //             _id: { year: { $year: '$orderDate' } },
+        //             totalOrders: { $sum: 1 },
+        //             totalProducts: { $sum: '$products.quantity' },
+        //         }
+        //     },
+        //     { $sort: { '_id.year': 1 } }
+        // ]);
+        // const yearlyUserData = await User.aggregate([
+        //     {
+        //         $group: {
+        //             _id: { $year: '$date' },
+        //             totalRegister: { $sum: 1 },
+        //         }
+        //     },
+        //     { $sort: { '_id': 1 } }
+        // ]);
+        // const yearlyData = yearlyOrderData.map((item, index) => ({
+        //     totalOrders: item.totalOrders,
+        //     totalProducts: item.totalProducts,
+        //     totalRegister: yearlyUserData[index] ? yearlyUserData[index].totalRegister : 0
+        // }));
+
+       
+        const weeklyOrderData = await Order.aggregate([
             { $unwind: '$products' },
             {
                 $group: {
-                    _id: { year: { $year: '$orderDate' } },
+                    _id: { week: { $isoWeek: '$orderDate' } },
                     totalOrders: { $sum: 1 },
                     totalProducts: { $sum: '$products.quantity' },
                 }
             },
-            { $sort: { '_id.year': 1 } }
+            { $sort: { '_id.week': 1 } }
         ]);
-        const yearlyUserData = await User.aggregate([
+        const weeklyUserData = await User.aggregate([
             {
                 $group: {
-                    _id: { $year: '$date' },
+                    _id: { $isoWeek: '$date' },
                     totalRegister: { $sum: 1 },
                 }
             },
             { $sort: { '_id': 1 } }
         ]);
-        const yearlyData = yearlyOrderData.map((item, index) => ({
-            totalOrders: item.totalOrders,
-            totalProducts: item.totalProducts,
-            totalRegister: yearlyUserData[index] ? yearlyUserData[index].totalRegister : 0
-        }));
+        const weeklyData = Array.from({ length: 52 }, (_, index) => {
+            const weekOrderData = weeklyOrderData.find(item => item._id.week === index + 1) || { totalOrders: 0, totalProducts: 0 };
+            const weekUserData = weeklyUserData.find(item => item._id === index + 1) || { totalRegister: 0 };
+            return {
+                totalOrders: weekOrderData.totalOrders,
+                totalProducts: weekOrderData.totalProducts,
+                totalRegister: weekUserData.totalRegister
+            };
+        });
+
+    
         const totalOrdersJson = JSON.stringify(monthlyData.map(item => item.totalOrders));
         const totalProductsJson = JSON.stringify(monthlyData.map(item => item.totalProducts));
         const totalRegisterJson = JSON.stringify(monthlyData.map(item => item.totalRegister));
         
-        const totalOrdersYearlyJson = JSON.stringify(yearlyData.map(item => item.totalOrders));
-        const totalProductsYearlyJson = JSON.stringify(yearlyData.map(item => item.totalProducts));
-        const totalRegisterYearlyJson = JSON.stringify(yearlyData.map(item => item.totalRegister));
+        // const totalOrdersYearlyJson = JSON.stringify(yearlyData.map(item => item.totalOrders));
+        // const totalProductsYearlyJson = JSON.stringify(yearlyData.map(item => item.totalProducts));
+        // const totalRegisterYearlyJson = JSON.stringify(yearlyData.map(item => item.totalRegister));
+        
+        const totalOrdersWeeklyJson = JSON.stringify(weeklyData.map(item => item.totalOrders));
+        const totalProductsWeeklyJson = JSON.stringify(weeklyData.map(item => item.totalProducts));
+        const totalRegisterWeeklyJson = JSON.stringify(weeklyData.map(item => item.totalRegister));
+        
+        // Render the admin panel with the data
         res.render('adminpanel', {
             user,
             product,
@@ -89,15 +132,19 @@ const adminDashboard = async (req, res) => {
             totalOrdersJson,
             totalProductsJson,
             totalRegisterJson,
-            totalOrdersYearlyJson,
-            totalProductsYearlyJson,
-            totalRegisterYearlyJson
+            // totalOrdersYearlyJson,
+            // totalProductsYearlyJson,
+            // totalRegisterYearlyJson,
+            totalOrdersWeeklyJson,
+            totalProductsWeeklyJson,
+            totalRegisterWeeklyJson
         });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 };
+
 
 
 const adminlogin = async (req, res) => {

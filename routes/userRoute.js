@@ -70,7 +70,7 @@ user_route.post('/searchproduct',isLogin,shopController.searchData)
 
 
 user_route.get('/wishlist',isLogin,wishlistController.wishlistPage)
-// user_route.get('/removeWishlistProduct',isLogin,wishlistController.removeWishlistProduct)
+user_route.get('/removeWishlistProduct',isLogin,wishlistController.removeWishlistProduct)
 user_route.post('/addtoCartFromWishlist',isLogin,wishlistController.addtoCartFromWishlist)
 
 
