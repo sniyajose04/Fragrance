@@ -1,6 +1,4 @@
-const User = require('../models/userModels');
-const Product = require('../models/productModel');
-const Category = require('../models/categoryModel')
+
 const Cart = require('../models/cartModel');
 const { ObjectId } = require('mongodb');
 
@@ -8,7 +6,6 @@ const cartPage = async (req, res) => {
     try {
         const user = req.session.user_id;
         const cartData = await Cart.findOne({ userId: user }).populate("products.productId");
-        console.log('caaarrrttttttttttttttttttttttt')
         console.log(cartData)
         res.render('cart', { cartData, user });
     } catch (error) {
@@ -52,7 +49,6 @@ const removeFromCart = async (req, res) => {
 };
 
 
-
 const updateQuantity = async (req, res) => {
     try {
         const { productId, direction } = req.body;
@@ -61,7 +57,6 @@ const updateQuantity = async (req, res) => {
             return res.status(404).json({ success: false, message: 'credentials not found !' })
         }
         const userCart = await Cart.findOne({ userId: req.session.user_id }).populate("products.productId");
-        // let userCart = await Cart.findOne({ userId: req.session.user_id });
         console.log('userCart:', userCart);
         if (!userCart) {
             return res.status(404).json({ success: false, message: 'Cart not found' });
@@ -73,8 +68,6 @@ const updateQuantity = async (req, res) => {
         if (productIndex === -1) {
             return res.status(404).json({ success: false, message: 'Product not found in cart' });
         }
-        console.log('userCart.products[productIndex] ', userCart.products[productIndex]);
-        console.log('userCart.products[productIndex].qty ', userCart.products[productIndex].quantity);
         const cartQty = userCart.products[productIndex].quantity
         if (direction == 'up' && cartQty < maxStock) {
             userCart.products[productIndex].quantity += 1;
@@ -88,9 +81,6 @@ const updateQuantity = async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 };
-
-
-
 
 
 module.exports = {

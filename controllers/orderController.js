@@ -2,12 +2,10 @@ const Order = require('../models/orderModel')
 const Product = require('../models/productModel');
 const Wallet = require('../models/walletModel')
 
-
-
 const orderList = async (req, res) => {
     try {
-       const order = await Order.find().populate('userId')
-        res.render('orderlist',{order});
+        const order = await Order.find().populate('userId')
+        res.render('orderlist', { order });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -15,24 +13,21 @@ const orderList = async (req, res) => {
 };
 
 
-const orderDetail = async(req,res)=>{
+const orderDetail = async (req, res) => {
     try {
-const orderId = req.query.orderId
-console.log('orderId',orderId)
-const orderData = await Order.findById(orderId)
-.populate('userId') 
-.populate('products.productId')
-.populate('address');
-        
-        res.render('orderDetail',{orderData})
+        const orderId = req.query.orderId
+        console.log('orderId', orderId)
+        const orderData = await Order.findById(orderId)
+            .populate('userId')
+            .populate('products.productId')
+            .populate('address');
+
+        res.render('orderDetail', { orderData })
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error'); 
+        res.status(500).send('Internal Server Error');
     }
 }
-
-
-
 
 
 const orderDetailChange = async (req, res) => {
@@ -48,7 +43,7 @@ const orderDetailChange = async (req, res) => {
         order.orderStatus = status;
         console.log('Updated Status:', status);
         if (status === "Cancelled" || status === "Returned") {
-            const refundAmount = order.totalAmount; 
+            const refundAmount = order.totalAmount;
             const walletData = await Wallet.findOne({ user: order.userId._id });
             if (walletData) {
                 walletData.walletBalance += refundAmount;
@@ -79,10 +74,9 @@ const orderDetailChange = async (req, res) => {
 };
 
 
-module.exports={
+module.exports = {
     orderList,
     orderDetail,
     orderDetailChange
 }
-          
-     
+

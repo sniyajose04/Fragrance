@@ -8,13 +8,12 @@ const checkoutController = require("../controllers/checkoutController")
 const productdetailController = require("../controllers/productdetailController")
 const shopController = require("../controllers/shopController")
 const wishlistController = require("../controllers/wishlistController")
-const offerController = require("../controllers/offerController")
 
 const { isLogin,isLogout,blockeduser} = require("../middleware/auth")
 
-
 user_route.set('views','./views/user');
 
+//USER
 user_route.get('/',blockeduser,usercontroller.renderhome)
 user_route.get('/register',isLogout,usercontroller.loadregister);
 user_route.post('/register',isLogout,usercontroller.insertUser);
@@ -30,25 +29,22 @@ user_route.post('/password',isLogout,usercontroller.updatePassword );
 user_route.get('/contact',isLogin,usercontroller.contactPage);
 user_route.get('/about',isLogout,usercontroller.aboutPage);
 
-
+//PRODUCT
 user_route.get('/productview',isLogout,productController.productView)
 
-
+//CART
 user_route.get('/cart',isLogin,cartController.cartPage)
 user_route.get('/removeFromCart',isLogin, cartController.removeFromCart);
 user_route.post('/updatequantity',isLogin, cartController.updateQuantity);
 
-
+//PROFILE
 user_route.get('/userDetail',isLogin,profileController.userDetailPage)
 user_route.post('/userDetail',isLogin,profileController.userPassword)
 user_route.post('/saveAddress',isLogin,profileController.saveAddress)
-// user_route.get('/editaddress',isLogin,profileController.editAddress)
 user_route.get('/orderdetail',isLogin,profileController.orderDetailPage)
 user_route.post('/ordercancel',isLogin,profileController.orderCancel)
 
-
-
-
+//CHECKOUT
 user_route.get('/checkOut',isLogin,checkoutController.checkOutPage)
 user_route.post('/placeOrder',isLogin,checkoutController.placeOrder)
 user_route.post('/onlineplaceorder',isLogin,checkoutController.onlinePlaceOrder)
@@ -59,16 +55,16 @@ user_route.get('/orderSuccess',isLogin,checkoutController.orderSuccess)
 user_route.post('/applycoupon',isLogin,checkoutController.applyCoupon)
 user_route.post('/checkoutsaveaddress',isLogin,checkoutController.checkoutSaveAddress)
 
-
+//PRODUCT DETAIL
 user_route.get('/productDetail',isLogin,productdetailController.productDetail )
 user_route.post('/addToCart',isLogin,productdetailController.addToCart )
 user_route.post('/addWishlist',isLogin,productdetailController.addWishlist )
 
-
+//SHOP
 user_route.get('/shop',isLogin,shopController.shopPage)
 user_route.post('/searchproduct',isLogin,shopController.searchData)
 
-
+//WISHLIST
 user_route.get('/wishlist',isLogin,wishlistController.wishlistPage)
 user_route.get('/removeWishlistProduct',isLogin,wishlistController.removeWishlistProduct)
 user_route.post('/addtoCartFromWishlist',isLogin,wishlistController.addtoCartFromWishlist)

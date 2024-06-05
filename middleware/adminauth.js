@@ -1,5 +1,4 @@
 
-
 const isLogout = async(req,res,next)=>{
     try {
         if(!req.session.admin_id){
@@ -10,7 +9,6 @@ const isLogout = async(req,res,next)=>{
         console.log(error)
     }
 }
-
 
 
 module.exports = isLogout

@@ -1,7 +1,5 @@
 const User = require('../models/userModels');
 const Address = require('../models/addressModel');
-const Cart = require('../models/cartModel');
-const Product = require('../models/productModel');
 const Order = require('../models/orderModel')
 const Wallet = require('../models/walletModel')
 
@@ -11,16 +9,12 @@ const userDetailPage = async (req, res) => {
         const user = await User.findOne({ _id: req.session.user_id });
         const order = await Order.find({ userId: req.session.user_id });
         const wallet = await Wallet.findOne({ user: req.session.user_id });
-
-        // Check if user has an existing referral code
         let referralCode = user.referralCode;
         if (!referralCode) {
-            // Generate a new referral code if it doesn't exist
             referralCode = await generateUniqueReferralCode();
             user.referralCode = referralCode;
             await user.save();
         }
-
         res.render('userDetail', { user, addresses, order, wallet, referralCode });
     } catch (error) {
         console.log(error.message);
@@ -28,7 +22,7 @@ const userDetailPage = async (req, res) => {
     }
 }
 
-// Generate unique referral code function
+
 async function generateUniqueReferralCode() {
     const RandomReferralCode = () => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -40,17 +34,14 @@ async function generateUniqueReferralCode() {
         }
         return referralCode;
     }
-
     let newReferralCode;
     let referralExists;
     do {
         newReferralCode = RandomReferralCode();
         referralExists = await User.findOne({ referralCode: newReferralCode });
     } while (referralExists);
-
     return newReferralCode;
 }
-
 
 
 const userPassword = async (req, res) => {
@@ -98,7 +89,7 @@ const saveAddress = async (req, res) => {
             altPhone
         })
         console.log('hfbhgs', newAddress)
-        const result = await newAddress.save();
+        await newAddress.save();
         res.status(200).send('success')
     } catch (error) {
         console.log(error.message);
@@ -114,7 +105,7 @@ const orderDetailPage = async (req, res) => {
             .populate('userId')
             .populate({
                 path: 'products.productId',
-                model: 'Product'  // Ensure the correct model name
+                model: 'Product'
             })
             .populate('address');
         if (!order) {
@@ -202,20 +193,20 @@ const orderCancel = async (req, res) => {
 };
 
 
-const repaymentPage = async(req,res)=>{
+const repaymentPage = async (req, res) => {
     try {
         const orderId = req.query._id
         const order = await Order.findOne(orderId).populate({
             path: 'products.productId',
-            model: 'Product'  
+            model: 'Product'
         })
         const userId = req.session.user_id;
         const userData = await User.findById(userId)
         const addressData = await Address.find({ userId: userId })
-        res.render('repayment',{order,addressData,userData})
+        res.render('repayment', { order, addressData, userData })
     } catch (error) {
         console.error(error);
-      
+
     }
 }
 
@@ -227,5 +218,5 @@ module.exports = {
     orderDetailPage,
     orderCancel,
     repaymentPage,
-   
+
 }

@@ -26,8 +26,8 @@ app.use(session({
 app.get('/addToCart', productdetailController.addToCart); 
 
 
-app.use('/', userRoute); // Use userRoute
-app.use('/admin', adminRoute); // Use adminRoute
+app.use('/', userRoute); 
+app.use('/admin', adminRoute);
 app.use(express.json())
 
 app.use(express.static('uploads'));

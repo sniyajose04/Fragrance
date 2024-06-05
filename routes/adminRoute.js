@@ -12,6 +12,7 @@ admin_route.set('views','./views/admin');
 
 const isLogout = require("../middleware/adminauth")
 
+//ADMIN
 admin_route.get('/adminpanel',isLogout,adminController.adminDashboard );
 admin_route.get('/',adminController.adminlogin);
 admin_route.get('/adminLogout',adminController.adminLogout);

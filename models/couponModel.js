@@ -1,8 +1,6 @@
 const mongoose = require('mongoose')
 
 const couponSchema = new mongoose.Schema({
-
-
     name : {
 
         type:String,
@@ -17,7 +15,6 @@ const couponSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    
     start:{
         type:Date,
         required:true
@@ -31,12 +28,10 @@ const couponSchema = new mongoose.Schema({
         required:true,
         default:true
     },
-
     usedByUsers:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     }]
-
 },{versionKey:false})
 
 module.exports = mongoose.model('Coupon',couponSchema)

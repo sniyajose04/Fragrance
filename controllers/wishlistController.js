@@ -1,7 +1,6 @@
 const Wishlist = require('../models/wishlistModel');
 const Cart     = require('../models/cartModel');
 
-
 const wishlistPage = async (req, res) => {
     try {
         const userId = req.session.user_id;
@@ -14,12 +13,11 @@ const wishlistPage = async (req, res) => {
     }
 }
 
+
 const removeWishlistProduct = async (req, res) => {
     try {
         const productId = req.query.id;
         const userId = req.session.user_id;
-        console.log('Received userId:', userId);
-        console.log('Received productId:', productId);
         if (!userId) {
             return res.status(401).send('Unauthorized');
         }
@@ -29,7 +27,6 @@ const removeWishlistProduct = async (req, res) => {
             return res.status(404).send('Wishlist not found');
         }
         console.log('Wishlist data:', JSON.stringify(wishlistData, null, 2));
-        // Find the index of the product using _id instead of productId
         const index = wishlistData.products.findIndex(item => item._id.toString() === productId);
         console.log('Product index:', index);
         if (index !== -1) {

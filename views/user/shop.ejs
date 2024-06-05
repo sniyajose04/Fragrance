@@ -466,7 +466,6 @@
                                             <li><a class="active" href="#">Featured</a></li>
                                             <li><a href="/shop?sort=price_low_to_high">Price: Low to High</a></li>
                                             <li><a href="/shop?sort=price_high_to_low">Price: High to Low</a></li>
-                                            <li><a href="/shop?sort=avg.rating">Avg. Rating</a></li>
                                             <li><a href="/shop?sort=aA-zZ">aA-zZ</a></li>
                                             <li><a href="/shop?sort=zZ-aA">zZ-aA</a></li>
                                             
@@ -515,24 +514,8 @@
                                     </div>
                                 </div>
                                 <% } %>
-
-
-
                         </div>
-                        <!--pagination-->
-                        <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-start">
-                                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">02</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">03</a></li>
-                                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">16</a></li>
-                                    <li class="page-item"><a class="page-link" href="#"><i
-                                                class="fi-rs-angle-double-small-right"></i></a></li>
-                                </ul>
-                            </nav>
-                        </div>
+                        
                     </div>
                     <div class="col-lg-3 primary-sidebar sticky-sidebar">
                         <div class="row">
@@ -564,7 +547,7 @@
                                             <img src="/productImages/<%= products[i].images[0].filename %>" alt="#">
                                         </div>
                                         <div class="content pt-10">
-                                            <h5><a href="shop-product-detail.html"><%= products[i].product_title %></a></h5>
+                                            <h5><a href="productDetail?id=<%=products[i]._id %>"><%= products[i].product_title %></a></h5>
                                             <div class="product-price">
                                                 <span>&#8377;<%=products[i].offerPrice>0 ?products[i].offerPrice : products[i].promotionalPrice %> </span>
                                                 

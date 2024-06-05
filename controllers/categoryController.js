@@ -3,25 +3,27 @@ const Category = require('../models/categoryModel')
 
 const addCategoryPage = async (req, res) => {
     try {
-        res.render('addcategory' ,{errorMessage:""})
+        res.render('addcategory', { errorMessage: "" })
     } catch (error) {
         console.log(error)
     }
 }
 
+
 const categoryDetail = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1; 
-        const pageSize = 5; 
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = 5;
         const skip = (page - 1) * pageSize;
-            const totalCategories = await Category.countDocuments();  
-            const totalPages = Math.ceil(totalCategories / pageSize);
-            const categoryData = await Category.find().skip(skip).limit(pageSize);          
-        res.render('categorylist', { Category: categoryData, totalPages: totalPages, currentPage: page  })
+        const totalCategories = await Category.countDocuments();
+        const totalPages = Math.ceil(totalCategories / pageSize);
+        const categoryData = await Category.find().skip(skip).limit(pageSize);
+        res.render('categorylist', { Category: categoryData, totalPages: totalPages, currentPage: page })
     } catch (error) {
         console.log(error)
-    }   
+    }
 }
+
 
 const addcategory = async (req, res) => {
     try {
@@ -43,7 +45,6 @@ const addcategory = async (req, res) => {
 }
 
 
-
 const list = async (req, res) => {
     try {
         const categoryID = req.params.id;
@@ -56,6 +57,7 @@ const list = async (req, res) => {
         res.status(500).json({ success: false, error: "An error occurred while blocking the user" });
     }
 }
+
 
 const Unlist = async (req, res) => {
     try {
@@ -70,16 +72,17 @@ const Unlist = async (req, res) => {
     }
 }
 
+
 const editCategoryPage = async (req, res) => {
     try {
         const categoryId = req.params.id;
-        console.log('Category id:',categoryId)
-        const category = await Category.findOne({_id:categoryId});
-       console.log(category)
+        console.log('Category id:', categoryId)
+        const category = await Category.findOne({ _id: categoryId });
+        console.log(category)
         if (!category) {
             return res.status(404).send('Category not found');
         }
-        res.render('editCategory', {Category: category });
+        res.render('editCategory', { Category: category });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -91,8 +94,8 @@ const updateCategory = async (req, res) => {
     try {
         const categoryId = req.query.id;
         console.log(req.body);
-        const { name ,is_list,description} = req.body; 
-        const updatedCategory = await Category.findByIdAndUpdate(categoryId, { name,is_list,description }, { new: true });
+        const { name, is_list, description } = req.body;
+        const updatedCategory = await Category.findByIdAndUpdate(categoryId, { name, is_list, description }, { new: true });
         if (!updatedCategory) {
             return res.status(404).send('Category not found');
         }

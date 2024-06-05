@@ -9,31 +9,22 @@ const shopPage = async (req, res) => {
             query.Category = req.query.category;
         }
         let productData;
-        switch (req.query.sort) {
-            case 'price_low_to_high':
-                productData = await Product.find(query).sort('promotionalPrice');
-                break;
-            case 'price_high_to_low':
-                productData = await Product.find(query).sort('-promotionalPrice');
-                break;
-            case 'avg.rating':
-                // Assuming there is some logic here to sort by average rating
-                // productData = await Product.find(query).sort({ avgRating: 1 });
-                break;
-            case 'aA-zZ':
-                productData = await Product.find(query).sort({ product_title: 1 });
-                break;
-            case 'zZ-aA':
-                productData = await Product.find(query).sort({ product_title: -1 });
-                break;
-            default:
-                productData = await Product.find(query);
-                break;
+        const sort = req.query.sort;
+        if (sort === 'price_low_to_high') {
+            productData = await Product.find(query).sort('promotionalPrice');
+        } else if (sort === 'price_high_to_low') {
+            productData = await Product.find(query).sort('-promotionalPrice');
+        } else if (sort === 'aA-zZ') {
+            productData = await Product.find(query).sort({ product_title: 1 });
+        } else if (sort === 'zZ-aA') {
+            productData = await Product.find(query).sort({ product_title: -1 });
+        } else {
+            productData = await Product.find(query);
         }
-        if(req.query.category){
+        if (req.query.category) {
             console.log(req.query.category);
-            productData = await Product.find({is_block: false,Category:req.query.category})
-            console.log('dsfasdfasdfasdfasdf',productData)
+            productData = await Product.find({ is_block: false, Category: req.query.category })
+            console.log('productData', productData)
         }
         const categoryData = await Category.find({ is_list: true }, { _id: 1, name: 1 });
         const user = await User.findOne({ _id: req.session.user_id });
@@ -46,26 +37,24 @@ const shopPage = async (req, res) => {
 };
 
 
-const searchData = async(req,res)=>{
+const searchData = async (req, res) => {
     try {
-        const userid = req.session.user;
-        const categoryData = await Category.find({is_list:true});
+        const categoryData = await Category.find({ is_list: true });
         const user = await User.findOne({ _id: req.session.user_id });
         const searchedData = req.body.query;
-        const regex = new RegExp('^'+searchedData,'i')
-        const productData = await Product.find({is_block: false,product_title:{$regex:regex}});
+        const regex = new RegExp('^' + searchedData, 'i')
+        const productData = await Product.find({ is_block: false, product_title: { $regex: regex } });
         const products = await Product.find({ is_block: false }).sort({ listDate: -1 }).limit(3);
-        res.render("shop",{productData,categoryData,user,products})
+        res.render("shop", { productData, categoryData, user, products })
     } catch (error) {
-        console.log(error,'search data error')
+        console.log(error, 'search data error')
         return res.status(500).send('Internal Server Error')
     }
 }
 
 
-
 module.exports = {
     shopPage,
     searchData
-   
+
 }

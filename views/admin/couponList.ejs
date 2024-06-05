@@ -1,5 +1,4 @@
 <%- include('./adminLayout/header') %>
-
     <body>
         <div class="screen-overlay"></div>
         <aside class="navbar-aside" id="offcanvas_aside">
@@ -24,7 +23,6 @@
                             <span class="text">Products</span>
                         </a>
                     </li>
-
                     <li class="menu-item  ">
                         <a class="menu-link" href="/admin/categorylist"> <i class="icon material-icons md-store"></i>
                             <span class="text">Category</span>
@@ -46,22 +44,18 @@
                                 class="icon material-icons md-shopping_cart"></i>
                             <span class="text">Coupon</span>
                         </a>
-
                     </li>
                     <li class="menu-item ">
                         <a class="menu-link" href="/admin/offerList"> <i
                                 class="icon material-icons md-shopping_cart"></i>
                             <span class="text">Offers</span>
                         </a>
-
                     </li>
-
             </nav>
         </aside>
         <main class="main-wrap">
             <header class="main-header navbar">
                 <div class="col-search">
-
                 </div>
                 <div class="col-nav">
                     <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
@@ -70,7 +64,6 @@
                         <li class="nav-item">
                             <a class="nav-link btn-icon" href="#">
                                 <i class="material-icons md-notifications animation-shake"></i>
-
                             </a>
                         </li>
                         <li class="nav-item">
@@ -81,7 +74,6 @@
                             <a href="#" class="requestfullscreen nav-link btn-icon"><i
                                     class="material-icons md-cast"></i></a>
                         </li>
-
                         <li class="dropdown nav-item">
                             <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
                                 aria-expanded="false"> <img class="img-xs rounded-circle"
@@ -108,13 +100,11 @@
                 <div class="content-header">
                     <div>
                         <h2 class="content-title card-title">Coupon List </h2>
-
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-9">
                         <div class="card mb-4">
-
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-hover">
@@ -128,13 +118,10 @@
                                                 <th class="text-end"> Action </th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
                                             <%if(locals.coupons){%>
                                                 <% for( let i=0; i < coupons.length; i++ ) { %>
-
                                                     <tr>
-
                                                         <td>
                                                             <%= coupons[i].name %>
                                                         </td>
@@ -150,12 +137,9 @@
                                                         <td>
                                                             <%= new Date(coupons[i].end).toLocaleDateString() %>
                                                         </td>
-
                                                         <td class="text-end">
-
                                                             <a onclick="deleteCoupon('<%= coupons[i]._id %>')"
                                                                 class="btn btn-info">Delete</a>
-
                                                         </td>
                                                     </tr>
                                                     <% } %>
@@ -171,7 +155,6 @@
                             <div class="card-body">
                                 <h5 class="mb-3">Add Coupon</h5>
                                 <form action="/admin/couponList" method="post">
-
                                     <div class="mb-4">
                                         <label for="order_id" class="form-label">Coupon name</label>
                                         <input type="text" placeholder="Type here" class="form-control" id="name"
@@ -184,7 +167,6 @@
                                             name="discount">
                                         <span class="text-danger" id="discountError"></span>
                                     </div>
-
                                     <div class="mb-4">
                                         <label for="order_total" class="form-label">Min Amount</label>
                                         <input type="text" placeholder="Type here" class="form-control"
@@ -197,37 +179,30 @@
                                             <input type="date" class="form-control" id="start" name="start">
                                             <span class="input-group-text">
                                                 <i class="bi bi-calendar"></i>
-                                          
                                             </span>
                                         </div>
                                         <span class="text-danger" id="startError"></span>
                                     </div>
-
                                     <div class="mb-4">
                                         <label for="order_modified_date" class="form-label">Ending Date</label>
                                         <div class="input-group">
                                             <input type="date" class="form-control" id="end" name="end">
                                             <span class="input-group-text">
                                                 <i class="bi bi-calendar"></i>
-                                               
                                             </span>
                                         </div>
                                         <span class="text-danger" id="endError"></span>
                                     </div>
-
                                     <div class="d-grid">
-                                        <button id="btn" class="btn btn-primary">Create coupon</button>
-                                        
+                                        <button id="btn" class="btn btn-primary">Create coupon</button>  
                                     </div>
                                 </form>
                             </div>
                         </div> 
                     </div>
                 </div>
-
             </section>
            
-
             <script>
                 document.getElementById('name').addEventListener('input', function () {
                     validateName();
@@ -254,7 +229,6 @@
                         event.preventDefault();
                     }
                 });
-
                 function validateForm() {
                     const isValid = validateDates() && validateName() && validateDiscount() && validateMinPurchaseAmount();
                     if (!isValid) {
@@ -262,8 +236,6 @@
                     }
                     return isValid;
                 }
-
-
                 function validateName() {
                     const name = document.getElementById('name').value.trim();
                     const namePattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
@@ -278,7 +250,6 @@
                         return true;
                     }
                 }
-
                 function validateDiscount() {
                     const discount = document.getElementById('discount').value.trim();
                     if (discount === '') {
@@ -292,7 +263,6 @@
                         return true;
                     }
                 }
-
                 function validateMinPurchaseAmount() {
                     const minpurchaseamount = document.getElementById('minpurchaseamount').value.trim();
                     const discount = document.getElementById('discount').value.trim();
@@ -310,16 +280,13 @@
                         return true;
                     }
                 }
-
                 function validateForm() {
                     const validName = validateName();
                     const validDiscount = validateDiscount();
                     const validMinPurchaseAmount = validateMinPurchaseAmount();
                     const validDates = validateDates();
-
                     return validName && validDiscount && validMinPurchaseAmount && validDates;
                 }
-
                 function validateDates() {
     const startInput = document.getElementById('start');
     const endInput = document.getElementById('end');
@@ -327,32 +294,23 @@
     const endDate = new Date(endInput.value);
     const currentDate = new Date();
 
-    // Reset error messages
     document.getElementById('startError').textContent = '';
     document.getElementById('endError').textContent = '';
-
-    // Allow start date to be the current date
     if (startDate.setHours(0, 0, 0, 0) < currentDate.setHours(0, 0, 0, 0)) {
         document.getElementById('startError').textContent = 'Start date must be today or a future date';
         return false;
     }
-
     if (endDate.setHours(0, 0, 0, 0) <= currentDate.setHours(0, 0, 0, 0)) {
         document.getElementById('endError').textContent = 'End date must be after today';
         return false;
     }
-
     if (endDate <= startDate) {
         document.getElementById('endError').textContent = 'End date must be after start date';
         return false;
     }
-
     return true;
 }
-
             </script>
-
-
 
 <script>
     function deleteCoupon(couponid) {
@@ -404,6 +362,5 @@
     </script>
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-            <%- include('./adminLayout/header') %>
+ <%- include('./adminLayout/header') %>

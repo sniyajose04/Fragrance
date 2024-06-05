@@ -41,15 +41,12 @@ const addOffers = async (req, res) => {
       console.log('offerPrice:', offerPrice);
       await product.save();
     }
-    // res.status(200).json({ message: 'Offer created successfully' });
     res.redirect('/admin/offerList')
   } catch (error) {
     console.error('Error creating offer:', error);
     res.status(500).send('Internal Server Error');
   }
 };
-
-
 
 
 const deleteOffer = async (req, res) => {
@@ -78,7 +75,6 @@ const deleteOffer = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
-
 
 
 module.exports = {

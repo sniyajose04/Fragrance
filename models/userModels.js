@@ -5,22 +5,18 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-
     email:{
         type:String,
         required:true
     },
-
     mobile:{
         type:String,
         required:true
     },
-
     password:{
         type:String,
         required:true
     },
-
     is_blocked:{
         type:Boolean,
         default:false
@@ -36,7 +32,6 @@ const userSchema = new mongoose.Schema({
     Offer:{
     type:mongoose.Types.ObjectId,
     ref: "Offer",
-    
     },
     referralCode: {
         type: String,
@@ -46,6 +41,5 @@ const userSchema = new mongoose.Schema({
         type: String,
       }]
       });
-      
 
 module.exports = mongoose.model('UserDetials',userSchema);

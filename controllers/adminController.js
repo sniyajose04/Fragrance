@@ -6,7 +6,6 @@ const Category = require('../models/categoryModel')
 const Order = require('../models/orderModel')
 
 
-
 const adminDashboard = async (req, res) => {
     try {
         const user = await User.find({});
@@ -20,7 +19,6 @@ const adminDashboard = async (req, res) => {
             }
         });
 
-       
         const monthlyOrderData = await Order.aggregate([
             { $unwind: '$products' },
             {
@@ -51,34 +49,6 @@ const adminDashboard = async (req, res) => {
             };
         });
 
-        
-        // const yearlyOrderData = await Order.aggregate([
-        //     { $unwind: '$products' },
-        //     {
-        //         $group: {
-        //             _id: { year: { $year: '$orderDate' } },
-        //             totalOrders: { $sum: 1 },
-        //             totalProducts: { $sum: '$products.quantity' },
-        //         }
-        //     },
-        //     { $sort: { '_id.year': 1 } }
-        // ]);
-        // const yearlyUserData = await User.aggregate([
-        //     {
-        //         $group: {
-        //             _id: { $year: '$date' },
-        //             totalRegister: { $sum: 1 },
-        //         }
-        //     },
-        //     { $sort: { '_id': 1 } }
-        // ]);
-        // const yearlyData = yearlyOrderData.map((item, index) => ({
-        //     totalOrders: item.totalOrders,
-        //     totalProducts: item.totalProducts,
-        //     totalRegister: yearlyUserData[index] ? yearlyUserData[index].totalRegister : 0
-        // }));
-
-       
         const weeklyOrderData = await Order.aggregate([
             { $unwind: '$products' },
             {
@@ -108,21 +78,13 @@ const adminDashboard = async (req, res) => {
                 totalRegister: weekUserData.totalRegister
             };
         });
-
-    
         const totalOrdersJson = JSON.stringify(monthlyData.map(item => item.totalOrders));
         const totalProductsJson = JSON.stringify(monthlyData.map(item => item.totalProducts));
         const totalRegisterJson = JSON.stringify(monthlyData.map(item => item.totalRegister));
-        
-        // const totalOrdersYearlyJson = JSON.stringify(yearlyData.map(item => item.totalOrders));
-        // const totalProductsYearlyJson = JSON.stringify(yearlyData.map(item => item.totalProducts));
-        // const totalRegisterYearlyJson = JSON.stringify(yearlyData.map(item => item.totalRegister));
-        
+
         const totalOrdersWeeklyJson = JSON.stringify(weeklyData.map(item => item.totalOrders));
         const totalProductsWeeklyJson = JSON.stringify(weeklyData.map(item => item.totalProducts));
         const totalRegisterWeeklyJson = JSON.stringify(weeklyData.map(item => item.totalRegister));
-        
-        // Render the admin panel with the data
         res.render('adminpanel', {
             user,
             product,
@@ -132,9 +94,6 @@ const adminDashboard = async (req, res) => {
             totalOrdersJson,
             totalProductsJson,
             totalRegisterJson,
-            // totalOrdersYearlyJson,
-            // totalProductsYearlyJson,
-            // totalRegisterYearlyJson,
             totalOrdersWeeklyJson,
             totalProductsWeeklyJson,
             totalRegisterWeeklyJson
@@ -144,7 +103,6 @@ const adminDashboard = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
-
 
 
 const adminlogin = async (req, res) => {
@@ -164,10 +122,10 @@ const verifyadmin = async (req, res) => {
         if (userdata) {
             if (userdata.is_admin) {
                 const passwordMatch = await bcrypt.compare(password, userdata.password);
-                if (passwordMatch){
+                if (passwordMatch) {
                     req.session.admin_id = userdata._id;
                     res.redirect('/admin/adminpanel');
-                }else{
+                } else {
                     return res.render('login', { message: "Password is incorrect" });
                 }
             } else {
@@ -183,7 +141,6 @@ const verifyadmin = async (req, res) => {
 };
 
 
-
 const userDetail = async (req, res) => {
     try {
         const userdata = await Admin.find({ is_admin: false })
@@ -192,7 +149,6 @@ const userDetail = async (req, res) => {
         console.log(error)
     }
 }
-
 
 
 const userBlock = async (req, res) => {
@@ -208,6 +164,7 @@ const userBlock = async (req, res) => {
         res.status(500).json({ success: false, error: "An error occurred while blocking the user" });
     }
 }
+
 
 const userUnblock = async (req, res) => {
     try {
@@ -233,6 +190,7 @@ const adminLogout = (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
+
 
 const salesReport = async (req, res) => {
     try {
@@ -260,7 +218,7 @@ const salesReport = async (req, res) => {
                     totalTransaction += parseFloat(item.totalAmount);
                 }
                 totalOrders++;
-                if (item.paymentMethod === 'Paypal') {
+                if (item.paymentMethod === 'Online Payment') {
                     onlinePayments++;
                 } else {
                     cashOnDelivery++;
@@ -294,7 +252,7 @@ const salesReport = async (req, res) => {
                     totalTransaction += parseFloat(item.totalAmount);
                 }
                 totalOrders++;
-                if (item.paymentMethod === 'Paypal') {
+                if (item.paymentMethod === 'Online Payment') {
                     onlinePayments++;
                 } else {
                     cashOnDelivery++;
@@ -320,13 +278,12 @@ const salesReport = async (req, res) => {
 };
 
 
-
 const dateFilter = async (req, res) => {
     try {
         const startDate = req.body.startDate
-        console.log('startDate',startDate)
+        console.log('startDate', startDate)
         const endDate = req.body.endDate
-        console.log('endDate',endDate)
+        console.log('endDate', endDate)
         res.redirect(`/admin/salesReport?startDate=${startDate}&endDate=${endDate}`)
     } catch (error) {
         console.log(error);

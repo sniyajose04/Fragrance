@@ -1,12 +1,10 @@
 const Product = require('../models/productModel');
 const Category = require('../models/categoryModel')
-const path = require('path')
-
 
 const productDetail = async (req, res) => {
     try {
         const products = await Product.find()
-        res.render('product', { products});
+        res.render('product', { products });
     } catch (error) {
         console.log(error)
     }
@@ -16,7 +14,6 @@ const productDetail = async (req, res) => {
 const addProductpage = async (req, res) => {
     try {
         const products = await Product.find()
-        // console.log('products : ', products)
         const category = await Category.find()
         res.render('productAdd', { category, products })
     } catch (error) {
@@ -30,7 +27,7 @@ const unpublish = async (req, res) => {
     try {
         const ProductID = req.params.id;
         await Product.findByIdAndUpdate(ProductID, {
-            is_block:false
+            is_block: false
         });
         res.status(200).json({ success: true });
     } catch (error) {
@@ -38,6 +35,7 @@ const unpublish = async (req, res) => {
         res.status(500).json({ success: false, error: "An error occurred " });
     }
 }
+
 
 const publish = async (req, res) => {
     try {
@@ -98,7 +96,7 @@ const editProductPage = async (req, res) => {
         if (!product) {
             return res.status(404).send('Product not found');
         }
-        res.render('editProduct', { product,category });
+        res.render('editProduct', { product, category });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -124,8 +122,6 @@ const updateProduct = async (req, res) => {
 };
 
 
-
-
 const productView = async (req, res) => {
     try {
         const productId = req.query.id;
@@ -136,6 +132,8 @@ const productView = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
+
+
 module.exports = {
     productDetail,
     addProductpage,

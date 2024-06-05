@@ -21,7 +21,6 @@
                         <span class="text">Products</span>
                     </a>
                 </li>
-                
                 <li class="menu-item active ">
                     <a class="menu-link" href="/admin/categorylist"> <i class="icon material-icons md-store"></i>
                         <span class="text">Category</span>
@@ -36,28 +35,23 @@
                     <a class="menu-link" href="/admin/orderlist"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Order</span>
                     </a>
-                   
                 </li> 
                 <li class="menu-item ">
                     <a class="menu-link" href="/admin/couponList"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Coupon</span>
                     </a>
-                    
                 </li>
                 <li class="menu-item ">
                     <a class="menu-link" href="/admin/offerList"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Offers</span>
                     </a>
-                    
                 </li>
-                
         </nav>
     </aside>
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
-                <form class="searchform">
-                    
+                <form class="searchform"> 
                 </form>
             </div>
             <div class="col-nav">
@@ -66,7 +60,6 @@
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
                             <i class="material-icons md-notifications animation-shake"></i>
-                           
                         </a>
                     </li>
                     <li class="nav-item">
@@ -75,7 +68,6 @@
                     <li class="nav-item">
                         <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
                     </li>
-                    
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/admin-assets/imgs/people/avatar2.jpg" alt="User"></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
@@ -95,24 +87,19 @@
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Categories </h2>
-                    
                 </div>
-               
                 <div>
-                    
                     <a href="/admin/addcategory" class="btn btn-primary btn-sm rounded"  > Add category</a>
                 </div>
             </div>
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                       
                         <div class="col-md-12">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                         
                                             <th>ID</th>
                                             <th>Name</th>
                                             <th>Description</th>
@@ -134,9 +121,7 @@
                                                     <% } else { %>
                                                         <td class="text-success ">list</td>
                                                 <% } %>
-                                                
                                                 <td class="">
-
                                                     <% if (element.is_list==false) { %>
                                                         <button class="btn btn-primary btn-sm" onclick="list( '<%= element._id %>')">list</button>
                                                     <% } else { %>
@@ -148,8 +133,6 @@
                                             </td>
                                             </tr>
                                         <% }) %>
-                                     
-                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -157,24 +140,18 @@
                     </div>
                 </div> 
             </div> 
-           
             <div class="pagination-area mt-30 mb-50">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-start">
                         <% for (let i = 1; i <= totalPages; i++) { %>
                             <li class="page-item <%= currentPage == i ? 'active' : '' %>">
-                                <!-- Update href to include categoryId -->
                                 <a class="page-link" href="/admin/categorylist?page=<%= i %>"><%= i %></a>
                             </li>
                         <% } %>
                     </ul>
                 </nav>
             </div>
-            
-            
         </section> 
-
-
 
         <script>
             function list(categoryId) {
@@ -200,21 +177,17 @@
                             }
                         })
                         .then(data => {
-                            // Check if the operation was successful
                             if (data.success) {
-                                // Show success message
                                 Swal.fire({
                                     title: "listed!",
                                     text: "User has been listed.",
                                     icon: "success",
                                     showConfirmButton: false
                                 });
-                                // Reload the page after 2 seconds
                                 setTimeout(() => {
                                     location.reload();
                                 }, 2000);
                             } else {
-                                // Show error message
                                 Swal.fire({
                                     title: "Error!",
                                     text: "Failed to list.",
@@ -223,7 +196,6 @@
                             }
                         })
                         .catch(error => {
-                            // Show error message
                             Swal.fire({
                                 title: "Error!",
                                 text: error.message,
@@ -233,7 +205,6 @@
                     }
                 });
             }
-
             function Unlist(categoryId){
                 Swal.fire({
                     title: "Are you sure?",
@@ -251,27 +222,23 @@
                         }) 
                         .then(response => {
                             if (response.ok) {
-                                return response.json(); // Parse response body as JSON
+                                return response.json(); 
                             } else {
                                 throw new Error('Failed to Unlist');
                             }
                         })
                         .then(data => {
-                            // Check if the operation was successful
                             if (data.success) {
-                                // Show success message
                                 Swal.fire({
                                     title: "Unlist!",
                                     text: "User has been Unlist.",
                                     icon: "success",
                                     showConfirmButton: false
                                 });
-                                 // Reload the page after 2 seconds
                                  setTimeout(() => {
                                     location.reload();
                                 }, 2000);
                             } else {
-                                // Show error message
                                 Swal.fire({
                                     title: "Error!",
                                     text: "Failed to Unlist user.",
@@ -280,7 +247,6 @@
                             }
                         })
                         .catch(error => {
-                            // Show error message
                             Swal.fire({
                                 title: "Error!",
                                 text: error.message,
@@ -290,9 +256,8 @@
                     }
                 });
             }
-
         </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <%- include('./adminLayout/footer') %>
+<%- include('./adminLayout/footer') %>

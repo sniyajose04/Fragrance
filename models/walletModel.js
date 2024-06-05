@@ -14,7 +14,6 @@ type: {
     enum: ['debit', 'credit'],
     required: true
 }
-
 })
 const wallet = new mongoose.Schema({
   user: {
@@ -22,14 +21,11 @@ const wallet = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-
   transaction:[transactionSchema],
   walletBalance: {
     type: Number,
     default: 0,
   },
-
-
 });
 
 module.exports = mongoose.model('Wallet', wallet);

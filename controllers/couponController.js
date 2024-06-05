@@ -1,5 +1,4 @@
 const Coupon = require('../models/couponModel')
-const User = require('../models/userModels')
 
 const couponList = async (req, res) => {
     try {
@@ -58,7 +57,6 @@ const deleteCoupon = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
-
 
 
 module.exports = {

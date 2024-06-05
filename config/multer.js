@@ -7,14 +7,10 @@ const storeProductImage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/productImages'); 
   },
-  filename: function (req, file, cb) {
-    
+  filename: function (req, file, cb) { 
     const timestamp = Date.now();
-    
     const fileExtension = path.extname(file.originalname);
-   
     const fileName = `${timestamp}${fileExtension}`;
-    
     cb(null, fileName);
   }
 });

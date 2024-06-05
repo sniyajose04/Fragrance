@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
+
 const cartSchema = new mongoose.Schema({
-   
     userId: {
         type: mongoose.Types.ObjectId,
         ref: "User"
@@ -17,8 +17,8 @@ const cartSchema = new mongoose.Schema({
             min: 1 
         }
 }]
-
 })
+
 module.exports = mongoose.model('Cart',cartSchema)
 
 

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const orderSchema = new mongoose.Schema({
    userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -8,7 +9,6 @@ const orderSchema = new mongoose.Schema({
   orderId:{
       type:String,
       required:true
-
   },
   products: [{
       productId: {
@@ -49,13 +49,11 @@ paymentMethod:{
 },
   cancelReason:{
       type:String,
-
   },
   returnReason:{
       type:String
   },
-
 });
 
-   module.exports =  mongoose.model('Order',orderSchema)
+module.exports =  mongoose.model('Order',orderSchema)
     

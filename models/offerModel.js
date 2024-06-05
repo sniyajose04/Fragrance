@@ -1,5 +1,6 @@
 
 const mongoose = require("mongoose");
+
 const offerSchema = new mongoose.Schema({
     category: {
         type: mongoose.Schema.Types.ObjectId,
@@ -20,8 +21,6 @@ const offerSchema = new mongoose.Schema({
         type:String,
         required:true
     }
-
 },{versionKey:false})
-
 
 module.exports = mongoose.model("Offer",offerSchema);
