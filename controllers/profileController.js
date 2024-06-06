@@ -88,7 +88,6 @@ const saveAddress = async (req, res) => {
             phonenumber,
             altPhone
         })
-        console.log('hfbhgs', newAddress)
         await newAddress.save();
         res.status(200).send('success')
     } catch (error) {
@@ -134,7 +133,6 @@ const orderCancel = async (req, res) => {
         const product = order.products.find(
             (item) => item.productId._id.toString() === productId
         );
-        console.log('product', product);
         if (!product) {
             return res.status(404).json({ error: 'Product not found in order' });
         }

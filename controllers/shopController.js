@@ -22,9 +22,7 @@ const shopPage = async (req, res) => {
             productData = await Product.find(query);
         }
         if (req.query.category) {
-            console.log(req.query.category);
             productData = await Product.find({ is_block: false, Category: req.query.category })
-            console.log('productData', productData)
         }
         const categoryData = await Category.find({ is_list: true }, { _id: 1, name: 1 });
         const user = await User.findOne({ _id: req.session.user_id });

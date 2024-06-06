@@ -10,26 +10,26 @@
     }
 
     .form-container {
-        max-width: 400px; /* Limit width */
-        border: 1px solid #ccc; /* Add border */
-        padding: 20px; /* Add padding */
-        margin: auto; /* Center horizontally */
+        max-width: 400px; 
+        border: 1px solid #ccc; 
+        padding: 20px; 
+        margin: auto; 
     }
 
     .form-container form {
-        margin-bottom: 20px; /* Add space below the form */
+        margin-bottom: 20px;
     }
 
     .form-container input[type="text"] {
-        width: calc(100% - 20px); /* Adjust width of input box */
-        padding: 10px; /* Add padding */
+        width: calc(100% - 20px);
+        padding: 10px; 
     }
 
     .timer-container {
-        border-top: 1px solid #ccc; /* Add border */
-        padding-top: 20px; /* Add space from the form */
-        margin-top: 20px; /* Add space from the form */
-        text-align: center; /* Center the timer text */
+        border-top: 1px solid #ccc; 
+        padding-top: 20px;
+        margin-top: 20px;
+        text-align: center;
     }
 </style>
 
@@ -64,7 +64,7 @@
                 document.getElementById('otpForm').addEventListener('submit', function(event) {
                     event.preventDefault(); 
                 });
-                document.getElementById('verifyButton').disabled = true; // Disable verify button
+                document.getElementById('verifyButton').disabled = true; 
             } else {
                 timeLeft--;
                 setTimeout(updateTimer, 1000);

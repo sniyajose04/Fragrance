@@ -56,7 +56,6 @@ async function generateUniqueReferralCode() {
 const insertUser = async (req, res) => {
     try {
         const { username, email, mno, password, referralCode } = req.body;
-        console.log("Request body:", req.body);
         const spassword = await securePassword(password);
         console.log("Secured password:", spassword);
         await createOtp(email);
@@ -103,7 +102,6 @@ const insertUser = async (req, res) => {
 
 const verifyotp = async (req, res) => {
     const { otp } = req.body;
-    console.log(req.body)
     const { email } = req.session.tempUser;
     try {
         const otpData = req.session.otpdata;
@@ -244,7 +242,6 @@ const emailverify = async (req, res) => {
 const otpVerify = async (req, res) => {
     try {
         const otp = req.query.otp;
-        console.log('otp',otp)
         const email = req.query.email;
         const otpData = await Otp.findOne({ email: email }).sort({ _id: -1 });
         if (!otpData) {

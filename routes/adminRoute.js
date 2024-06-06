@@ -29,18 +29,18 @@ admin_route.get('/product',isLogout,productController.productDetail);
 admin_route.get('/productAdd',isLogout,productController.addProductpage)
 admin_route.post('/productAdd',upload.uploadProduct,productController.addproduct)
 admin_route.get('/editProduct/:id',isLogout, productController.editProductPage);
-admin_route.post('/updateproduct',productController.updateProduct)
-admin_route.patch('/publish/:id',productController.publish)
-admin_route.patch('/unpublish/:id',productController.unpublish)
+admin_route.post('/updateproduct',isLogout,productController.updateProduct)
+admin_route.patch('/publish/:id',isLogout,productController.publish)
+admin_route.patch('/unpublish/:id',isLogout,productController.unpublish)
 
 //CATEGORY
 admin_route.get('/categorylist',isLogout,categoryController.categoryDetail)
 admin_route.get('/addcategory',isLogout,categoryController.addCategoryPage)
-admin_route.post('/addcategory',categoryController.addcategory)
+admin_route.post('/addcategory',isLogout,categoryController.addcategory)
 admin_route.get('/editCategory/:id',isLogout,categoryController.editCategoryPage)
-admin_route.post('/updateCategory',categoryController.updateCategory)
-admin_route.patch('/list/:id',categoryController.list)
-admin_route.patch('/Unlist/:id',categoryController.Unlist)
+admin_route.post('/updateCategory',isLogout,categoryController.updateCategory)
+admin_route.patch('/list/:id',isLogout,categoryController.list)
+admin_route.patch('/Unlist/:id',isLogout,categoryController.Unlist)
 
 
 //ORDER

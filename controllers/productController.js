@@ -89,9 +89,7 @@ const addproduct = async (req, res) => {
 const editProductPage = async (req, res) => {
     try {
         const productId = req.params.id;
-        console.log('Product id:', productId)
         const product = await Product.findOne({ _id: productId }).populate('Category');
-        console.log("product", product)
         const category = await Category.find()
         if (!product) {
             return res.status(404).send('Product not found');
@@ -107,7 +105,6 @@ const editProductPage = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
         const productId = req.query.id;
-        console.log(req.body);
         const { product_title, Description, Stock, regularPrice, promotionalPrice, images, category, is_block } = req.body;
         const updateProduct = await Product.findByIdAndUpdate(productId, { product_title, Description, Stock, regularPrice, promotionalPrice, images, category, is_block }, { new: true });
         if (!updateProduct) {

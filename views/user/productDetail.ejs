@@ -590,9 +590,6 @@
                 var quantity = parseInt(currentQuantity);
                 var productId = document.getElementById('productId').value;
 
-                console.log('Quantity:', quantity);
-                console.log('Product ID:', productId);
-
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
                         confirmButton: "btn btn-success",
@@ -657,9 +654,6 @@
     var quantity = parseInt(currentQuantity);
     var productId = document.getElementById('productId').value;
 
-    console.log('Quantity:', quantity);
-    console.log('Product ID:', productId);
-
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-success",
@@ -690,7 +684,6 @@
                 }
                 return response.json(); 
             }).then(data => {
-                console.log('Response Data:', data);
                 if (!data.success) {
                     Swal.fire({
                         icon: 'warning',

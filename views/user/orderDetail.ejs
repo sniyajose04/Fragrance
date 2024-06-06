@@ -309,7 +309,6 @@
         reason,
         productId
     };
-    console.log('requestData', requestData);
 
     let action = '';
     let confirmText = '';
@@ -361,7 +360,6 @@
         $(document).ready(function ($) {   
         
             $(document).on('click', '#pdfButton', function (event) {
-                console.log('ooooooooooooooooo')
                 var element = document.getElementById('products');
                 let randomNumber = Math.floor(Math.random() * (10000000000 - 1)) + 1;
                 var opt = {

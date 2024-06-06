@@ -281,9 +281,7 @@ const salesReport = async (req, res) => {
 const dateFilter = async (req, res) => {
     try {
         const startDate = req.body.startDate
-        console.log('startDate', startDate)
         const endDate = req.body.endDate
-        console.log('endDate', endDate)
         res.redirect(`/admin/salesReport?startDate=${startDate}&endDate=${endDate}`)
     } catch (error) {
         console.log(error);

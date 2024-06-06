@@ -624,8 +624,6 @@
             var selectedAddressId = document.querySelector('input[name="selectedAddress"]:checked');
             var totalAmount = parseFloat(document.getElementById('totalAmount').innerText.replace(/[^0-9.-]+/g, ""));
             var selectedPaymentMethod = document.querySelector('input[name="payment_option"]:checked').nextElementSibling.textContent.trim();
-            console.log('hdggfjjgdfjh', selectedPaymentMethod);
-            console.log(selectedPaymentMethod);
             if (!selectedAddressId) {
                 Swal.fire({
                     icon: 'error',
@@ -647,7 +645,6 @@
         });
 
         function placeOrder(addressId, totalAmount, paymentMethod) {
-    console.log([addressId, totalAmount, paymentMethod]);
 
     var productIds = [];
     var productQtys = [];
@@ -675,8 +672,6 @@
         },
         
         success: function (response) {
-            console.log('Response:', response);
-console.log('heelllllooooooooo  ')
             if (response.message === "Order placed successfully") {
                 Swal.fire({
                     icon: 'success',
@@ -716,7 +711,6 @@ console.log('heelllllooooooooo  ')
 
 
 function createRazorpayOrder(addressId, totalAmount, paymentMethod) {
-    console.log([addressId, totalAmount, paymentMethod]);
 
     var productIds = [];
     var productQtys = [];
@@ -744,7 +738,6 @@ function createRazorpayOrder(addressId, totalAmount, paymentMethod) {
         },
         success: function (response) {
             order = response.order;
-            console.log('response.order', order);
             var options = {
                 "key": "rzp_test_a55Y0ryUXOfd3c",
                 "amount": response.razorpayOrder.amount,
@@ -789,7 +782,6 @@ function createRazorpayOrder(addressId, totalAmount, paymentMethod) {
                     },8000)
                     },
                     error: function (xhr) {
-                        console.log(xhr);
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -802,7 +794,6 @@ function createRazorpayOrder(addressId, totalAmount, paymentMethod) {
             rzp1.open();
         },
         error: function (xhr) {
-            console.log("Error: ", xhr);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -821,7 +812,6 @@ function verifyPayment(orderId, payment) {
             payment: payment
         },
         success: function (response) {
-            console.log("response: ", response);
             if (response.status) {
                 Swal.fire({
                     title: "Order success",
@@ -836,7 +826,6 @@ function verifyPayment(orderId, payment) {
             } 
         },
         error: function (xhr) {
-            console.log("Verification Error: ", xhr);
             Swal.fire({
                 icon: 'error',
                 title: 'Verification Error',

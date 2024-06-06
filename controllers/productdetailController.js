@@ -21,12 +21,8 @@ const productDetail = async (req, res) => {
 const addToCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
-    console.log('productId:', productId);
-    console.log('quantity:', quantity);
     const userId = req.session.user_id;
-    console.log('userId:', userId);
     let userCart = await Cart.findOne({ userId: userId });
-    console.log('userCart:', userCart);
     if (!userCart) {
       userCart = new Cart({ userId, products: [] });
     }
@@ -43,11 +39,8 @@ const addToCart = async (req, res) => {
 const addWishlist = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
-    console.log(req.body);
     const userId = req.session.user_id;
-    console.log('userId : ', userId);
     let userWishlist = await Wishlist.findOne({ userId: userId });
-    console.log('userWishlist:', userWishlist);
     if (!userWishlist) {
       userWishlist = new Wishlist({ userId, products: [] });
     }

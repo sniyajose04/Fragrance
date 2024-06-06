@@ -17,11 +17,8 @@ const offerList = async (req, res) => {
 const addOffers = async (req, res) => {
   try {
     const { category, discount, start, end } = req.body;
-    console.log('Request Body:', req.body);
     const offerCategory = await Category.findOne({ name: category.trim() });
-    console.log('offerCategory:', offerCategory);
     const existingOffer = await Offer.findOne({ category: offerCategory._id });
-    console.log('existingOffer:', existingOffer);
     if (existingOffer) {
       return res.status(400).send('Offer already added in this category');
     }
@@ -31,14 +28,11 @@ const addOffers = async (req, res) => {
       start: start,
       end: end
     });
-    console.log('offerData:', offerData);
     const offerProducts = await Product.find({ productCategory: offerCategory._id });
-    console.log('offerProducts:', offerProducts);
     for (const product of offerProducts) {
       const offerPrice = Math.floor(product.regularPrice * (1 - discount / 100));
       product.offerPrice = offerPrice;
       product.discountApplied = true;
-      console.log('offerPrice:', offerPrice);
       await product.save();
     }
     res.redirect('/admin/offerList')

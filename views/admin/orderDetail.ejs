@@ -297,14 +297,10 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-        
         <script>
+
     function changestatus(orderID, currentStatus) {
-       
-        console.log(orderID);
-        console.log(currentStatus);
         const selectedStatus = document.getElementById('select').value;
-        console.log(selectedStatus);
         if (selectedStatus !== currentStatus) {
             Swal.fire({
                 
@@ -315,7 +311,6 @@
                 confirmButtonText: 'Yes, change it!',
                 cancelButtonText: 'No, cancel!',
             }).then((result) => {
-                console.log("its hereeeeeeeee");
                 if (result.isConfirmed) {
                     
                     fetch('/admin/orderdetailchange', {
@@ -359,7 +354,7 @@
                 }
             });
         } else {
-            // Status not changed
+            
             Swal.fire({
                 title: 'Info',
                 text: 'The status is already set to ' + currentStatus + '. No changes made.',

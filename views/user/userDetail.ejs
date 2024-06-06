@@ -982,7 +982,6 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes'
             }).then((result) => {
-                console.log('result')
                 if (result.isConfirmed) {
                     console.log('user say yess to edit the address')
                     openEditAddressModal(addressId);
@@ -1031,52 +1030,6 @@
 
 
     </script>
-
-
-
-
-
-
-
-
-
-    //
-    <script>
-        //         function saveEditedAddress() {
-
-        //             const editedAddress = {
-        //                 addressType: $('#editAddressType').val(),
-        //                 name: $('#name').val(),
-        //                 housename: $('#housename').val(),
-        //                 street: $('#street').val(),
-        //                 city: $('#city').val(),
-        //                 district: $('#district').val(),
-        //                 state: $('#state').val(),
-        //                 pincode: $('#pincode').val(),
-        //                 phonenumber: $('#phonenumber').val(),
-        //                 altPhone: $('#altPhone').val()
-        //             };
-
-
-        //             $.ajax({
-        //                 url: '/editAddress',
-        //                 method: 'PUT',
-        //                 data: editedAddress,
-        //                 success: function (response) {
-
-        //                     console.log("Address updated successfully:", response);
-
-        //                     $('#editAddressModal').modal('hide');
-        //                 },
-        //                 error: function (xhr, status, error) {
-        //                     console.error(error);
-
-        //                 }
-        //             });
-        //         }
-        //     </script>
-
-
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

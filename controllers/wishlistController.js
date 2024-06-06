@@ -5,7 +5,6 @@ const wishlistPage = async (req, res) => {
     try {
         const userId = req.session.user_id;
         const wishlist = await Wishlist.findOne({ userId }).populate("products.productId");
-        console.log('wishlist:',wishlist);
         res.render('wishlist', { wishlist });
     } catch (error) {
         console.log(error);
@@ -50,7 +49,6 @@ const addtoCartFromWishlist = async(req,res)=>{
         const {productId,quantity}=req.body;
         const userId = req.session.user_id;
         let userCart = await Cart.findOne({ userId: userId });
-        console.log('userCart:', userCart);
         if (!userCart) {
             userCart = new Cart({ userId, products: [] });
         }

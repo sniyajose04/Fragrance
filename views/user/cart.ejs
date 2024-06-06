@@ -544,9 +544,6 @@
 
 
         function increaseQuantity(event, productId, max) {
-            console.log('productId ', productId);
-            console.log('max:', max)
-
             var inputElement = event.target.parentNode.querySelector('.quantity-input');
             var currentQuantity = parseInt(inputElement.value);
             var priceElement = event.target.closest('tr').querySelector('.price span');

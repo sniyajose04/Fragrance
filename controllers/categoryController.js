@@ -29,7 +29,6 @@ const addcategory = async (req, res) => {
     try {
         const { name, is_list, description } = req.body;
         const existingCategory = await Category.findOne({ name: name });
-        console.log(req.body);
         if (existingCategory) {
             return res.render("addcategory", { errorMessage: "Category already exists", name, is_list, description });
         }
@@ -76,9 +75,7 @@ const Unlist = async (req, res) => {
 const editCategoryPage = async (req, res) => {
     try {
         const categoryId = req.params.id;
-        console.log('Category id:', categoryId)
         const category = await Category.findOne({ _id: categoryId });
-        console.log(category)
         if (!category) {
             return res.status(404).send('Category not found');
         }
@@ -93,7 +90,6 @@ const editCategoryPage = async (req, res) => {
 const updateCategory = async (req, res) => {
     try {
         const categoryId = req.query.id;
-        console.log(req.body);
         const { name, is_list, description } = req.body;
         const updatedCategory = await Category.findByIdAndUpdate(categoryId, { name, is_list, description }, { new: true });
         if (!updatedCategory) {

@@ -182,7 +182,6 @@
         <script>
             function userBlock(userId, index,) {
                 const statuschange= document.getElementById(`blockId` + index).textContent.trim();
-                console.log(statuschange);
                 const Action=statuschange=="Unblock"?'userUnblock':'userBlock';
                 Swal.fire({
                     title: "Are you sure?",
@@ -202,7 +201,6 @@
                             .then(data => {
 
                                 if (data.success) {
-                                    console.log(data);
                                     if (data.block) {
                                         const status = document.getElementById(`status` + index)
                                         const color=document.getElementById('color'+index)

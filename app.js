@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const mongoose = require('mongoose');
 const express = require("express");
 const session = require("express-session");
@@ -9,7 +11,14 @@ const userRoute = require('./routes/userRoute');
 const adminRoute = require('./routes/adminRoute');
 const productdetailController = require('./controllers/productdetailController');
 
-mongoose.connect("mongodb://127.0.0.1:27017/FraGraCe");
+mongoose.connect(process.env.MONGO_URL, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true 
+  })
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('Connection error', err));
+
+
 const app = express();
 
 app.set('view engine', 'ejs');
