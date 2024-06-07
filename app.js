@@ -11,7 +11,7 @@ const userRoute = require('./routes/userRoute');
 const adminRoute = require('./routes/adminRoute');
 const productdetailController = require('./controllers/productdetailController');
 
-mongoose.connect(process.env.MONGO_URL, { 
+mongoose.connect(process.env.MONGO_URL || "mongodb+srv://sniyajose18:sniya*2004@cluster0.olylo1a.mongodb.net/FraGrAnce", { 
     useNewUrlParser: true, 
     useUnifiedTopology: true 
   })
