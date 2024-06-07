@@ -53,6 +53,10 @@ paymentMethod:{
   returnReason:{
       type:String
   },
+  Coupon: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "coupon",
+  }
 });
 
 module.exports =  mongoose.model('Order',orderSchema)

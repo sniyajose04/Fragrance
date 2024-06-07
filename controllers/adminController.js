@@ -194,25 +194,28 @@ const adminLogout = (req, res) => {
 
 const salesReport = async (req, res) => {
     try {
+        const orderStatusFilter = { $or: [{ orderStatus: 'Order Placed' }, { orderStatus: 'Delivered' }] };
+        
         if (req.query.startDate && req.query.endDate) {
-            const orders = await Order.find({
+            const dateFilter = {
                 orderDate: {
                     $gte: new Date(req.query.startDate),
                     $lte: new Date(req.query.endDate)
                 }
-            }).populate('userId').sort({ orderDate: -1 });
+            };
+            const orders = await Order.find({
+                ...dateFilter,
+                ...orderStatusFilter
+            }).populate('userId').populate('Coupon').sort({ orderDate: -1 });
+            
             let totalTransaction = 0;
             let totalOrders = 0;
-            const userData = await Order.distinct('userId', {
-                orderDate: {
-                    $gte: new Date(req.query.startDate),
-                    $lte: new Date(req.query.endDate)
-                }
-            });
+            const userData = await Order.distinct('userId', dateFilter);
             let totalCustomers = userData.length;
             let onlinePayments = 0;
             let cashOnDelivery = 0;
             let orderCancelled = 0;
+            
             orders.forEach((item) => {
                 if (item.totalAmount !== undefined && item.totalAmount !== null) {
                     totalTransaction += parseFloat(item.totalAmount);
@@ -227,6 +230,7 @@ const salesReport = async (req, res) => {
                     orderCancelled++;
                 }
             });
+            
             res.render('salesReport', {
                 orders,
                 totalCustomers,
@@ -239,7 +243,8 @@ const salesReport = async (req, res) => {
                 end: req.query.endDate
             });
         } else {
-            const orders = await Order.find({}).populate('userId').sort({ orderDate: -1 });
+            const orders = await Order.find(orderStatusFilter).populate('userId').sort({ orderDate: -1 });
+            
             let totalTransaction = 0;
             let totalOrders = 0;
             const userData = await Order.distinct('userId');
@@ -247,6 +252,7 @@ const salesReport = async (req, res) => {
             let onlinePayments = 0;
             let cashOnDelivery = 0;
             let orderCancelled = 0;
+            
             orders.forEach((item) => {
                 if (item.totalAmount !== undefined && item.totalAmount !== null) {
                     totalTransaction += parseFloat(item.totalAmount);
@@ -261,6 +267,7 @@ const salesReport = async (req, res) => {
                     orderCancelled++;
                 }
             });
+            
             res.render('salesReport', {
                 orders,
                 totalCustomers,
@@ -278,16 +285,6 @@ const salesReport = async (req, res) => {
 };
 
 
-const dateFilter = async (req, res) => {
-    try {
-        const startDate = req.body.startDate
-        const endDate = req.body.endDate
-        res.redirect(`/admin/salesReport?startDate=${startDate}&endDate=${endDate}`)
-    } catch (error) {
-        console.log(error);
-        res.status(500).send('Internal Server Error');
-    }
-}
 
 
 module.exports = {
@@ -299,5 +296,5 @@ module.exports = {
     userUnblock,
     adminLogout,
     salesReport,
-    dateFilter
+  
 }

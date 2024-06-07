@@ -22,7 +22,7 @@ admin_route.get('/Userlist',isLogout,adminController.userDetail)
 admin_route.patch('/userBlock/:id',adminController.userBlock)
 admin_route.patch('/userUnblock/:id',adminController.userUnblock)
 admin_route.get('/salesReport',isLogout,adminController.salesReport)
-admin_route.post('/dateFilter',isLogout,adminController.dateFilter)
+
 
 //PRODUCT
 admin_route.get('/product',isLogout,productController.productDetail);

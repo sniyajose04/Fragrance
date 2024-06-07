@@ -162,9 +162,9 @@
                                     <tr>
                                         <td><%= order[i].orderId %></td>
                                      
-                                        <td><b><%= order[i].userId.name %></b></td>
-                                        <td><%=order[i].userId.email %></td>
-                                       
+                                        <td><b><%= order[i].userId ? order[i].userId.name : 'No user' %></b></td>
+                                        <td><%= order[i].userId ? order[i].userId.email : 'No email' %></td>
+                                    
                                         <td><%=order[i].totalAmount %></td>
                                      
                                         <td><%=order[i].orderStatus %></td>

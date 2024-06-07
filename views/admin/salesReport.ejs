@@ -11,43 +11,15 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="card mb-4">
-                        <header class="card-header">
-
-                            <form action="/admin/dateFilter" method="post">
-                            <div class="row gx-3">
-                                <%if(locals.start && locals.end){%>
-                                    <div class="col-lg-2 col-md-3 col-6 ">
-                                        From :<br><input type="date" name="startDate" value="<%=start%>">
-                                    </div>
-                                    <div class="col-lg-2 col-md-3 col-6">
-                                        To : <br><input type="date" name="endDate" value="<%=end%>">
-                                    </div>
-                                    <%}else{%>
-                                        <div class="col-lg-2 col-md-3 col-6 ">
-                                            From : <br><input type="date" name="startDate" >
-                                        </div>
-                                        <div class="col-lg-2 col-md-3 col-6">
-                                            To : <br><input type="date" name="endDate">
-                                        </div>
-                                        <%}%>
-                               
-                                <div class="col-lg-2 col-md-3 col-6">
-                                    <button href="#" type="submit" class="btn btn-md rounded font-sm">Filter Out</button>
-                                </div>
-                               
-                            </div>
-                        </form>
-
-                        
-
-                        </header> <!-- card-header end// -->
+                       
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="myTable">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Customer name</th>
+                                            <th>Discount</th>
                                             <th>Price</th>
                                             <th>Status</th>
                                             <th>Date</th>
@@ -60,12 +32,15 @@
                                             <tr>
                                                 <td><%= orders[i].orderId ? 'ORD#' + orders[i].orderId : 'N/A' %></td>
                                                 <td><b><%= orders[i].userId && orders[i].userId.name ? orders[i].userId.name : 'N/A' %></b></td>
+                                                <td> 
+                                                    <%= orders[i].Coupon && orders[i].Coupon.discount ? orders[i].Coupon.discount : 'N/A' %>
+                                                  </td>
+                                                  
                                                 <td> ₹<%= orders[i].totalAmount ? orders[i].totalAmount : 'N/A' %></td>
-                                                <% if (orders[i].orderStatus == 'Cancelled' || orders[i].orderStatus == 'Returned') { %>
-                                                    <td><span class="text-danger"><%= orders[i].orderStatus %></span></td>
-                                                <% } else { %>
+                                                <% if (orders[i].orderStatus == 'Order Placed' || orders[i].orderStatus == 'Delivered') { %>
                                                     <td><span class="text-success"><%= orders[i].orderStatus %></span></td>
                                                 <% } %>
+                                                
                                                 <td><%= orders[i].orderDate.toLocaleString() ? orders[i].orderDate.toLocaleString() : 'N/A' %></td>
                                                 <td class="text-end">
                                                     <a href="/admin/orderDetail?orderId=<%= orders[i]._id %>" class="btn btn-md rounded font-sm">Detail</a>
@@ -77,9 +52,9 @@
 
                                     </tbody>
                                 </table>
-                            </div> <!-- table-responsive //end -->
-                        </div> <!-- card-body end// -->
-                    </div> <!-- card end// -->
+                            </div>
+                        </div>
+                    </div> 
                 </div>
                 <div class="col-md-3">
                     <button class="btn btn-secondary print ms-2" id="printScreen" >Download &nbsp; Report &nbsp;&nbsp;<i class="icon material-icons md-print"></i></button><br><br>
@@ -130,4 +105,10 @@
             </div>
            
         </section> 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    
+        <script>
+        let table = new DataTable('#myTable');
+        </script>
         <%- include('./adminLayout/footer') %>

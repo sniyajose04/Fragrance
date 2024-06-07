@@ -299,42 +299,14 @@
             </div>
             <div class="card mb-4">
                 <header class="card-header">
-                    <h4 class="card-title">Latest orders</h4>
-                    <div class="row align-items-center">
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <div class="custom_select">
-                                <select class="form-select select-nice">
-                                    <option value="" disabled selected>All Category</option>
-                                    <% category.forEach(cat=> { %>
-                                        <option value="<%= cat._id %>">
-                                            <%= cat.name %>
-                                        </option>
-                                        <% }); %>
-
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-6">
-                            <input type="date" value="02.05.2021" class="form-control">
-                        </div>
-                        <div class="col-md-2 col-6">
-                            <div class="custom_select">
-                                <select class="form-select select-nice">
-                                    <option selected>Status</option>
-                                    <option>All</option>
-                                    <option>Paid</option>
-                                    <option>Chargeback</option>
-                                    <option>Refund</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                    <h4 >Latest orders</h4>
+                    
                 </header>
                 <div class="card-body">
                     <div class="table-responsive">
                         <div class="table-responsive">
                             <%if(order){%>
-                                <table class="table align-middle table-nowrap mb-0">
+                                <table class="table align-middle table-nowrap mb-0" id="myTable">
                                     <thead class="table-light">
                                         <tr>
                                             <th scope="col" class="text-center">
@@ -438,5 +410,10 @@
         </section> 
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    
+        <script>
+        let table = new DataTable('#myTable');
+        </script>
 <%- include('./adminLayout/footer') %>

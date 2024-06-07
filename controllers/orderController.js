@@ -1,16 +1,22 @@
 const Order = require('../models/orderModel')
-const Product = require('../models/productModel');
 const Wallet = require('../models/walletModel')
 
 const orderList = async (req, res) => {
     try {
-        const order = await Order.find().populate('userId')
-        res.render('orderlist', { order });
+        const orders = await Order.find().populate('userId');
+        const validOrders = orders.map(order => {
+            if (!order.userId) {
+                order.userId = { name: 'No user', email: 'No email' };
+            }
+            return order;
+        });
+        res.render('orderlist', { order: validOrders });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 };
+
 
 
 const orderDetail = async (req, res) => {
