@@ -27,7 +27,7 @@ user_route.get('/otpVerify',isLogout,usercontroller.otpVerify );
 user_route.post('/password',isLogout,usercontroller.newPasswordPage );
 user_route.post('/password',isLogout,usercontroller.updatePassword );
 user_route.get('/contact',isLogin,usercontroller.contactPage);
-user_route.get('/about',isLogout,usercontroller.aboutPage);
+user_route.get('/about',isLogin,usercontroller.aboutPage);
 
 //PRODUCT
 user_route.get('/productview',isLogout,productController.productView)
