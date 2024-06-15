@@ -102,6 +102,7 @@ const insertUser = async (req, res) => {
 
 const verifyotp = async (req, res) => {
     const { otp } = req.body;
+    console.log(req.body)
     const { email } = req.session.tempUser;
     try {
         const otpData = req.session.otpdata;
