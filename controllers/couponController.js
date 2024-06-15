@@ -3,7 +3,7 @@ const Coupon = require('../models/couponModel')
 const couponList = async (req, res) => {
     try {
         const coupons = await Coupon.find({ isList: true });
-        res.render('couponlist', { coupons });
+        res.render('couponList', { coupons });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -28,7 +28,7 @@ const addCoupons = async (req, res) => {
             start: data.startDate,
             end: data.endDate
         });
-        res.redirect('/admin/couponlist')
+        res.redirect('/admin/couponList')
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
