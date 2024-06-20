@@ -151,8 +151,8 @@
         <div class="header-top header-top-ptb-1 d-none d-lg-block">
             <div class="container">
                 <div class="row align-items-center">
-                    
-                   
+
+
                 </div>
             </div>
         </div>
@@ -164,22 +164,22 @@
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
-                           
+
                         </div>
                         <div class="header-action-right">
                             <div class="header-action-2">
                                 <div class="header-action-icon-2">
                                     <a href="/wishlist">
                                         <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
-                                       
+
                                     </a>
                                 </div>
                                 <div class="header-action-icon-2">
                                     <a class="mini-cart-icon" href="/cart">
                                         <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
-                                       
+
                                     </a>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -198,17 +198,17 @@
                         <nav>
                             <ul>
                                 <li><a class="active" href="/">Home </a>
-                                    
+
                                 </li>
                                 <li>
                                     <a href="/about">About</a>
                                 </li>
                                 <li><a href="/shop">Shop </a>
-                                   
+
                                 </li>
 
 
-                                
+
                                 <li>
                                     <a href="/contact">Contact</a>
                                 </li>
@@ -217,7 +217,7 @@
                     </div>
                 </div>
 
-               
+
                 <div class="header-action-right d-block d-lg-none">
                     <div class="header-action-2">
                         <div class="header-action-icon-2">
@@ -557,19 +557,30 @@
                                                         }
                                                     </style>
 
-                                                    <button type="submit"
-                                                        style="background-color: rgba(3, 78, 83, 0.98); color: white;"
-                                                        onclick="addToCart()" class="button button-add-to-cart">Add to
-                                                        cart</button>
-                                                    <input type="hidden" name="productId" id="productId"
-                                                        value="<%=productData._id%>">
+                                                    <td class="text-right" data-title="Cart">
+                                                        <% if (productData.Stock> 0) { %>
+                                                            <button id="addtocart" class="addtocart btn btn-sm"
+                                                                onclick="addToCart()">
+                                                                <i class="fi-rs-shopping-bag mr-5"></i>Add to cart
+                                                            </button>
+                                                            <input type="hidden" name="productId" id="productId"
+                                                                value="<%=productData._id %>">
+                                                            <input type="hidden" name="stockproductId"
+                                                                id="stockproductId" value="<%= productData.Stock %>">
+                                                            <% } else { %>
+                                                                <button class="btn btn-sm btn-danger" disabled>Out of
+                                                                    Stock</button>
+                                                                <% } %>
 
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                      
-                                                        onclick="addWishlist()">
-                                                        <i class="fi-rs-heart"></i>
-                                                     </a>
-                                                      
+                                                                    <a aria-label="Add To Wishlist"
+                                                                        class="action-btn hover-up"
+                                                                        onclick="addWishlist()">
+                                                                        <i class="fi-rs-heart"></i>
+                                                                    </a>
+                                                                    <input type="hidden" name="productId" id="productId"
+                                                                        value="<%=productData._id %>">
+                                                    </td>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -589,6 +600,17 @@
                 let currentQuantity = 1;
                 var quantity = parseInt(currentQuantity);
                 var productId = document.getElementById('productId').value;
+                var stock = parseInt(document.getElementById('stockproductId').value);
+
+                if (stock <= 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Out of stock',
+                        text: 'This product is currently out of stock.',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
 
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
@@ -608,8 +630,7 @@
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
-                    
-                        fetch("/addtoCart", {
+                        fetch("/addToCart", {
                             method: "POST",
                             headers: {
                                 'Content-Type': 'application/json',
@@ -621,14 +642,15 @@
                             }
                             return response.json();
                         }).then(data => {
-                            console.log('Response Data:', data);
-
-                            
                             if (!data.success) {
-                                console.error('Error:', data.message);
-                                toastr.error(data.message); 
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Already in cart',
+                                    text: data.message,
+                                    confirmButtonText: 'OK'
+                                });
                             } else {
-                                console.log('Item added successfully'); 
+                                console.log('Item added successfully');
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Added Successfully',
@@ -638,82 +660,80 @@
                                     window.location.href = '/cart';
                                 });
                             }
-                        })
-
-                            .catch(error => {
-                                console.error('Error adding item to cart:', error);
-                               
-                            });
+                        }).catch(error => {
+                            console.error('Error adding item to cart:', error);
+                        });
                     }
                 });
             }
 
- 
+
             function addWishlist() {
-    let currentQuantity = 1;
-    var quantity = parseInt(currentQuantity);
-    var productId = document.getElementById('productId').value;
 
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: "btn btn-success",
-            cancelButton: "btn btn-danger"
-        },
-        buttonsStyling: false
-    });
+                let currentQuantity = 1;
+                var quantity = parseInt(currentQuantity);
+                var productId = document.getElementById('productId').value;
 
-    swalWithBootstrapButtons.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, Add to wishlist!",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            fetch("/addWishlist", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ quantity, productId }),
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to add item to wishlist. Status: ${response.status}`);
-                }
-                return response.json(); 
-            }).then(data => {
-                if (!data.success) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Already in Wishlist',
-                        text: data.message,
-                        confirmButtonText: 'OK'
-                    });
-                } else {
-                    console.log('Item added successfully');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Added Successfully',
-                        showConfirmButton: true,
-                        confirmButtonClass: 'btn btn-warning',
-                    }).then(() => {
-                        window.location.href = '/wishlist'; 
-                    });
-                }
-            }).catch(error => {
-                console.error('Error adding item to wishlist:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'There was an error adding the item to the wishlist. Please try again.',
-                    confirmButtonText: 'OK'
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: "btn btn-success",
+                        cancelButton: "btn btn-danger"
+                    },
+                    buttonsStyling: false
                 });
-            });
-        }
-    });
-}
+
+                swalWithBootstrapButtons.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, Add to wishlist!",
+                    cancelButtonText: "No, cancel!",
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch("/addWishlist", {
+                            method: "POST",
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ quantity, productId }),
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Failed to add item to wishlist. Status: ${response.status}`);
+                            }
+                            return response.json();
+                        }).then(data => {
+                            if (!data.success) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Already in Wishlist',
+                                    text: data.message,
+                                    confirmButtonText: 'OK'
+                                });
+                            } else {
+                                console.log('Item added successfully');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Added Successfully',
+                                    showConfirmButton: true,
+                                    confirmButtonClass: 'btn btn-warning',
+                                }).then(() => {
+                                    window.location.href = '/wishlist';
+                                });
+                            }
+                        }).catch(error => {
+                            console.error('Error adding item to wishlist:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'There was an error adding the item to the wishlist. Please try again.',
+                                confirmButtonText: 'OK'
+                            });
+                        });
+                    }
+                });
+            }
 
         </script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -50,36 +50,21 @@
         </div>
     </div>
 
-
     <header class="header-area header-style-1 header-height-2">
         <div class="header-top header-top-ptb-1 d-none d-lg-block">
             <div class="container">
                 <div class="row align-items-center">
-                    
-                    
                     <div class="col-xl-3 col-lg-4">
                         <div class="header-info header-info-right">
                             <ul>
                                 <% if (user) { %>
-                                    <li class="dropdown nav-item">
-                                        <a class="dropdown-toggle " data-bs-toggle="dropdown" href="#"
-                                            id="dropdownAccount" aria-expanded="false" >
-                                            <%= user.name %>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                                         
-                                            <a class="dropdown-item" href="/userDetail"><i
-                                                    class="material-icons md-settings"></i> My Account</a>
-                                            
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item text-danger" href="/userLogout"><i
-                                                    class="material-icons md-exit_to_app"></i>Logout</a>
-                                        </div>
-                                    </li>
-                                    <% } else { %>
-                                        <li><i class="fi-rs-user"></i><a href="/login">Log In</a>/<a href="/register">
-                                                Sign Up</a></li>
-                                        <% } %>
+                                    <li><a href="/userDetail"><%=user.name%></a></li>
+
+                                    <li><a href="/userLogout">Logout</a></li>
+
+                                    <% }else{%>
+                                        <li><i class="fi-rs-user"></i><a href="/login">Log In</a></li>
+                                  <%  } %>
                             </ul>
                         </div>
                     </div>
@@ -95,8 +80,7 @@
                     <div class="header-right">
                         <div class="search-style-2">
                             <form action="#">
-                                
-                                <!-- <input type="text" placeholder="Search for items..."> -->
+                               
                             </form>
                         </div>
                         <div class="header-action-right">
@@ -140,7 +124,6 @@
                                     </li>
                                     <li><a href="/shop">Shop </a>
                                     </li>
-                                    
                                     
                                     <li>
                                         <a href="/contact">Contact</a>
@@ -317,9 +300,23 @@
                                 </div>
                                 <% } %>
                         </div>
+                        <div class="pagination-area mt-15 mb-5">
+                            <nav aria-label="page navigation example">
+                                <ul class="pagination justify-content-start">
+                                    <% for(let i=1;i<=numofPage;i++){ %>
+                                        <li class="page-item <% if(i===currentPage){%>active<%} %>">
+                                            <a class="page-link" href="/?page=<%=i %>"><%=i %></a>
+                                            </li>
+                                        <% } %>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
+                    
                 </div>
+                
             </div>
+           
         </section>
     </main>
 

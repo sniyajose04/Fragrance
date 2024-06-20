@@ -1,19 +1,22 @@
 <%- include('./userLayout/header') %>
+
     <header class="header-area header-style-1 header-height-2">
         <div class="header-top header-top-ptb-1 d-none d-lg-block">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-xl-3 col-lg-4">
-                        <div class="header-info">
-
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-lg-4">
                         <div class="header-info header-info-right">
                             <ul>
+                                <% if (user) { %>
+                                    <li><a href="/userDetail">
+                                            <%=user.name%>
+                                        </a></li>
 
-                              
+                                    <li><a href="/userLogout">Logout</a></li>
+
+                                    <% }else{%>
+                                        <li><i class="fi-rs-user"></i><a href="/login">Log In</a></li>
+                                        <% } %>
                             </ul>
                         </div>
                     </div>
@@ -28,7 +31,7 @@
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
-                            
+
                         </div>
                         <div class="header-action-right">
                             <div class="header-action-2">
@@ -62,7 +65,7 @@
                         <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
                             <nav>
                                 <ul>
-                                    <li><a class="active" href="/">Home</a>
+                                    <li><a href="/">Home</a>
 
                                     </li>
                                     <li>
@@ -376,15 +379,29 @@
                                                         <%= wishlist.products[i].productId.promotionalPrice%>
                                                     </span></td>
                                                 <td class="text-center" data-title="Stock">
-                                                    <span class="color3 font-weight-bold">In Stock</span>
+                                                    <% if(wishlist.products[i].productId.Stock>=0){%>
+                                                        <span class="color3 font-weight-bold">In Stock</span>
+                                                        <% }else{%>
+                                                            <span class="color3 font-weight-bold">Out of Stock</span>
+                                                            <%}%>
                                                 </td>
                                                 <td class="text-right" data-title="Cart">
-                                                    <button id="addtocart" class="addtocart btn btn-sm" onclick="addToCart()"
-                                                       ><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
-                                                       <input type="hidden" name="productId" id="productId"
-                                                        value="<%= wishlist.products[i].productId._id%>">
+                                                    <% if (wishlist.products[i].productId.Stock> 0) { %>
+                                                        <button id="addtocart" class="addtocart btn btn-sm"
+                                                            onclick="addToCart()">
+                                                            <i class="fi-rs-shopping-bag mr-5"></i>Add to cart
+                                                        </button>
+                                                        <input type="hidden" name="productId" id="productId"
+                                                            value="<%= wishlist.products[i].productId._id %>">
+                                                        <input type="hidden" name="stockproductId" id="stockproductId"
+                                                            value="<%= wishlist.products[i].productId.Stock %>">
+                                                        <% } else { %>
+                                                            <button class="btn btn-sm btn-danger" disabled>Out of
+                                                                Stock</button>
+                                                            <% } %>
                                                 </td>
-                                                
+
+
                                                 <td class="action" data-title="Remove">
                                                     <button class="btn btn-link remove-item"
                                                         onclick="confirmDeleteProduct('<%= wishlist.products[i]._id %>')"
@@ -412,101 +429,110 @@
 
     <script>
         function confirmDeleteProduct(productId) {
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: "btn btn-success",
-            cancelButton: "btn btn-danger"
-        },
-        buttonsStyling: false
-    });
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+            });
 
-    swalWithBootstrapButtons.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-           
-            window.location.href = '/removeWishlistProduct?id=' + productId;
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          
-            Swal.fire(
-                "Cancelled",
-                "Your item is safe :)",
-                "error"
-            );
+            swalWithBootstrapButtons.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    window.location.href = '/removeWishlistProduct?id=' + productId;
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+                    Swal.fire(
+                        "Cancelled",
+                        "Your item is safe :)",
+                        "error"
+                    );
+                }
+            });
         }
-    });
-}
 
 
 
-function addToCart() {
-                let currentQuantity = 1;
-                var quantity = parseInt(currentQuantity);
-                var productId = document.getElementById('productId').value;
+        function addToCart() {
+            let currentQuantity = 1;
+            var quantity = parseInt(currentQuantity);
+            var productId = document.getElementById('productId').value;
+            var stock = parseInt(document.getElementById('stockproductId').value);
 
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: "btn btn-success",
-                        cancelButton: "btn btn-danger"
-                    },
-                    buttonsStyling: false
+            if (stock <= 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Out of stock',
+                    text: 'This product is currently out of stock.',
+                    confirmButtonText: 'OK'
                 });
-
-                swalWithBootstrapButtons.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, Add to cart!",
-                    cancelButtonText: "No, cancel!",
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                    
-                        fetch("/addtoCartFromWishlist", {
-                            method: "POST",
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ quantity, productId }),
-                        }).then(response => {
-                            if (!response.ok) {
-                                throw new Error(`Failed to add item to cart. Status: ${response.status}`);
-                            }
-                            return response.json();
-                        }).then(data => {
-                            console.log('Response Data:', data);
-
-                            
-                            if (!data.success) {
-                                console.error('Error:', data.message);
-                                toastr.error(data.message); 
-                            } else {
-                                console.log('Item added successfully'); 
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Added Successfully',
-                                    showConfirmButton: true,
-                                    confirmButtonClass: 'btn btn-warning',
-                                }).then(() => {
-                                    window.location.href = '/cart';
-                                });
-                            }
-                        })
-
-                            .catch(error => {
-                                console.error('Error adding item to cart:', error);
-                               
-                            });
-                    }
-                });
+                return;
             }
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+            });
+
+            swalWithBootstrapButtons.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Add to cart!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("/addtoCartFromWishlist", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ quantity, productId }),
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Failed to add item to cart. Status: ${response.status}`);
+                        }
+                        return response.json();
+                    }).then(data => {
+                        if (!data.success) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Already in cart',
+                                text: data.message,
+                                confirmButtonText: 'OK'
+                            });
+                        } else {
+                            console.log('Item added successfully');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Added Successfully',
+                                showConfirmButton: true,
+                                confirmButtonClass: 'btn btn-warning',
+                            }).then(() => {
+                                window.location.href = '/cart';
+                            });
+                        }
+                    }).catch(error => {
+                        console.error('Error adding item to cart:', error);
+                    });
+                }
+            });
+        }
+
 
     </script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

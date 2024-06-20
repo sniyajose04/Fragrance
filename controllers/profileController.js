@@ -99,6 +99,7 @@ const saveAddress = async (req, res) => {
 
 const orderDetailPage = async (req, res) => {
     try {
+      const user = await User.findOne({ _id: req.session.user_id })
         const orderId = req.query.orderId;
         const order = await Order.findById(orderId)
             .populate('userId')
@@ -110,7 +111,7 @@ const orderDetailPage = async (req, res) => {
         if (!order) {
             return res.status(404).send('Order not found');
         }
-        res.render('orderDetail', { order });
+        res.render('orderDetail', { order ,user});
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Internal Server Error');
@@ -136,7 +137,7 @@ const orderCancel = async (req, res) => {
         if (!product) {
             return res.status(404).json({ error: 'Product not found in order' });
         }
-        const couponData = order.coupon ? await Coupon.findById(order.coupon) : null;
+        const couponData = order.Coupon ? await Coupon.findById(order.Coupon) : null;
         const discount = couponData ? (couponData.discount / 100) : 0;
         const refundAmount = product.productId.promotionalPrice * product.quantity * (1 - discount);
         if (order.orderStatus === "Order Placed" || order.orderStatus === "Delivered") {

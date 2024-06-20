@@ -10,10 +10,17 @@ const Wallet = require('../models/walletModel')
 
 const renderhome = async (req, res) => {
     try {
+        const pages =req.query.page||1;
+        const sizeOfPage = 8;
+        const productSkip = (pages-1)*sizeOfPage;
+        const productCount = await Product.find({  is_block: false }).count();
+        const numofPage = Math.ceil(productCount/sizeOfPage)
+        const currentPage = parseInt(pages);
         const categoryData = await Category.find({ is_list: true }, { _id: 1 })
-        const productData = await Product.find({ is_block: false, Category: { $in: categoryData } })
+        const productData = await Product.find({ is_block: false, Category: { $in: categoryData } }).skip(productSkip)
+        .limit(sizeOfPage);
         const user = await User.findOne({ _id: req.session.user_id })
-        return res.render('home', { productData, user })
+        return res.render('home', { productData, user,numofPage ,currentPage})
     } catch (error) {
         console.log(error)
     }
@@ -286,7 +293,8 @@ const updatePassword = async (req, res) => {
 
 const contactPage = async (req, res) => {
     try {
-        res.render('contact');
+        const user = await User.findOne({ _id: req.session.user_id })
+        res.render('contact',{user});
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Internal Server Error');
@@ -296,7 +304,8 @@ const contactPage = async (req, res) => {
 
 const aboutPage = async (req, res) => {
     try {
-        res.render('about');
+        const user = await User.findOne({ _id: req.session.user_id })
+        res.render('about',{user});
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Internal Server Error');
@@ -330,4 +339,5 @@ module.exports = {
     updatePassword,
     contactPage,
     aboutPage,
+    
 }

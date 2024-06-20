@@ -26,6 +26,10 @@ const addToCart = async (req, res) => {
     if (!userCart) {
       userCart = new Cart({ userId, products: [] });
     }
+    const existingProduct = userCart.products.find(p => p.productId.toString() === productId);
+    if (existingProduct) {
+      return res.status(200).json({ success: false, message: 'Product is already in the cart' });
+    }
     userCart.products.push({ productId, quantity: quantity || 1 });
     await userCart.save();
     res.status(200).json({ success: true, message: 'Item added to cart successfully' });
