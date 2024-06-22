@@ -4,7 +4,7 @@
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
             <a href="index.html" class="brand-wrap">
-                <img src="/admin-assets/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
+                <img src="/productImages/logoimages.png" class="logo" alt="Evara Dashboard">
             </a>
             <div>
                 <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
@@ -171,17 +171,15 @@
 
                                 <div class="col-sm-6 mb-3">
                                     <label class="form-label">Category</label>
-                                    
                                     <select class="form-select" name="category" id="category">
-                                        <option value="" disabled selected>Select Category</option>
-                                        <% category.forEach(cat=> { %>
-                                            <option value="<%= cat._id %>">
+                                        <option value="" disabled>Select Category</option>
+                                        <% category.forEach(cat => { %>
+                                            <option value="<%= cat._id %>" <%= product.category && product.category._id == cat._id ? 'selected' : '' %>>
                                                 <%= cat.name %>
                                             </option>
-                                            <% }); %>
+                                        <% }); %>
                                     </select>
                                 </div>
-                                
                                
                         </div>
                         <button type="submit" class="btn btn-primary btn-sm rounded">Update Product</button>

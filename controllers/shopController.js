@@ -34,7 +34,17 @@ const shopPage = async (req, res) => {
         const user = await User.findOne({ _id: req.session.user_id });
         const products = await Product.find({ is_block: false }).sort({ listDate: -1 }).limit(3);
 
-        return res.render('shop', { productData, user, categoryData, products, numofPage, currentPage });
+        return res.render('shop', {
+            productData,
+            user,
+            categoryData,
+            products,
+            numofPage,
+            currentPage,
+            query: req.query.query || '',
+            category: req.query.category || '',
+            sort
+        });
     } catch (error) {
         console.error('Error in shopPage:', error);
         return res.status(500).send('Internal Server Error: ' + error.message);
@@ -51,12 +61,23 @@ const searchData = async (req, res) => {
         const regex = new RegExp(searchedData, 'i');
         const productData = await Product.find({ is_block: false, product_title: { $regex: regex } });
         const products = await Product.find({ is_block: false }).sort({ listDate: -1 }).limit(3);
-        res.render("shop", { productData, categoryData, user, products })
+
+        res.render('shop', {
+            productData,
+            categoryData,
+            user,
+            products,
+            query: searchedData,
+            numofPage: 1,
+            currentPage: 1,
+            sort: '',
+            category: ''
+        });
     } catch (error) {
-        console.log(error, 'search data error')
-        return res.status(500).send('Internal Server Error')
+        console.log('Error in searchData:', error);
+        return res.status(500).send('Internal Server Error: ' + error.message);
     }
-}
+};
 
 
 module.exports = {

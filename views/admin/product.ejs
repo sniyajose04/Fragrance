@@ -5,7 +5,7 @@
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
             <a href="index.html" class="brand-wrap">
-                <img src="/admin-assets/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
+                <img src="/productImages/logoimages.png" class="logo" alt="Evara Dashboard">
             </a>
             <div>
                 <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i> </button>
@@ -157,15 +157,12 @@
                                                 <td class="text-success">publish</td>
                                             <% } %>
                                             <td class="">
-
-                                                <% if (products[i].is_block==true) { %>
-                                                    <button class="btn btn-primary" onclick="unpublish( '<%= products[i]._id %>')">publish</button>
+                                                <% if (products[i].is_block == true) { %>
+                                                    <a class="text-success" onclick="unpublish('<%= products[i]._id %>')">Publish</a>
                                                 <% } else { %>
-                                                    <button class="btn btn-danger" onclick="publish('<%= products[i]._id %>')">unPublish</button>
+                                                    <a class="text-danger" onclick="publish('<%= products[i]._id %>')">Unpublish</a>
                                                 <% } %>
-                                                 
                                             </td>
-                                           
                                             <td>
                                                 <a href="/admin/editProduct/<%= products[i]._id %>" class="badge rounded-pill alert-dark">Edit</a>
                                             </td>

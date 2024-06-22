@@ -195,89 +195,68 @@ const adminLogout = (req, res) => {
 const salesReport = async (req, res) => {
     try {
         const orderStatusFilter = { $or: [{ orderStatus: 'Order Placed' }, { orderStatus: 'Delivered' }] };
-        
+        const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+        const limit = parseInt(req.query.limit) || 10; // Default to 10 orders per page if not provided
+        const skip = (page - 1) * limit;
+
+        const dateFilter = {};
         if (req.query.startDate && req.query.endDate) {
-            const dateFilter = {
-                orderDate: {
-                    $gte: new Date(req.query.startDate),
-                    $lte: new Date(req.query.endDate)
-                }
+            dateFilter.orderDate = {
+                $gte: new Date(req.query.startDate),
+                $lte: new Date(req.query.endDate)
             };
-            const orders = await Order.find({
-                ...dateFilter,
-                ...orderStatusFilter
-            }).populate('userId').populate('Coupon').sort({ orderDate: -1 });
-            
-            let totalTransaction = 0;
-            let totalOrders = 0;
-            const userData = await Order.distinct('userId', dateFilter);
-            let totalCustomers = userData.length;
-            let onlinePayments = 0;
-            let cashOnDelivery = 0;
-            let orderCancelled = 0;
-            
-            orders.forEach((item) => {
-                if (item.totalAmount !== undefined && item.totalAmount !== null) {
-                    totalTransaction += parseFloat(item.totalAmount);
-                }
-                totalOrders++;
-                if (item.paymentMethod === 'Online Payment') {
-                    onlinePayments++;
-                } else {
-                    cashOnDelivery++;
-                }
-                if (item.orderStatus === 'Cancelled') {
-                    orderCancelled++;
-                }
-            });
-            
-            res.render('salesReport', {
-                orders,
-                totalCustomers,
-                totalOrders,
-                totalTransaction,
-                onlinePayments,
-                cashOnDelivery,
-                orderCancelled,
-                start: req.query.startDate,
-                end: req.query.endDate
-            });
-        } else {
-            const orders = await Order.find(orderStatusFilter).populate('userId').sort({ orderDate: -1 });
-            
-            let totalTransaction = 0;
-            let totalOrders = 0;
-            const userData = await Order.distinct('userId');
-            let totalCustomers = userData.length;
-            let onlinePayments = 0;
-            let cashOnDelivery = 0;
-            let orderCancelled = 0;
-            
-            orders.forEach((item) => {
-                if (item.totalAmount !== undefined && item.totalAmount !== null) {
-                    totalTransaction += parseFloat(item.totalAmount);
-                }
-                totalOrders++;
-                if (item.paymentMethod === 'Online Payment') {
-                    onlinePayments++;
-                } else {
-                    cashOnDelivery++;
-                }
-                if (item.orderStatus === 'Cancelled') {
-                    orderCancelled++;
-                }
-            });
-            
-            res.render('salesReport', {
-                orders,
-                totalCustomers,
-                totalOrders,
-                totalTransaction,
-                onlinePayments,
-                cashOnDelivery,
-                orderCancelled
-            });
         }
+
+        const queryFilter = { ...orderStatusFilter, ...dateFilter };
+
+        const orders = await Order.find(queryFilter)
+            .populate('userId')
+            .populate('Coupon')
+            .sort({ orderDate: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        const totalOrdersCount = await Order.countDocuments(queryFilter);
+        const userData = await Order.distinct('userId', dateFilter);
+        const totalCustomers = userData.length;
+
+        let totalTransaction = 0;
+        let totalOrders = 0;
+        let onlinePayments = 0;
+        let cashOnDelivery = 0;
+        let orderCancelled = 0;
+
+        orders.forEach((item) => {
+            if (item.totalAmount !== undefined && item.totalAmount !== null) {
+                totalTransaction += parseFloat(item.totalAmount);
+            }
+            totalOrders++;
+            if (item.paymentMethod === 'Online Payment') {
+                onlinePayments++;
+            } else {
+                cashOnDelivery++;
+            }
+            if (item.orderStatus === 'Cancelled') {
+                orderCancelled++;
+            }
+        });
+
+        const totalPages = Math.ceil(totalOrdersCount / limit);
+
+        res.render('salesReport', {
+            orders,
+            totalCustomers,
+            totalOrders,
+            totalTransaction,
+            onlinePayments,
+            cashOnDelivery,
+            orderCancelled,
+            currentPage: page,
+            totalPages,
+            limit,
+            start: req.query.startDate,
+            end: req.query.endDate
+        });
     } catch (error) {
         console.log(error);
         res.status(500).send('Internal Server Error');
@@ -285,6 +264,17 @@ const salesReport = async (req, res) => {
 };
 
 
+const dateFilter = async (req, res) => {
+    try {
+        // console.log(req.query.startDate)
+        const startDate = req.body.startDate
+        const endDate = req.body.endDate
+        res.redirect(`/admin/salesReport?startDate=${startDate}&endDate=${endDate}`)
+    } catch (error) {
+        console.log(error.message)
+        res.redirect('/500')
+    }
+}
 
 
 module.exports = {
@@ -296,5 +286,6 @@ module.exports = {
     userUnblock,
     adminLogout,
     salesReport,
+    dateFilter
   
 }

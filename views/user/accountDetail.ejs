@@ -1,0 +1,300 @@
+<%- include('./userLayout/header') %>
+    <header class="header-area header-style-1 header-height-2">
+        <div class="header-top header-top-ptb-1 d-none d-lg-block">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="header-info header-info-right">
+                            <ul>
+                                <% if (user) { %>
+                                    <li><a href="/userDetail">
+                                            <%=user.name%>
+                                        </a></li>
+
+                                    <li><a href="/userLogout">Logout</a></li>
+
+                                    <% }else{%>
+                                        <li><i class="fi-rs-user"></i><a href="/login">Log In</a></li>
+                                        <% } %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom sticky-bar sticky-white-bg">
+            <div class="container">
+                <div class="header-wrap header-space-between position-relative">
+                    <div class="logo logo-width-1">
+                        <a href="index.html"><img src="/productImages/logoimages.png" alt="logo"></a>
+                    </div>
+                    <div
+                        class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
+                        <nav>
+                            <ul>
+                                <li><a href="/">Home</a>
+
+                                </li>
+                                <li><a href="/shop">Shop</a>
+
+                                </li>
+                                <li>
+                                    <a href="/about">About</a>
+                                </li>
+
+
+                                <li>
+                                    <a href="/contact">Contact</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="header-action-right">
+                        <div class="search-style-2">
+
+                        </div>
+                        <div class="header-action-2">
+                            <div class="header-action-icon-2">
+                                <a href="/wishlist">
+                                    <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
+
+                                </a>
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a class="mini-cart-icon" href="/cart">
+                                    <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+
+                                </a>
+
+                            </div>
+                            <div class="header-action-icon d-block d-lg-none">
+                                <div class="burger-icon">
+                                    <span class="burger-icon-top"></span>
+                                    <span class="burger-icon-mid"></span>
+                                    <span class="burger-icon-bottom"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-header-active mobile-header-wrapper-style">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-top">
+                <div class="mobile-header-logo">
+                    <a href="index.html"><img src="/productImages/logoimages.png" alt="logo"></a>
+                </div>
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                    <button class="close-style search-close">
+                        <i class="icon-top"></i>
+                        <i class="icon-bottom"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-header-content-area">
+                <div class="mobile-search search-style-3 mobile-header-border">
+                    <form action="#">
+                        <input type="text" placeholder="Search for items…">
+                        <button type="submit"><i class="fi-rs-search"></i></button>
+                    </form>
+                </div>
+                <div class="mobile-menu-wrap mobile-header-border">
+                </div>
+                <!-- mobile menu start -->
+                <nav>
+                    <ul class="mobile-menu">
+                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                href="index.html">Home</a>
+
+                        </li>
+                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                href="shop-grid-right.html">shop</a>
+
+                        </li>
+
+
+
+                    </ul>
+                </nav>
+                <!-- mobile menu end -->
+            </div>
+            <div class="mobile-header-info-wrap mobile-header-border">
+                <div class="single-mobile-header-info mt-30">
+                    <a href="page-contact.html"> Our location </a>
+                </div>
+                <div class="single-mobile-header-info">
+                    <a href="page-login-register.html">Log In / Sign Up </a>
+                </div>
+                <div class="single-mobile-header-info">
+                    <a href="#">(+01) - 2345 - 6789 </a>
+                </div>
+            </div>
+            <div class="mobile-social-icon">
+                <h5 class="mb-15 text-grey-4">Follow Us</h5>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <section class="pt-150 pb-150">
+        <div class="container offset-lg-3">
+            <div class="row">
+                <div class="col-lg-10 m-auto">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
+                                <div class="padding_eight_all bg-white">
+                                    <div class="heading_s1">
+                                        <h3 class="mb-30 text-center">Account Details</h3>
+                                    </div>
+    
+                                    <form method="post" action="/userDetail" id="userForm">
+                                        <% if(user){ %>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control square" name="fullName" id="fullName" value="<%= user.name %>" disabled>
+                                                <span class="text-danger" id="fullNameError"></span>
+                                            </div>
+    
+                                            <div class="form-group">
+                                                <label>Email Address <span class="required">*</span></label>
+                                                <input class="form-control square" name="email" type="email" id="email" value="<%= user.email %>" disabled>
+                                                <span class="text-danger" id="emailError"></span>
+                                            </div>
+    
+                                            <div class="form-group">
+                                                <label>Phone Number<span class="required">*</span></label>
+                                                <input class="form-control square" name="phoneNumber" type="text" id="phoneNumber" value="<%= user.mobile %>" disabled>
+                                                <span class="text-danger" id="phoneNumberError"></span>
+                                            </div>
+    
+                                            <div class="form-group text-center">
+                                                <button type="button" class="btn btn-fill-out submit" id="editButton">Edit</button>
+                                            </div>
+    
+                                            <div class="form-group text-center">
+                                                <button type="button" class="btn btn-fill-out submit" id="changePasswordButton">Change Password</button>
+                                            </div>
+    
+                                            <div id="passwordFields" style="display: none;">
+                                                <div class="form-group">
+                                                    <label>Current Password <span class="required">*</span></label>
+                                                    <input class="form-control square" name="password" type="password" id="password">
+                                                    <span class="text-danger" id="passwordError"></span>
+                                                </div>
+    
+                                                <div class="form-group">
+                                                    <label>New Password <span class="required">*</span></label>
+                                                    <input class="form-control square" name="newPassword" type="password" id="newPassword">
+                                                    <span class="text-danger" id="newPasswordError"></span>
+                                                </div>
+    
+                                                <div class="form-group">
+                                                    <label>Confirm Password <span class="required">*</span></label>
+                                                    <input class="form-control square" name="confirmPassword" type="password" id="confirmPassword">
+                                                    <span class="text-danger" id="confirmPasswordError"></span>
+                                                </div>
+    
+                                                <div class="form-group text-center">
+                                                    <button type="submit" class="btn btn-fill-out submit" id="saveButton">Submit</button>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+    document.getElementById('changePasswordButton').addEventListener('click', function() {
+        document.getElementById('passwordFields').style.display = 'block';
+        document.getElementById('changePasswordButton').style.display = 'none';
+    });
+    
+    document.getElementById('editButton').addEventListener('click', function() {
+        document.getElementById('fullName').disabled = false;
+        document.getElementById('email').disabled = false;
+        document.getElementById('phoneNumber').disabled = false;
+        document.getElementById('editButton').classList.add('d-none');
+    });
+    
+    document.getElementById('userForm').addEventListener('submit', function(event) {
+        // Clear previous errors
+        document.getElementById('fullNameError').textContent = '';
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('phoneNumberError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
+        document.getElementById('newPasswordError').textContent = '';
+        document.getElementById('confirmPasswordError').textContent = '';
+    
+        let isValid = true;
+    
+        // Full Name validation
+        const fullName = document.getElementById('fullName').value.trim();
+        if (!fullName) {
+            document.getElementById('fullNameError').textContent = 'Full Name is required.';
+            isValid = false;
+        }
+    
+        // Email validation
+        const email = document.getElementById('email').value.trim();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailPattern.test(email)) {
+            document.getElementById('emailError').textContent = 'Valid Email is required.';
+            isValid = false;
+        }
+    
+        // Phone Number validation
+        const phoneNumber = document.getElementById('phoneNumber').value.trim();
+        const phonePattern = /^[0-9]{10}$/; // Adjust this pattern to your needs
+        if (!phoneNumber || !phonePattern.test(phoneNumber)) {
+            document.getElementById('phoneNumberError').textContent = 'Valid Phone Number is required.';
+            isValid = false;
+        }
+    
+        // Password validation
+        if (document.getElementById('passwordFields').style.display !== 'none') {
+            const password = document.getElementById('password').value.trim();
+            const newPassword = document.getElementById('newPassword').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+    
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'Current Password is required.';
+                isValid = false;
+            }
+    
+            if (!newPassword) {
+                document.getElementById('newPasswordError').textContent = 'New Password is required.';
+                isValid = false;
+            }
+    
+            if (newPassword && newPassword.length < 6) {
+                document.getElementById('newPasswordError').textContent = 'New Password must be at least 6 characters.';
+                isValid = false;
+            }
+    
+            if (newPassword !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+                isValid = false;
+            }
+        }
+    
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+    </script>
+    
+
+    <%- include('./userLayout/footer') %>

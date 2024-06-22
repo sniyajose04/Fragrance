@@ -1,0 +1,386 @@
+<%- include('./userLayout/header') %>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .small-radio input[type="radio"] {
+            transform: scale(0.6);
+            margin-right: 5px;
+        }
+    </style>
+    <header class="header-area header-style-1 header-height-2">
+        <div class="header-top header-top-ptb-1 d-none d-lg-block">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="header-info header-info-right">
+                            <ul>
+                                <% if (user) { %>
+                                    <li><a href="/userDetail">
+                                            <%=user.name%>
+                                        </a></li>
+
+                                    <li><a href="/userLogout">Logout</a></li>
+
+                                    <% }else{%>
+                                        <li><i class="fi-rs-user"></i><a href="/login">Log In</a></li>
+                                        <% } %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom sticky-bar sticky-white-bg">
+            <div class="container">
+                <div class="header-wrap header-space-between position-relative">
+                    <div class="logo logo-width-1">
+                        <a href="index.html"><img src="/productImages/logoimages.png" alt="logo"></a>
+                    </div>
+                    <div
+                        class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
+                        <nav>
+                            <ul>
+                                <li><a href="/">Home</a>
+
+                                </li>
+                                <li><a href="/shop">Shop</a>
+
+                                </li>
+                                <li>
+                                    <a href="/about">About</a>
+                                </li>
+
+
+                                <li>
+                                    <a href="/contact">Contact</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="header-action-right">
+                        <div class="search-style-2">
+
+                        </div>
+                        <div class="header-action-2">
+                            <div class="header-action-icon-2">
+                                <a href="/wishlist">
+                                    <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
+
+                                </a>
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a class="mini-cart-icon" href="/cart">
+                                    <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+
+                                </a>
+
+                            </div>
+                            <div class="header-action-icon d-block d-lg-none">
+                                <div class="burger-icon">
+                                    <span class="burger-icon-top"></span>
+                                    <span class="burger-icon-mid"></span>
+                                    <span class="burger-icon-bottom"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-header-active mobile-header-wrapper-style">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-top">
+                <div class="mobile-header-logo">
+                    <a href="index.html"><img src="/productImages/logoimages.png" alt="logo"></a>
+                </div>
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                    <button class="close-style search-close">
+                        <i class="icon-top"></i>
+                        <i class="icon-bottom"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-header-content-area">
+                <div class="mobile-search search-style-3 mobile-header-border">
+                    <form action="#">
+                        <input type="text" placeholder="Search for items…">
+                        <button type="submit"><i class="fi-rs-search"></i></button>
+                    </form>
+                </div>
+                <div class="mobile-menu-wrap mobile-header-border">
+                </div>
+                <!-- mobile menu start -->
+                <nav>
+                    <ul class="mobile-menu">
+                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                href="index.html">Home</a>
+
+                        </li>
+                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                href="shop-grid-right.html">shop</a>
+
+                        </li>
+
+
+
+                    </ul>
+                </nav>
+                <!-- mobile menu end -->
+            </div>
+            <div class="mobile-header-info-wrap mobile-header-border">
+                <div class="single-mobile-header-info mt-30">
+                    <a href="page-contact.html"> Our location </a>
+                </div>
+                <div class="single-mobile-header-info">
+                    <a href="page-login-register.html">Log In / Sign Up </a>
+                </div>
+                <div class="single-mobile-header-info">
+                    <a href="#">(+01) - 2345 - 6789 </a>
+                </div>
+            </div>
+            <div class="mobile-social-icon">
+                <h5 class="mb-15 text-grey-4">Follow Us</h5>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="container mt-5">
+        <a href="#" class="btn btn-primary btn-sm rounded" id="addAddressBtn" data-toggle="modal" data-target="#addAddressModal">
+            Add New Address
+        </a>
+
+        <div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addAddressModalLabel">Add New Address</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addressForm">
+                            <input type="hidden" id="addressId" name="id">
+                            <div class="form-group">
+                                <label for="addressType">Address Type</label>
+                                <div>
+                                    <label class="small-radio"><input type="radio" name="addressType" value="home" checked> Home</label>
+                                    <label class="small-radio"><input type="radio" name="addressType" value="office"> Office</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                                <span class="text-danger" id="nameError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="housename">House Name</label>
+                                <input type="text" class="form-control" id="housename" name="housename" required>
+                                <span class="text-danger" id="housenameError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="street">Street</label>
+                                <input type="text" class="form-control" id="street" name="street" required>
+                                <span class="text-danger" id="streetError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" class="form-control" id="city" name="city" required>
+                                <span class="text-danger" id="cityError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="district">District</label>
+                                <input type="text" class="form-control" id="district" name="district" required>
+                                <span class="text-danger" id="districtError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input type="text" class="form-control" id="state" name="state" required>
+                                <span class="text-danger" id="stateError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="pincode">Pincode</label>
+                                <input type="text" class="form-control" id="pincode" name="pincode" required>
+                                <span class="text-danger" id="pincodeError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="phonenumber">Phone Number</label>
+                                <input type="text" class="form-control" id="phonenumber" name="phonenumber" required>
+                                <span class="text-danger" id="phonenumberError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="altPhone">Alternate Phone</label>
+                                <input type="text" class="form-control" id="altPhone" name="altPhone">
+                                <span class="text-danger" id="altPhoneError"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmSaveAddress()">Save Address</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4" id="addressList">
+            <!-- Addresses will be displayed here dynamically -->
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        let isEditing = false;
+
+        async function confirmSaveAddress() {
+           
+            document.querySelectorAll('.text-danger').forEach(span => span.textContent = '');
+
+            const form = document.getElementById('addressForm');
+            const formData = new FormData(form);
+            let isValid = true;
+
+         
+            formData.forEach((value, key) => {
+                if (!value && key !== 'altPhone' && key !== 'id') {
+                    document.getElementById(`${key}Error`).textContent = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
+                    isValid = false;
+                }
+            });
+
+          
+            const phoneNumber = formData.get('phonenumber');
+            const altPhone = formData.get('altPhone');
+            const pincode = formData.get('pincode');
+
+            const phoneRegex = /^\d{10}$/;
+            const pincodeRegex = /^\d{6}$/;
+
+            if (phoneNumber && !phoneRegex.test(phoneNumber)) {
+                document.getElementById('phonenumberError').textContent = 'Phone number must be 10 digits';
+                isValid = false;
+            }
+
+            if (altPhone && altPhone.length > 0 && !phoneRegex.test(altPhone)) {
+                document.getElementById('altPhoneError').textContent = 'Alternate phone number must be 10 digits';
+                isValid = false;
+            }
+
+            if (pincode && !pincodeRegex.test(pincode)) {
+                document.getElementById('pincodeError').textContent = 'Pincode must be 6 digits';
+                isValid = false;
+            }
+
+            if (isValid) {
+                const addressData = {};
+                formData.forEach((value, key) => {
+                    addressData[key] = value;
+                });
+
+                const endpoint = isEditing ? '/updateAddress' : '/saveAddress';
+
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(addressData)
+                    });
+
+                    if (response.ok) {
+                        if (isEditing) {
+                            const addressElement = document.querySelector(`div[data-id="${addressData.id}"]`);
+                            addressElement.outerHTML = `
+                            <div class="col-lg-6" data-id="${addressData.id}">
+                                <div class="card mb-3 mb-lg-0">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">My address</h5>
+                                        <button class="btn btn-sm btn-link" onclick="editAddress('${addressData.id}')">Edit</button>
+                                    </div>
+                                    <div class="card-body">
+                                        <address>
+                                            ${addressData.name},<br>
+                                            ${addressData.housename},<br>
+                                            ${addressData.street},<br>
+                                            ${addressData.city}, ${addressData.district}<br>
+                                            ${addressData.state}, ${addressData.pincode}<br>
+                                        </address>
+                                        <p>Phone Number: ${addressData.phonenumber}</p>
+                                        <p>Alternate Phone: ${addressData.altPhone || 'N/A'}</p>
+                                    </div>
+                                </div>
+                            </div>`;
+                        } else {
+                            // Add new address to the list
+                            const addressList = document.getElementById('addressList');
+                            const newAddressHTML = `
+                            <div class="col-lg-6" data-id="${addressData.id}">
+                                <div class="card mb-3 mb-lg-0">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">My address</h5>
+                                        <button class="btn btn-sm btn-link" onclick="editAddress('${addressData.id}')">Edit</button>
+                                    </div>
+                                    <div class="card-body">
+                                        <address>
+                                            ${addressData.name},<br>
+                                            ${addressData.housename},<br>
+                                            ${addressData.street},<br>
+                                            ${addressData.city}, ${addressData.district}<br>
+                                            ${addressData.state}, ${addressData.pincode}<br>
+                                        </address>
+                                        <p>Phone Number: ${addressData.phonenumber}</p>
+                                        <p>Alternate Phone: ${addressData.altPhone || 'N/A'}</p>
+                                    </div>
+                                </div>
+                            </div>`;
+                            addressList.insertAdjacentHTML('beforeend', newAddressHTML);
+                        }
+
+                     
+                        $('#addAddressModal').modal('hide');
+                     
+                        form.reset();
+                        isEditing = false;
+                    } else {
+                        console.error('Failed to save address');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+        }
+
+        function editAddress(id) {
+            isEditing = true;
+            const addressElement = document.querySelector(`div[data-id="${id}"]`);
+            const addressData = {
+                id,
+                addressType: addressElement.querySelector('input[name="addressType"]:checked').value,
+                name: addressElement.querySelector('input[name="name"]').value,
+                housename: addressElement.querySelector('input[name="housename"]').value,
+                street: addressElement.querySelector('input[name="street"]').value,
+                city: addressElement.querySelector('input[name="city"]').value,
+                district: addressElement.querySelector('input[name="district"]').value,
+                state: addressElement.querySelector('input[name="state"]').value,
+                pincode: addressElement.querySelector('input[name="pincode"]').value,
+                phonenumber: addressElement.querySelector('input[name="phonenumber"]').value,
+                altPhone: addressElement.querySelector('input[name="altPhone"]').value,
+            };
+
+            for (const key in addressData) {
+                document.getElementById(key).value = addressData[key];
+            }
+
+            $('#addAddressModal').modal('show');
+        }
+    </script>
+    <%- include('./userLayout/footer') %>

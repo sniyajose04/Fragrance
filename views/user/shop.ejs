@@ -435,31 +435,27 @@
             </div>
         </div>
         <style>
-            #search{
-                margin-left:10%;
-                margin-bottom:5%;
+            #search {
+                margin-left: 10%;
+                margin-bottom: 5%;
             }
         </style>
         <section class="mt-50 mb-50">
             <div class="container">
                 <div class="row">
-                  
                     <div id="search" class="col-lg-12">
-                        <section class = 'search-bar col-lg-4'>
+                        <section class='search-bar col-lg-4'>
                             <div class="container">
                                 <form action="/searchproduct" method="POST" class="d-flex justify-content-end align-items-center">
-                                    <input type="text" name="query" placeholder="Search products..." class="form-control">
+                                    <input type="text" name="query" placeholder="Search products..." class="form-control" value="<%= query %>">
                                     <button type="submit" class="btn btn-primary ml-2">Search</button>
                                 </form>
                             </div>
                         </section>
                     </div>
-            
                     <div class="col-lg-9">
                         <div class="shop-product-fillter">
-
                             <div class="sort-by-product-area">
-
                                 <div class="sort-by-cover">
                                     <div class="sort-by-product-wrap">
                                         <div class="sort-by">
@@ -471,93 +467,64 @@
                                     </div>
                                     <div class="sort-by-dropdown">
                                         <ul>
-                                            <li><a class="active" href="#">Featured</a></li>
-                                            <li><a href="/shop?sort=price_low_to_high">Price: Low to High</a></li>
-                                            <li><a href="/shop?sort=price_high_to_low">Price: High to Low</a></li>
-                                            <li><a href="/shop?sort=aA-zZ">aA-zZ</a></li>
-                                            <li><a href="/shop?sort=zZ-aA">zZ-aA</a></li>
-                                            
+                                            <li><a href="/shop?sort=price_low_to_high&category=<%= category %>&query=<%= query %>">Price: Low to High</a></li>
+                                            <li><a href="/shop?sort=price_high_to_low&category=<%= category %>&query=<%= query %>">Price: High to Low</a></li>
+                                            <li><a href="/shop?sort=aA-zZ&category=<%= category %>&query=<%= query %>">aA-zZ</a></li>
+                                            <li><a href="/shop?sort=zZ-aA&category=<%= category %>&query=<%= query %>">zZ-aA</a></li>
                                         </ul>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="row product-grid-3">
-                            <% for(let i=0; i < productData.length; i++) { %>
-
+                            <% for(let i = 0; i < productData.length; i++) { %>
                                 <div class="col-lg-4 col-md-4 col-12 col-sm-6">
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="/productDetail?id=<%=productData[i]._id%>">
-                                                    <img class="default-img"
-                                                        src="/productImages/<%=productData[i].images[0].filename %>"
-                                                        alt="zzzzzz">
-                                                    <img class="hover-img"
-                                                        src="/productImages/<%=productData[i].images[0].filename %>"
-                                                        alt="">
+                                                <a href="/productDetail?id=<%= productData[i]._id %>">
+                                                    <img class="default-img" src="/productImages/<%= productData[i].images[0].filename %>" alt="Product Image">
+                                                    <img class="hover-img" src="/productImages/<%= productData[i].images[0].filename %>" alt="Product Image">
                                                 </a>
                                             </div>
-                                            
-                                          
                                         </div>
                                         <div class="product-content-wrap">
-
-                                            <h2><a href="shop-product-right.html">
-                                                    <%=productData[i].product_title%>
-                                                </a></h2>
-
-                                            <!-- <div class="rating-result" title="90%">
-                                                <span>
-                                                    <span>90%</span>
-                                                </span>
-                                            </div> -->
+                                            <h2><a href="/productDetail?id=<%= productData[i]._id %>"><%= productData[i].product_title %></a></h2>
                                             <div class="product-price">
-                                                <span>&#8377;<%=productData[i].offerPrice>0 ?productData[i].offerPrice : productData[i].promotionalPrice %> </span>
+                                                <span>&#8377;<%= productData[i].offerPrice > 0 ? productData[i].offerPrice : productData[i].promotionalPrice %></span>
                                                 <span class="old-price">&#8377;<%= productData[i].regularPrice %></span>
                                             </div>
-                                            
                                         </div>
                                     </div>
                                 </div>
-                                <% } %>
-                                
+                            <% } %>
                         </div>
                         <div class="pagination-area mt-15 mb-5">
                             <nav aria-label="page navigation example">
                                 <ul class="pagination justify-content-start">
                                     <% for(let i = 1; i <= numofPage; i++) { %>
                                         <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                                            <a class="page-link" href="/shop?page=<%= i %>"><%= i %></a>
+                                            <a class="page-link" href="/shop?page=<%= i %>&query=<%= query %>&category=<%= category %>&sort=<%= sort %>"><%= i %></a>
                                         </li>
                                     <% } %>
                                 </ul>
                             </nav>
                         </div>
-                        
                     </div>
-                    
                     <div class="col-lg-3 primary-sidebar sticky-sidebar">
-                        <div class="row">
-                            <div class="col-lg-12 col-mg-6"></div>
-                            <div class="col-lg-12 col-mg-6"></div>
-                        </div>
                         <div class="widget-category mb-30">
-
                             <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
                             <a href="/shop">All</a>
                             <ul class="categories">
-                                <% for (let i=0; i < categoryData.length; i++) { %>
+                                <% for (let i = 0; i < categoryData.length; i++) { %>
                                     <li>
-                                        <a href="/shop?category=<%= categoryData[i]._id %>">
+                                        <a href="/shop?category=<%= categoryData[i]._id %>&query=<%= query %>">
                                             <%= categoryData[i].name %>
                                         </a>
                                     </li>
-                                    <% } %>
+                                <% } %>
                             </ul>
                         </div>
-                        
                         <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
                             <div class="widget-header position-relative mb-20 pb-10">
                                 <h5 class="widget-title mb-10">New products</h5>
@@ -567,28 +534,25 @@
                                 <% for (let i = 0; i < products.length; i++) { %>
                                     <div class="single-post clearfix">
                                         <div class="image">
-                                            <img src="/productImages/<%= products[i].images[0].filename %>" alt="#">
+                                            <img src="/productImages/<%= products[i].images[0].filename %>" alt="Product Image">
                                         </div>
                                         <div class="content pt-10">
-                                            <h5><a href="productDetail?id=<%=products[i]._id %>"><%= products[i].product_title %></a></h5>
+                                            <h5><a href="/productDetail?id=<%= products[i]._id %>"><%= products[i].product_title %></a></h5>
                                             <div class="product-price">
-                                                <span>&#8377;<%=products[i].offerPrice>0 ?products[i].offerPrice : products[i].promotionalPrice %> </span>
-                                                
-                                               
-                                               
+                                                <span>&#8377;<%= products[i].offerPrice > 0 ? products[i].offerPrice : products[i].promotionalPrice %></span>
                                             </div>
-                                            
                                         </div>
                                     </div>
                                 <% } %>
                             <% } else { %>
                                 <p>No new products available.</p>
                             <% } %>
-                       
-                    
+                        </div>
+                    </div>
                 </div>
-                
             </div>
         </section>
     </main>
+    
+   
     <%- include('./userLayout/footer') %>

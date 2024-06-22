@@ -8,13 +8,55 @@
                   
                 </div>
             </div>
+            
             <div class="row">
                 <div class="col-md-9">
                     <div class="card mb-4">
-                       
+                        <header class="card-header">
+
+                            <form action="/admin/dateFilter" method="post">
+                            <div class="row gx-3">
+                                <%if(locals.start && locals.end){%>
+                                    <div class="col-lg-2 col-md-3 col-6 ">
+                                        From :<br><input type="date" name="startDate" value="<%=start%>">
+                                    </div>
+                                    <div class="col-lg-2 col-md-3 col-6">
+                                        To : <br><input type="date" name="endDate" value="<%=end%>">
+                                    </div>
+                                    <%}else{%>
+                                        <div class="col-lg-2 col-md-3 col-6 ">
+                                            From : <br><input type="date" name="startDate" >
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-6">
+                                            To : <br><input type="date" name="endDate">
+                                        </div>
+                                        <%}%>
+                               
+                                        <div class="row justify-content-center">
+                                            <div class="col-lg-2 col-md-3 col-6 text-center">
+                                                <form action="/admin/salesReport" method="GET">
+                                                    <input type="hidden" name="startDate" value="<%= start %>">
+                                                    <input type="hidden" name="endDate" value="<%= end %>">
+                                                    <input type="hidden" name="page" value="1">
+                                                    <input type="hidden" name="limit" value="<%= limit %>">
+                                                    <button type="submit" class="btn btn-md rounded font-sm">Filter Out</button>
+                                                </form>
+                                            </div>
+                                            <div class="col-lg-2 col-md-3 col-6 ">
+                                                <form action="/admin/salesReport" method="GET">
+                                                    <button type="submit" class="btn btn-md rounded font-sm">All</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                            </div>
+                        </form>
+            
+                        
+            
+                        </header> 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="myTable">
+                                <table class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -23,41 +65,73 @@
                                             <th>Price</th>
                                             <th>Status</th>
                                             <th>Date</th>
-                                            <th class="text-end"> Action </th>
+                                            <th class="text-end">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%for(i=0;i<orders.length;i++){%>
-
+                                        <% for (let i = 0; i < orders.length; i++) { %>
                                             <tr>
                                                 <td><%= orders[i].orderId ? 'ORD#' + orders[i].orderId : 'N/A' %></td>
                                                 <td><b><%= orders[i].userId && orders[i].userId.name ? orders[i].userId.name : 'N/A' %></b></td>
-                                                <td> 
-                                                    <%= orders[i].Coupon && orders[i].Coupon.discount ? orders[i].Coupon.discount : 'N/A' %>
-                                                  </td>
-                                                  
-                                                <td> ₹<%= orders[i].totalAmount ? orders[i].totalAmount : 'N/A' %></td>
-                                                <% if (orders[i].orderStatus == 'Order Placed' || orders[i].orderStatus == 'Delivered') { %>
-                                                    <td><span class="text-success"><%= orders[i].orderStatus %></span></td>
-                                                <% } %>
-                                                
+                                                <td><%= orders[i].Coupon && orders[i].Coupon.discount ? orders[i].Coupon.discount : 'N/A' %></td>
+                                                <td>₹<%= orders[i].totalAmount ? orders[i].totalAmount : 'N/A' %></td>
+                                                <td>
+                                                    <% if (orders[i].orderStatus === 'Order Placed' || orders[i].orderStatus === 'Delivered') { %>
+                                                        <span class="text-success"><%= orders[i].orderStatus %></span>
+                                                    <% } %>
+                                                </td>
                                                 <td><%= orders[i].orderDate.toLocaleString() ? orders[i].orderDate.toLocaleString() : 'N/A' %></td>
                                                 <td class="text-end">
                                                     <a href="/admin/orderDetail?orderId=<%= orders[i]._id %>" class="btn btn-md rounded font-sm">Detail</a>
                                                 </td>
                                             </tr>
-                                            
-                                      
-                                        <%}%>
-
+                                        <% } %>
                                     </tbody>
                                 </table>
                             </div>
+                        
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                    <% if (currentPage > 1) { %>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=<%= currentPage - 1 %>&limit=<%= limit %>&startDate=<%= start %>&endDate=<%= end %>" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                    <% } %>
+                        
+                                    <% for (let i = 1; i <= totalPages; i++) { %>
+                                        <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                            <a class="page-link" href="?page=<%= i %>&limit=<%= limit %>&startDate=<%= start %>&endDate=<%= end %>"><%= i %></a>
+                                        </li>
+                                    <% } %>
+                        
+                                    <% if (currentPage < totalPages) { %>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=<%= currentPage + 1 %>&limit=<%= limit %>&startDate=<%= start %>&endDate=<%= end %>" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    <% } %>
+                                </ul>
+                            </nav>
                         </div>
+                        
                     </div> 
                 </div>
                 <div class="col-md-3">
-                    <button class="btn btn-secondary print ms-2" id="printScreen" >Download &nbsp; Report &nbsp;&nbsp;<i class="icon material-icons md-print"></i></button><br><br>
+                    <div class="d-inline-block">
+                        <button class="btn btn-secondary print" id="printScreen">
+                            Download &nbsp; Report &nbsp;&nbsp;<i class="icon material-icons md-print"></i>
+                        </button>
+                    </div>
+                    <div class="d-inline-block ms-2">
+                        <a href="/admin/adminpanel" class="btn btn-secondary print">
+                            Back
+                        </a>
+                    </div>
+                    <br><br>
+                    
                     <script>
                         const printid=document.getElementById('printScreen')
                         printid.addEventListener('click',function(){
@@ -102,9 +176,5 @@
            
         </section> 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
-    
-        <script>
-        let table = new DataTable('#myTable');
-        </script>
+       
         <%- include('./adminLayout/footer') %>
