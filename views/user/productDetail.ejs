@@ -460,53 +460,52 @@
         </div>
     </div>
     <style>
-        /* Increase the size of the increment and decrement buttons */
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             height: 50px;
-            /* Adjust the height as needed */
             width: 60px;
-            /* Adjust the width as needed */
         }
-    
-        /* For Firefox */
+
+
         input[type="number"] {
             -moz-appearance: textfield;
         }
-    
-    
-    
-    .image-container {
-      /* width: 500px; */
-      height: 470px;
-        overflow: hidden;
-        /* border: 1px solid #ccc; Optional: Add a border for visualization */
-    }
-    
-    .zoom-container {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-    
-    .image-zoom {
-        width: 100%;
-        height: 100%;
-        transition: transform 0.3s ease;
-    }
-    
-    .image-zoom:hover {
-        transform: scale(1.8); /* Adjust the scale factor for zoom effect */
-    }
-    .thumbnail {
-        border: 1px solid black;  
-        border-radius: 10%;
-      }
-      .custom-col {
-        flex: 0 0 5.5%; /* Adjust the width percentage as needed */
-        max-width: 30%;
-      }
-    
+
+        .image-container {
+            height: 470px;
+            overflow: hidden;
+        }
+
+        .zoom-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .image-zoom {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .image-zoom:hover {
+            transform: scale(1.8);
+        }
+
+        .thumbnail-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .thumbnail {
+            width: 100px;
+            height: auto;
+            border: 1px solid black;
+            border-radius: 10%;
+            cursor: pointer;
+            margin: 3px;
+        }
     </style>
     <main class="main">
         <section class="mt-50 mb-50">
@@ -516,34 +515,21 @@
                         <div class="product-detail accordion-detail">
                             <div class="row mb-50">
                                 <div class="col-md-6 col-sm-12 col-xs-12">
-                                    <div class="product-images-slider mb-20">
-                                        <div class=" image-container">
-                                            <% if (productData.images && productData.images.length> 0) { %>
-                                                <% for (let i=1; i < productData.images.length; i++) { %>
-                                            <div class="zoom-container">
-                                              
-                                                <img src='/productImages/<%= productData.images[i].filename %>' id="mainImage" alt="Image" class="image-zoom">
-                                            </div>
-                                            <% } %>
-                                            <% } %>
-                                          </div>
-                                         
-                                                  
+                                    <div class="image-container">
+                                        <div class="zoom-container">
+                                            <img src='/productImages/<%= productData.images[0].filename %>'
+                                                id="mainImage" alt="Image" class="image-zoom">
                                         </div>
-                                        <div class="product-big-image custom-col">
-                                            <% if (productData.images && productData.images.length> 0) { %>
-                                                <% for(let i=0;i<productData.images.length;i++){ %>
-                                                <figure class="border-radius-10 ">
-                                                    <img src="/productImages/<%= productData.images[i].filename %>"
-                                                    onclick="changeMainImage('<%= productData.images[i].filename %>')" alt="Thumbnail" class="my-3 thumbnail">
-                                                </figure>
-                                                <% } %>
-                                                    <% } %>
-                                        </div>  
-                                      
-                                        
                                     </div>
-                                
+
+                                    <div class="thumbnail-container d-flex flex-wrap">
+                                        <% for (let i=0; i < productData.images.length; i++) { %>
+                                            <img src='/productImages/<%= productData.images[i].filename %>'
+                                                onclick="changeMainImage('<%= productData.images[i].filename %>')"
+                                                alt="Thumbnail" class="my-3 thumbnail">
+                                            <% } %>
+                                    </div>
+                                </div>
 
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-info">
@@ -645,19 +631,19 @@
     </main>
     <%- include('./userLayout/footer') %>
 
-    <script>
-        function changeMainImage(imageUrl) {
-            const mainImage = document.getElementById('mainImage');
-            mainImage.src = `/productImages/${imageUrl}`;
+        <script>
+            function changeMainImage(imageUrl) {
+                const mainImage = document.getElementById('mainImage');
+                mainImage.src = `/productImages/${imageUrl}`;
             }
-            document.querySelector('.image-zoom').addEventListener('mousemove', function(e) {
-              const { left, top, width, height } = this.getBoundingClientRect();
-              const x = (e.clientX - left) / width * 100;
-              const y = (e.clientY - top) / height * 100;
-        
-              this.style.transformOrigin = `${x}% ${y}%`;
+            document.querySelector('.image-zoom').addEventListener('mousemove', function (e) {
+                const { left, top, width, height } = this.getBoundingClientRect();
+                const x = (e.clientX - left) / width * 100;
+                const y = (e.clientY - top) / height * 100;
+
+                this.style.transformOrigin = `${x}% ${y}%`;
             });
-            </script>
+        </script>
 
         <script>
 
