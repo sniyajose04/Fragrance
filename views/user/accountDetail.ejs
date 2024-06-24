@@ -155,51 +155,31 @@
                                         <h3 class="mb-30 text-center">Account Details</h3>
                                     </div>
     
-                                    <form method="post" action="/userDetail" id="userForm">
+                                    <form method="post" action="/userDetail" onsubmit="return validationChecking()">
                                         <% if(user){ %>
+                                            
                                             <div class="form-group">
                                                 <input type="text" class="form-control square" name="fullName" id="fullName" value="<%= user.name %>" disabled>
-                                                <span class="text-danger" id="fullNameError"></span>
+                                                <span class="ms-2 text-danger" id="fullNameError"></span>
                                             </div>
     
                                             <div class="form-group">
                                                 <label>Email Address <span class="required">*</span></label>
                                                 <input class="form-control square" name="email" type="email" id="email" value="<%= user.email %>" disabled>
-                                                <span class="text-danger" id="emailError"></span>
+                                                <span class="ms-2 text-danger" id="emailError"></span>
                                             </div>
     
                                             <div class="form-group">
                                                 <label>Phone Number<span class="required">*</span></label>
                                                 <input class="form-control square" name="phoneNumber" type="text" id="phoneNumber" value="<%= user.mobile %>" disabled>
-                                                <span class="text-danger" id="phoneNumberError"></span>
+                                                <span class="ms-2 text-danger" id="phoneNumberError"></span>
                                             </div>
     
                                             <div class="form-group text-center">
                                                 <button type="button" class="btn btn-fill-out submit" id="editButton">Edit</button>
                                             </div>
     
-                                            <div class="form-group text-center">
-                                                <button type="button" class="btn btn-fill-out submit" id="changePasswordButton">Change Password</button>
-                                            </div>
-    
-                                            <div id="passwordFields" style="display: none;">
-                                                <div class="form-group">
-                                                    <label>Current Password <span class="required">*</span></label>
-                                                    <input class="form-control square" name="password" type="password" id="password">
-                                                    <span class="text-danger" id="passwordError"></span>
-                                                </div>
-    
-                                                <div class="form-group">
-                                                    <label>New Password <span class="required">*</span></label>
-                                                    <input class="form-control square" name="newPassword" type="password" id="newPassword">
-                                                    <span class="text-danger" id="newPasswordError"></span>
-                                                </div>
-    
-                                                <div class="form-group">
-                                                    <label>Confirm Password <span class="required">*</span></label>
-                                                    <input class="form-control square" name="confirmPassword" type="password" id="confirmPassword">
-                                                    <span class="text-danger" id="confirmPasswordError"></span>
-                                                </div>
+                                           
     
                                                 <div class="form-group text-center">
                                                     <button type="submit" class="btn btn-fill-out submit" id="saveButton">Submit</button>
@@ -208,6 +188,28 @@
                                         <% } %>
                                     </form>
                                 </div>
+                                <div class="form-group text-center">
+                                    <button type="button" class="btn btn-fill-out submit" id="changePasswordButton">Change Password</button>
+                                </div>
+
+                                <div id="passwordFields" style="display: none;">
+                                    <div class="form-group">
+                                        <label>Current Password <span class="required">*</span></label>
+                                        <input class="form-control square" name="password" type="password" id="password">
+                                        <span class="text-danger" id="passwordError"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>New Password <span class="required">*</span></label>
+                                        <input class="form-control square" name="newPassword" type="password" id="newPassword">
+                                        <span class="text-danger" id="newPasswordError"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Confirm Password <span class="required">*</span></label>
+                                        <input class="form-control square" name="confirmPassword" type="password" id="confirmPassword">
+                                        <span class="text-danger" id="confirmPasswordError"></span>
+                                    </div>
                             </div>
                         </div>
                     </div>

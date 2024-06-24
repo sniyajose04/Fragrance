@@ -157,39 +157,44 @@
             <a href="/addAddress"><button class="btn float-end btn-success btn-sm rounded font-md">Add Address</button></a>
       
           </div>
-        <div class="col-md-8">
+          <div class="col-md-9">
             <div class="row">
-                <% if(locals.addressData) { %>
-                  
-                    <div class="col-lg-6">
-                        <% for(let i=0; i < addressData.length; i++) { %>
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0">Shipping Address</h5>
-                            </div>
-                            <div class="card-body">
-                                <address><%= addressData[i].name %><br>
-                                    <%= addressData[i].housename %><br>
-                                    <%= addressData[i].street %> ,<%= addressData[i].city %>, <br><%=addressData[i].pincode %> <br>Phone: <%= addressData[i].phonenumber %></address>
-                                <p><%= addressData[i].state %></p>
-                               
-                                    <a href="/editAddress?id=<%= address._id %>" class="btn-small">Edit</a>
-                                  <div class="ms-2">
-                                    <a href="/deleteAddress?id=<%= address._id %>" class="btn-small">delete</a>
-                                  </div>
+                <% if (locals.addressData && addressData.length > 0) { %>
+                    <% for (let i = 0; i < addressData.length; i++) { %>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Shipping Address</h5>
+                                </div>
+                                <div class="card-body">
+                                    <address>
+                                        <strong><%= addressData[i].name %></strong><br>
+                                        <%= addressData[i].houseName %><br>
+                                        <%= addressData[i].street %>, <%= addressData[i].city %>, <br>
+                                        <%= addressData[i].state %>, <%= addressData[i].pincode %><br>
+                                        Phone: <%= addressData[i].phoneNumber %>
+                                    </address>
+                                   
+                                    <div class="text-end me-4 mt-15 mb-3">
+                                        <a href="/editAddress?id=<%= addressData._id %>" class="btn btn-small btn-primary">Edit</a>
+
+                                       
+                                    </div>
+                                    <div class="text-end me-4 mt-15 mb-3"></div>
+                                    <a href="/deleteAddress?id=<%= addressData[i]._id %>" class="btn btn-small btn-danger ms-2">Delete</a>
+                                </div>
                             </div>
                         </div>
-                        <% } %>
+                    <% } %>
+                <% } else { %>
+                    <div class="col-12">
+                        <p>No addresses found</p>
                     </div>
-                    <% }else { %>
-                        <tr>
-                            <td colspan="6">
-                                <p>address not found</p>
-                            </td>
-                        </tr>
-                        <% }  %>
-           
+                <% } %>
+            </div>
         </div>
+        
+        
         </div>
         </div>
         </div>

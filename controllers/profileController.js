@@ -46,6 +46,79 @@ async function generateUniqueReferralCode() {
 }
 
 
+const userEdit = async (req, res) => {
+    try {
+        const { user_id, name, mobile } = req.body;
+
+        if (!user_id) {
+            return res.status(400).json({ success: false, message: 'User ID is missing or invalid' });
+        }
+
+        const userData = await User.findById(user_id);
+
+        if (!userData) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        userData.name = name;
+        userData.mobile = mobile;
+        await userData.save();
+
+        res.status(200).json({ success: true, message: 'Profile updated successfully' });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
+
+const securePassword = async (Password) => {
+    try {
+        const passwordHash = await bcrypt.hash(Password, 10);
+        return passwordHash;
+    } catch (error) {
+        console.log(error)
+    }
+}
+  
+
+const changePassword = async (req, res) => {
+    try {
+      const user_id = req.session.user_id;
+      const current_password = req.body.password;
+      const new_password = req.body.newPassword;
+      if (!current_password || !new_password) {
+        return res.status(400).json({ success: false, message: 'Passwords are required' });
+      }
+      const user = await User.findById(user_id);
+      if (!user) {
+        return res.status(400).json({ success: false, message: 'User not found' });
+      }
+      if (!user.password) {
+        return res.status(500).json({ success: false, message: 'User password not found' });
+      }
+      const isPasswordMatch = await bcrypt.compare(current_password, user.password);
+      if (!isPasswordMatch) {
+        return res.status(400).json({ success: false, message: 'Current password is incorrect' });
+      }
+      const secure_new_password = await securePassword(new_password);
+      const updateData = await User.findByIdAndUpdate(
+        user_id,
+        { $set: { password: secure_new_password } },
+        { new: true } // return the updated document
+      );
+      if (updateData) {
+        return res.json({ success: true, message: 'Password updated successfully' });
+      } else {
+        return res.status(500).json({ success: false, message: 'Error updating password' });
+      }
+    } catch (error) {
+      console.log(error.message);
+      return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
+
 const accountDetailPage = async(req,res)=>{
     try {
         const user = await User.findOne({ _id: req.session.user_id });
@@ -60,7 +133,9 @@ const accountDetailPage = async(req,res)=>{
 const userAddressPage = async(req,res)=>{
     try {
         const user = await User.findOne({ _id: req.session.user_id });
-        res.render('userAddress',{user})
+        const addressData = await Address.find({ userId: req.session.user_id });
+        console.log('Addresses retrieved:', addressData);
+        res.render('userAddress',{user,addressData})
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Internal Server Error');  
@@ -84,21 +159,21 @@ const addAddress = async (req, res) => {
     try {
         console.log('Request received:', req.body); // Log incoming request data
         const userId = req.session.user_id;
-        const { userName, houseName, street, city, state, pincode, phoneNumber } = req.body;
+        const { name, houseName, street, city, state, pincode, phoneNumber } = req.body;
         const address = new Address({
             userId,
-            userName,
+            name,
             houseName,
             street,
             city,
             state,
             pincode,
             phoneNumber,
-            is_listed:true
+            is_listed: true
         });
         const addressData = await address.save();
         console.log('Address saved:', addressData);
-        res.status(200).json({ success: true, message: "Address added successfully" });
+        res.status(200).json({ success: true }); // Updated to send JSON with success key
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ success: false, message: 'Internal Server Error' });
@@ -106,47 +181,56 @@ const addAddress = async (req, res) => {
 };
 
 
-const editAddressPage = async(req,res)=>{
+
+const editAddressPage = async (req, res) => {
     try {
         const userId = req.session.user_id;
-        const user = await User.findById(userId);
+        const user = await User.findOne({ _id: userId }); // Assuming userId is correctly set
         const id = req.query.id;
+        console.log('id :',id)
         const addressData = await Address.findById(id);
-        res.render("editAddress",addressData,user)
+console.log("////////////////",addressData)
+        if (!addressData) {
+            return res.status(404).json({ success: false, message: 'Address not found' });
+        }
+
+        res.render("editAddress", { addressData, user }); // Pass addressData and user to the template
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
-}
+};
+
+
 
   
-  const editAddress = async (req, res) => {
+const editAddress = async (req, res) => {
     try {
+        const { name, houseName, street, city, state, pincode, phoneNumber, addressData_id } = req.body;
+        const updateData = await Address.findByIdAndUpdate(
+            addressData_id,
+            {
+                $set: {
+                    name,
+                    houseName,
+                    street,
+                    city,
+                    state,
+                    pincode,
+                    phoneNumber,
+                    is_listed: true
+                }
+            },
+            { new: true }
+        );
 
-      const { userName, houseName, street, city, state, pincode, phoneNumber,address_id} = req.body;
-      const updateData = await Address.findByIdAndUpdate(
-        { _id: address_id },
-        {
-          $set: {
-            userName,
-            houseName,
-            street,
-            city,
-            state,
-            pincode,
-            phoneNumber,
-            is_listed:true
-          },
-        }
-      );
-    
-      res.status(200).json({ success: true, message: "return sucessfully" });
+        res.status(200).json({ success: true, message: "Updated successfully" });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
-    catch (error) {
-      console.log(error.message);
-    }
-  }
-  
+};
+
 
   const deleteAddress = async(req,res)=>{
     try {
@@ -346,5 +430,8 @@ module.exports = {
     addAddress,
     editAddressPage,
     editAddress,
-    deleteAddress
+    deleteAddress,
+    changePassword,
+    userEdit,
+    securePassword
 }

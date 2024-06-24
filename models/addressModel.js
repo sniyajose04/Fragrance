@@ -6,7 +6,7 @@ const addressSchema = new mongoose.Schema({
         ref:'User',
         required:true
     },
-    userName: {
+    name: {
         type: String,
         required: true
     },
@@ -38,10 +38,7 @@ const addressSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    is_listed:{
-        type:Boolean,
-        default:true
-    }
+   
 })
 
 module.exports = mongoose.model('Address', addressSchema)
