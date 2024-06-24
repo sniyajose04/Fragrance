@@ -41,12 +41,13 @@ user_route.post('/updatequantity',isLogin, cartController.updateQuantity);
 user_route.get('/userDetail',isLogin,profileController.userDetailPage)
 user_route.get('/accountDetail',isLogin,profileController.accountDetailPage)
 user_route.get('/userAddress',isLogin,profileController.userAddressPage)
-user_route.get('/wallet',isLogin,profileController.walletPage)
-user_route.get('/userOrder',isLogin,profileController.userOrderPage)
+user_route.get('/addAddress',isLogin,profileController.addAddressPage)
+user_route.post('/addAddress',isLogin,profileController.addAddress)
+user_route.get('/editAddress',isLogin,profileController.editAddressPage)
+user_route.put('/editAddress',isLogin,profileController.editAddress)
+user_route.get('/deleteAddress',isLogin,profileController.deleteAddress)
 
 user_route.post('/userDetail',isLogin,profileController.userPassword)
-user_route.post('/saveAddress',isLogin,profileController.saveAddress)
-user_route.post('/updateAddress',isLogin,profileController.updateAddress)
 user_route.get('/orderdetail',isLogin,profileController.orderDetailPage)
 user_route.post('/ordercancel',isLogin,profileController.orderCancel)
 

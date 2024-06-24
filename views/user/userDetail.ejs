@@ -1,26 +1,28 @@
 <%- include('./userLayout/header') %>
- 
-        <header class="header-area header-style-1 header-height-2">
-            <div class="header-top header-top-ptb-1 d-none d-lg-block">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-xl-3 col-lg-4">
-                            <div class="header-info header-info-right">
-                                <ul>
-                                    <% if (user) { %>
-                                        <li><a href="/userDetail"><%=user.name%></a></li>
-    
-                                        <li><a href="/userLogout">Logout</a></li>
-    
-                                        <% }else{%>
-                                            <li><i class="fi-rs-user"></i><a href="/login">Log In</a></li>
-                                      <%  } %>
-                                </ul>
-                            </div>
+
+    <header class="header-area header-style-1 header-height-2">
+        <div class="header-top header-top-ptb-1 d-none d-lg-block">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="header-info header-info-right">
+                            <ul>
+                                <% if (user) { %>
+                                    <li><a href="/userDetail">
+                                            <%=user.name%>
+                                        </a></li>
+
+                                    <li><a href="/userLogout">Logout</a></li>
+
+                                    <% }else{%>
+                                        <li><i class="fi-rs-user"></i><a href="/login">Log In</a></li>
+                                        <% } %>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         <div class="header-bottom sticky-bar sticky-white-bg">
             <div class="container">
                 <div class="header-wrap header-space-between position-relative">
@@ -31,7 +33,7 @@
                         class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
                         <nav>
                             <ul>
-                                <li><a  href="/">Home</a>
+                                <li><a href="/">Home</a>
 
                                 </li>
                                 <li><a href="/shop">Shop</a>
@@ -166,25 +168,24 @@
                                                     class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" 
-                                                href="/accountDetail" 
-                                                ><i class="fi-rs-user mr-10"></i>Account details</a>
+                                            <a class="nav-link" href="/accountDetail"><i
+                                                    class="fi-rs-user mr-10"></i>Account details</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link"  href="/userAddress"
-                                                ><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                            <a class="nav-link" href="/userAddress"><i
+                                                    class="fi-rs-marker mr-10"></i>My Address</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link"  href="/wallet"
-                                                ><i
+                                            <a class="nav-link" id="wallet-tab" data-bs-toggle="tab" href="#wallet"
+                                                role="tab" aria-controls="wallet" aria-selected="true"><i
                                                     class="fi-rs-shopping-bag mr-10"></i>Wallet</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link"  href="/userOrder"
-                                                ><i
+                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders"
+                                                role="tab" aria-controls="orders" aria-selected="false"><i
                                                     class="fi-rs-shopping-bag mr-10"></i>Orders</a>
                                         </li>
-                                      
+
                                     </ul>
                                 </div>
                             </div>
@@ -208,296 +209,154 @@
                                         </div>
                                         <div class="col-md">
                                             <article class="box m-3 bg-light d-flex">
-                                              <h5>Referral Code </h5> :<h5>
-                                                <%=referralCode%>
-                                              </h5>
+                                                <h5>Referral Code </h5> :<h5>
+                                                    <%=referralCode%>
+                                                </h5>
                                             </article>
-                                         
-                                          </div> 
+
+                                        </div>
                                         <% } %>
 
-                                            
-                                            
 
-                                            
+
+                                            <div class="tab-pane fade" id="orders" role="tabpanel"
+                                                aria-labelledby="orders-tab">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5 class="mb-0">Your Orders</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Order</th>
+                                                                        <th>Date</th>
+                                                                        <th>Total</th>
+                                                                        <th>Order status</th>
+                                                                        <th>Items</th>
+                                                                        <th>Status</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <% for( let i=order.length-1; i>=0; i--) { %>
+                                                                        <% let items=order[i].products.reduce((acc,
+                                                                            product)=> acc + product.quantity, 0) %>
+
+
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <%=order[i].orderId %>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%= order[i].orderDate.toLocaleString()
+                                                                                        %>
+                                                                                </td>
+
+                                                                                <td>
+                                                                                    <%= order[i].totalAmount%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%= order[i].orderStatus%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%=items%>
+                                                                                </td>
+
+
+                                                                                <td>
+                                                                                    <a href="/orderdetail?orderId=<%=order[i]._id%>"
+                                                                                        class="btn-small d-block">View</a>
+                                                                                </td>
+
+                                                                            </tr>
+                                                                            <% } %>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="wallet" role="tabpanel"
+                                                aria-labelledby="wallet-tab">
+                                                <div class="col-md-8 col-lg-10">
+                                                    <div
+                                                        class="tab-content d-flex justify-content-center align-items-center">
+
+
+
+                                                        <div class="card" style="width: 50vw; margin-top: 10px;">
+                                                            <div
+                                                                class="card-body d-flex flex-column align-items-center justify-content-center">
+                                                                <i class="fa-solid fa-wallet"
+                                                                    style="font-size: 50px;"></i>
+
+
+                                                                <h3>Wallet Balance</h3>
+                                                                <p style="font-size: 30px; ">₹&nbsp;<%= wallet ?
+                                                                        wallet.walletBalance : 0 %>
+                                                                </p>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div
+                                                        class="mt-5 card-body d-flex flex-column align-items-center justify-content-center">
+                                                        <table class="table" style="width: 38vw;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Transaction Type</th>
+                                                                    <th scope="col">Date</th>
+                                                                    <th scope="col">Amount</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% if (wallet && wallet.transaction &&
+                                                                    wallet.transaction.length) { %>
+                                                                    <% for (let i=0; i < wallet.transaction.length; i++)
+                                                                        { %>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <span
+                                                                                    class="badge badge-pill bg-success">
+                                                                                    <%= wallet.transaction[i].type %>
+                                                                                </span>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= wallet.transaction[i].date.toLocaleString()
+                                                                                    %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <span class="">
+                                                                                    <%= wallet.transaction[i].amount %>
+                                                                                </span>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <% } %>
+                                                                            <% } else { %>
+                                                                                <tr>
+                                                                                    <td colspan="3">No transactions
+                                                                                        available.</td>
+                                                                                </tr>
+                                                                                <% } %>
+                                                            </tbody>
+
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
         </section>
     </main>
-    
-
-
-    <script>
-        var addressForm = document.getElementById("addressForms");
-        var name = document.getElementById("name");
-        var housename = document.getElementById("housename");
-        var street = document.getElementById("street");
-        var city = document.getElementById("city");
-        var district = document.getElementById("district");
-        var state = document.getElementById("state");
-        var pincode = document.getElementById("pincode");
-        var phonenumber = document.getElementById("phonenumber");
-        var altPhone = document.getElementById("altPhone");
-
-        var housenameError = document.getElementById("housenameError");
-        var streetError = document.getElementById("streetError");
-        var cityError = document.getElementById("cityError");
-        var districtError = document.getElementById("districtError");
-        var stateError = document.getElementById("stateError");
-        var pincodeError = document.getElementById("pincodeError");
-        var phonenumberError = document.getElementById("phonenumberError");
-        var altPhoneError = document.getElementById("altPhoneError");
-        var nameError = document.getElementById("nameError");
-
-
-        var phNu_check = /^\d{10}$/;
-
-        addressForm.addEventListener('submit', (e) => {
-            if (name.value.trim() === '') {
-                e.preventDefault();
-                nameError.innerHTML = "Name is required";
-            } else {
-                nameError.innerHTML = "";
-            }
-
-            if (housename.value.trim() === '') {
-                e.preventDefault();
-                housenameError.innerHTML = "housename is required";
-            } else {
-                housenameError.innerHTML = "";
-            }
-
-            if (street.value.trim() === '') {
-                e.preventDefault();
-                streetError.innerHTML = "street is required";
-            } else {
-                streetError.innerHTML = "";
-            }
-
-            if (city.value.trim() === '') {
-                e.preventDefault();
-                cityError.innerHTML = "city is required";
-            } else {
-                cityError.innerHTML = "";
-            }
-
-            if (district.value.trim() === '') {
-                e.preventDefault();
-                districtError.innerHTML = "district is required";
-            } else {
-                districtError.innerHTML = "";
-            }
-
-            if (state.value.trim() === '') {
-                e.preventDefault();
-                stateError.innerHTML = "state is required";
-            } else {
-                stateError.innerHTML = "";
-            }
-
-            if (pincode.value.trim() === '') {
-                e.preventDefault();
-                pincodeError.innerHTML = "pincode is required";
-            } else {
-                pincodeError.innerHTML = "";
-            }
-
-            var phonenumber = phonenumberInput.value.trim();
-            if (phonenumber === '0000000000') {
-                e.preventDefault();
-                phonenumberError.innerHTML = "Please enter a valid phone number other than all zeros";
-            } else if (!phonenumber.match(phNu_check)) {
-                e.preventDefault();
-                phonenumberError.innerHTML = "Please enter a valid 10-digit phone number";
-            } else {
-                phonenumberError.innerHTML = "";
-            }
-
-            var altPhone = altPhoneInput.value.trim();
-            if (altPhone === '0000000000') {
-                e.preventDefault();
-                altPhoneError.innerHTML = "Please enter a valid phone number other than all zeros";
-            } else if (!altPhone.match(phNu_check)) {
-                e.preventDefault();
-                altPhoneError.innerHTML = "Please enter a valid 10-digit phone number";
-            } else {
-                altPhoneError.innerHTML = "";
-            }
-
-        });
-    </script>
-
-    <script>
-        function confirmAddAddress(addressId) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Do you want to add address?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    openAddAddressModal();
-                }
-            });
-        }
-
-        $(document).ready(function () {
-            $("#addressForms").click(function () {
-                $("#addressType").val("");
-                $("#name").val("");
-                $("#housename").val("");
-                $("#street").val("");
-                $("#city").val("");
-                $("#district").val("");
-                $("#state").val("");
-                $("#pincode").val("");
-                $("#phonenumber").val("");
-                $("#altPhone").val("");
-            });
-
-            $("#saveAddress").click(function () {
-                saveAddress();
-            });
-        });
-
-        function openAddAddressModal() {
-
-            $("#addressType").val("");
-            $("#name").val("");
-            $("#housename").val("");
-            $("#street").val("");
-            $("#city").val("");
-            $("#district").val("");
-            $("#state").val("");
-            $("#pincode").val("");
-            $("#phonenumber").val("");
-            $("#altPhone").val("");
-
-
-            $('#addAddressModal').modal('show');
-        }
-
-        function confirmSaveAddress() {
-            Swal.fire({
-                title: 'Success',
-                text: 'Address has been saved',
-                icon: 'success',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    saveAddress();
-                }
-            });
-        }
-
-        function saveAddress() {
-            const addressType = $('input[name="addressType"]:checked').val();
-            const name = $('#name').val();
-            const housename = $('#housename').val();
-            const street = $('#street').val();
-            const city = $('#city').val();
-            const district = $('#district').val();
-            const state = $('#state').val();
-            const pincode = $('#pincode').val();
-            const phonenumber = $('#phonenumber').val();
-            const altPhone = $('#altPhone').val();
-
-            const newAddress = {
-                addressType: addressType,
-                name: name,
-                housename: housename,
-                street: street,
-                city: city,
-                district: district,
-                state: state,
-                pincode: pincode,
-                phonenumber: phonenumber,
-                altPhone: altPhone
-            };
-
-            $.ajax({
-                url: '/saveAddress',
-                method: 'POST',
-                data: newAddress,
-                success: function (response) {
-                    window.location.href = '/userDetail';
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                }
-            });
-
-
-            $('#addAddressModal').modal('hide');
-        }
-
-
-        function confirmEditAddressModal(addressId) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Do you want to edit this address?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    console.log('user say yess to edit the address')
-                    openEditAddressModal(addressId);
-                }
-            });
-        }
-
-
-        function openEditAddressModal(addressId) {
-
-            $.ajax({
-
-                url: `/editaddress/${addressId}`,
-                method: 'GET',
-                success: function (response) {
-                    if (response && response.success) {
-
-                        $('#editAddressType').val(response.addressType);
-                        $('#editName').val(response.name);
-                        $('#editHousename').val(response.housename);
-                        $('#editStreet').val(response.street);
-                        $('#editCity').val(response.city);
-                        $('#editDistrict').val(response.district);
-                        $('#editState').val(response.state);
-                        $('#editPincode').val(response.pincode);
-                        $('#editPhonenumber').val(response.phonenumber);
-                        $('#editAltPhone').val(response.altPhone);
-
-
-                        $('#editAddressId').val(addressId);
-
-
-                        $('#editAddressModal').modal('show');
-                    } else {
-
-                        console.error('Error retrieving address data:', response.error);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error retrieving address data:', error);
-                }
-            });
-        }
-
-
-
-
-    </script>
-
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

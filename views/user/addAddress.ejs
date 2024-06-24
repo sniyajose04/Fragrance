@@ -1,0 +1,328 @@
+<%- include('./userLayout/header') %>
+<header class="header-area header-style-1 header-height-2">
+  <div class="header-top header-top-ptb-1 d-none d-lg-block">
+      <div class="container">
+          <div class="row align-items-center">
+              <div class="col-xl-3 col-lg-4">
+                  <div class="header-info header-info-right">
+                      <ul>
+                          <% if (user) { %>
+                              <li><a href="/userDetail">
+                                      <%=user.name%>
+                                  </a></li>
+
+                              <li><a href="/userLogout">Logout</a></li>
+
+                              <% }else{%>
+                                  <li><i class="fi-rs-user"></i><a href="/login">Log In</a></li>
+                                  <% } %>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="header-bottom sticky-bar sticky-white-bg">
+      <div class="container">
+          <div class="header-wrap header-space-between position-relative">
+              <div class="logo logo-width-1">
+                  <a href="index.html"><img src="/productImages/logoimages.png" alt="logo"></a>
+              </div>
+              <div
+                  class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
+                  <nav>
+                      <ul>
+                          <li><a href="/">Home</a>
+
+                          </li>
+                          <li><a href="/shop">Shop</a>
+
+                          </li>
+                          <li>
+                              <a href="/about">About</a>
+                          </li>
+
+
+                          <li>
+                              <a href="/contact">Contact</a>
+                          </li>
+                      </ul>
+                  </nav>
+              </div>
+              <div class="header-action-right">
+                  <div class="search-style-2">
+
+                  </div>
+                  <div class="header-action-2">
+                      <div class="header-action-icon-2">
+                          <a href="/wishlist">
+                              <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
+
+                          </a>
+                      </div>
+                      <div class="header-action-icon-2">
+                          <a class="mini-cart-icon" href="/cart">
+                              <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+
+                          </a>
+
+                      </div>
+                      <div class="header-action-icon d-block d-lg-none">
+                          <div class="burger-icon">
+                              <span class="burger-icon-top"></span>
+                              <span class="burger-icon-mid"></span>
+                              <span class="burger-icon-bottom"></span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</header>
+<div class="mobile-header-active mobile-header-wrapper-style">
+  <div class="mobile-header-wrapper-inner">
+      <div class="mobile-header-top">
+          <div class="mobile-header-logo">
+              <a href="index.html"><img src="/productImages/logoimages.png" alt="logo"></a>
+          </div>
+          <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+              <button class="close-style search-close">
+                  <i class="icon-top"></i>
+                  <i class="icon-bottom"></i>
+              </button>
+          </div>
+      </div>
+      <div class="mobile-header-content-area">
+          <div class="mobile-search search-style-3 mobile-header-border">
+              <form action="#">
+                  <input type="text" placeholder="Search for items…">
+                  <button type="submit"><i class="fi-rs-search"></i></button>
+              </form>
+          </div>
+          <div class="mobile-menu-wrap mobile-header-border">
+          </div>
+          <!-- mobile menu start -->
+          <nav>
+              <ul class="mobile-menu">
+                  <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                          href="index.html">Home</a>
+
+                  </li>
+                  <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                          href="shop-grid-right.html">shop</a>
+
+                  </li>
+
+
+
+              </ul>
+          </nav>
+          <!-- mobile menu end -->
+      </div>
+      <div class="mobile-header-info-wrap mobile-header-border">
+          <div class="single-mobile-header-info mt-30">
+              <a href="page-contact.html"> Our location </a>
+          </div>
+          <div class="single-mobile-header-info">
+              <a href="page-login-register.html">Log In / Sign Up </a>
+          </div>
+          <div class="single-mobile-header-info">
+              <a href="#">(+01) - 2345 - 6789 </a>
+          </div>
+      </div>
+      <div class="mobile-social-icon">
+          <h5 class="mb-15 text-grey-4">Follow Us</h5>
+          <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+          <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+          <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+          <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+          <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+      </div>
+  </div>
+</div>
+</div>
+<main class="main">
+  <div class="page-header breadcrumb-wrap">
+      <div class="container">
+          <div class="breadcrumb">
+              <a href="index.html" rel="nofollow">Home</a>
+              <span></span>Profile
+              <span></span>Add Address
+          </div>
+      </div>
+  </div>
+              <div class="col-md-6">
+
+
+                <section class="content-body p-xl-4">
+                  <form action="/addAddress" method="post" onsubmit="return validationChecking()">
+                    <div class="row">
+                      <div class="form-group">
+                        <input type="text" id="userName" name="userName" placeholder="Enter Name" />
+                        <div id="erroruserName" class="ms-2 text-danger"></div>
+                      </div>
+                     <div class="form-group">
+                        <input type="text" id="houseName" name="houseName" placeholder="Enter Housename" />
+                        <div id="errorhouseName" class="ms-2 text-danger"></div>
+                      </div>
+                      <div class="form-group ">
+                        <input type="text" id="street" name="street" placeholder="Enter street" />
+                        <div id="errorstreet" class="ms-2 text-danger"></div>
+                      </div>
+                      <div class="form-group ">
+                        <input type="text" id="city" name="city" placeholder="Enter city" />
+                        <div id="errorcity" class="ms-2 text-danger"></div>
+                      </div>
+
+                      <div class="row">
+                        <div class="form-group col-md-6">
+                          <input type="text" id="state" name="state" placeholder="Enter state" />
+                          <div id="errorstate" class="ms-2 text-danger"></div>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <input type="text" id="pincode" name="pincode" placeholder="Enter pincode" />
+                          <div id="errorpincode" class="ms-2 text-danger"></div>
+                        </div>
+                      </div>
+                      <div class="form-group ">
+                        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter phonenumber" />
+                        <div id="errorphoneNumber" class="ms-2 text-danger"></div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="text-center">
+                      <button class="btn btn-primary " onclick="submitAddressForm()">Save changes</button>
+                    </div>
+
+                  </form>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const userName = document.getElementById("userName")
+  const erroruserName = document.getElementById("erroruserName")
+  const houseName = document.getElementById("houseName");
+  const errorhouseName = document.getElementById("errorhouseName");
+  const street = document.getElementById("street");
+  const errorstreet = document.getElementById("errorstreet");
+  const city = document.getElementById("city");
+  const errorcity = document.getElementById("errorcity");
+  const state = document.getElementById("state");
+  const errorstate = document.getElementById("errorstate");
+  const pincode = document.getElementById("pincode");
+  const errorpincode = document.getElementById("errorpincode");
+  const phoneNumber = document.getElementById("phoneNumber");
+  const errorphoneNumber = document.getElementById("errorphoneNumber");
+
+  userName.addEventListener('input', function () {
+    erroruserName.innerHTML = userName.value.trim() === "" ? "Please enter user name" : /^[a-zA-Z ]+$/.test(userName.value) == false ? "Please enter alphabets only" : "";
+  });
+  houseName.addEventListener('input', function () {
+    errorhouseName.innerHTML = houseName.value.trim() === "" ? "Please enter home name" : /^[a-zA-Z ]+$/.test(houseName.value) == false ? "Please enter alphabets only" : "";
+  });
+  street.addEventListener('input', function () {
+    errorstreet.innerHTML = street.value.trim() === "" ? "Please enter street name" : /^[a-zA-Z ]+$/.test(street.value) == false ? "Please enter alphabets only" : "";
+  });
+  city.addEventListener('input', function () {
+    errorcity.innerHTML = city.value.trim() === "" ? "Please enter city name" : /^[a-zA-Z ]+$/.test(city.value) == false ? "Please enter alphabets only" : "";
+  });
+  state.addEventListener('input', function () {
+    errorstate.innerHTML = state.value.trim() === "" ? "Please enter state name" : /^[a-zA-Z ]+$/.test(state.value) == false ? "Please enter alphabets only" : "";
+  });
+  pincode.addEventListener('input', function () {
+    errorpincode.innerHTML = pincode.value.trim() === "" ? "Please enter  pincode" : /^\d{6}$/.test(pincode.value) == false ? "Please enter valid  pincode" : "";
+  });
+  phoneNumber.addEventListener('input', function () {
+    errorphoneNumber.innerHTML = phoneNumber.value.trim() === "" ? "Please enter phone number" : /^\d{10}$/.test(phoneNumber.value) == false ? "Please enter valid  phone number" : "";
+  });
+
+
+});
+function validationChecking() {
+  const userName = document.getElementById("userName");
+  const erroruserName = document.getElementById("erroruserName");
+  const houseName = document.getElementById("houseName");
+  const errorhouseName = document.getElementById("errorhouseName");
+  const street = document.getElementById("street");
+  const errorstreet = document.getElementById("errorstreet");
+  const city = document.getElementById("city");
+  const errorcity = document.getElementById("errorcity");
+  const state = document.getElementById("state");
+  const errorstate = document.getElementById("errorstate");
+  const pincode = document.getElementById("pincode");
+  const errorpincode = document.getElementById("errorpincode");
+  const phoneNumber = document.getElementById("phoneNumber");
+  const errorphoneNumber = document.getElementById("errorphoneNumber");
+
+  let isValid = true;
+
+  erroruserName.innerHTML = userName.value.trim() === "" ? "Please enter user name" : /^[a-zA-Z ]+$/.test(userName.value) == false ? "Please enter alphabets only" : "";
+  errorhouseName.innerHTML = houseName.value.trim() === "" ? "Please enter home name" : /^[a-zA-Z ]+$/.test(houseName.value) == false ? "Please enter alphabets only" : "";
+  errorstreet.innerHTML = street.value.trim() === "" ? "Please enter street name" : /^[a-zA-Z ]+$/.test(street.value) == false ? "Please enter alphabets only" : "";
+  errorcity.innerHTML = city.value.trim() === "" ? "Please enter city name" : /^[a-zA-Z ]+$/.test(city.value) == false ? "Please enter alphabets only" : "";
+  errorstate.innerHTML = state.value.trim() === "" ? "Please enter state name" : /^[a-zA-Z ]+$/.test(state.value) == false ? "Please enter alphabets only" : "";
+  errorpincode.innerHTML = pincode.value.trim() === "" ? "Please enter pincode" : /^\d{6}$/.test(pincode.value) == false ? "Please enter valid pincode" : "";
+  errorphoneNumber.innerHTML = phoneNumber.value.trim() === "" ? "Please enter phoneNumber" : /^\d{10}$/.test(phoneNumber.value) == false ? "Please enter valid phonenumber" : "";
+
+  if (
+    erroruserName.innerHTML ||
+    errorhouseName.innerHTML ||
+    errorstreet.innerHTML ||
+    errorcity.innerHTML ||
+    errorstate.innerHTML ||
+    errorpincode.innerHTML ||
+    errorphoneNumber.innerHTML 
+  ) {
+    isValid = false;
+  }
+
+  return isValid;
+}
+
+function submitAddressForm() {
+    // Collect form data
+    var formData = {
+        userName: document.getElementById('userName').value,
+        houseName: document.getElementById('houseName').value,
+        street: document.getElementById('street').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        pincode: document.getElementById('pincode').value,
+        phoneNumber: document.getElementById('phoneNumber').value
+    };
+
+    $.ajax({
+        url: '/addAddress',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function(response) {
+            console.log('Server response:', response);
+            if (response.success) {
+                window.location.href = '/userAddress';
+            } else {
+                console.error('Failed to add address:', response.message);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error:', textStatus, errorThrown);
+        }
+    });
+}
+
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <%- include('./userLayout/footer') %>

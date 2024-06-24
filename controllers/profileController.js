@@ -25,48 +25,6 @@ const userDetailPage = async (req, res) => {
 }
 
 
-const accountDetailPage = async(req,res)=>{
-    try {
-        const user = await User.findOne({ _id: req.session.user_id });
-        res.render('accountDetail',{user})
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send('Internal Server Error'); 
-    }
-}
-
-
-const userAddressPage = async(req,res)=>{
-    try {
-        const user = await User.findOne({ _id: req.session.user_id });
-        const addresses = await Address.find({ userId: req.session.user_id });
-        res.render('userAddress',{user,addresses})
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send('Internal Server Error'); 
-    }
-}
-
-
-const walletPage = async(req,res)=>{
-    try {
-        const user = await User.findOne({ _id: req.session.user_id });
-        const addresses = await Address.find({ userId: req.session.user_id });
-        const order = await Order.find({ userId: req.session.user_id });
-        const wallet = await Wallet.findOne({ user: req.session.user_id });
-        let referralCode = user.referralCode;
-        if (!referralCode) {
-            referralCode = await generateUniqueReferralCode();
-            user.referralCode = referralCode;
-            await user.save();
-        }
-        res.render('wallet',{user,addresses, order, wallet, referralCode })
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send('Internal Server Error'); 
-    }
-}
-
 async function generateUniqueReferralCode() {
     const RandomReferralCode = () => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -88,18 +46,124 @@ async function generateUniqueReferralCode() {
 }
 
 
-const userOrderPage = async(req,res)=>{
+const accountDetailPage = async(req,res)=>{
     try {
-        const addresses = await Address.find({ userId: req.session.user_id });
         const user = await User.findOne({ _id: req.session.user_id });
-        const order = await Order.find({ userId: req.session.user_id });
-      
-        res.render('userOrder',{user,addresses,order})
+        res.render('accountDetail',{user})
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Internal Server Error'); 
     }
 }
+
+
+const userAddressPage = async(req,res)=>{
+    try {
+        const user = await User.findOne({ _id: req.session.user_id });
+        res.render('userAddress',{user})
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send('Internal Server Error');  
+    }
+}
+
+
+const addAddressPage = async(req,res)=>{
+    try {
+        const user = await User.findOne({ _id: req.session.user_id });
+        const addresses = await Address.find({ userId: req.session.user_id });
+        res.render('addAddress',{user,addresses})
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send('Internal Server Error'); 
+    }
+}
+
+
+const addAddress = async (req, res) => {
+    try {
+        console.log('Request received:', req.body); // Log incoming request data
+        const userId = req.session.user_id;
+        const { userName, houseName, street, city, state, pincode, phoneNumber } = req.body;
+        const address = new Address({
+            userId,
+            userName,
+            houseName,
+            street,
+            city,
+            state,
+            pincode,
+            phoneNumber,
+            is_listed:true
+        });
+        const addressData = await address.save();
+        console.log('Address saved:', addressData);
+        res.status(200).json({ success: true, message: "Address added successfully" });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+
+const editAddressPage = async(req,res)=>{
+    try {
+        const userId = req.session.user_id;
+        const user = await User.findById(userId);
+        const id = req.query.id;
+        const addressData = await Address.findById(id);
+        res.render("editAddress",addressData,user)
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+}
+
+  
+  const editAddress = async (req, res) => {
+    try {
+
+      const { userName, houseName, street, city, state, pincode, phoneNumber,address_id} = req.body;
+      const updateData = await Address.findByIdAndUpdate(
+        { _id: address_id },
+        {
+          $set: {
+            userName,
+            houseName,
+            street,
+            city,
+            state,
+            pincode,
+            phoneNumber,
+            is_listed:true
+          },
+        }
+      );
+    
+      res.status(200).json({ success: true, message: "return sucessfully" });
+    }
+    catch (error) {
+      console.log(error.message);
+    }
+  }
+  
+
+  const deleteAddress = async(req,res)=>{
+    try {
+        const id = req.query.id
+        const addressData = await Address.findByIdAndUpdate(
+            {_id:id},
+            {$set:{
+                is_listed:false
+            }}
+        )
+        res.redirect('/userAddress')
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ success: false, message: 'Internal Server Error' }); 
+    }
+  }
 
 
 const userPassword = async (req, res) => {
@@ -153,89 +217,7 @@ const userPassword = async (req, res) => {
 };
 
 
-const saveAddress = async (req, res) => {
-    try {
-        const { addressType, name, housename, street, city, district, state, pincode, phonenumber, altPhone } = req.body;
 
-        // Validate phone number and pincode
-        const phoneRegex = /^\d{10}$/;
-        const pincodeRegex = /^\d{6}$/;
-
-        if (!phoneRegex.test(phonenumber)) {
-            return res.status(400).send('Phone number must be 10 digits');
-        }
-
-        if (altPhone && !phoneRegex.test(altPhone)) {
-            return res.status(400).send('Alternate phone number must be 10 digits');
-        }
-
-        if (!pincodeRegex.test(pincode)) {
-            return res.status(400).send('Pincode must be 6 digits');
-        }
-
-        const newAddress = new Address({
-            userId: req.session.user_id,
-            addressType,
-            name,
-            housename,
-            street,
-            city,
-            district,
-            state,
-            pincode,
-            phonenumber,
-            altPhone: altPhone || null
-        });
-
-        await newAddress.save();
-        res.status(200).send('success');
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send('Internal Server Error');
-    }
-};
-
-
-const updateAddress = async (req, res) => {
-    try {
-        const { id, addressType, name, housename, street, city, district, state, pincode, phonenumber, altPhone } = req.body;
-
-        // Validate phone number and pincode
-        const phoneRegex = /^\d{10}$/;
-        const pincodeRegex = /^\d{6}$/;
-
-        if (!phoneRegex.test(phonenumber)) {
-            return res.status(400).send('Phone number must be 10 digits');
-        }
-
-        if (altPhone && !phoneRegex.test(altPhone)) {
-            return res.status(400).send('Alternate phone number must be 10 digits');
-        }
-
-        if (!pincodeRegex.test(pincode)) {
-            return res.status(400).send('Pincode must be 6 digits');
-        }
-
-        const updatedAddress = {
-            addressType,
-            name,
-            housename,
-            street,
-            city,
-            district,
-            state,
-            pincode,
-            phonenumber,
-            altPhone: altPhone || null
-        };
-
-        await Address.findByIdAndUpdate(id, updatedAddress);
-        res.status(200).send('success');
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send('Internal Server Error');
-    }
-};
 
 
 const orderDetailPage = async (req, res) => {
@@ -351,17 +333,18 @@ const repaymentPage = async (req, res) => {
 }
 
 
+
 module.exports = {
     userDetailPage,
     userPassword,
-    saveAddress,
     orderDetailPage,
     orderCancel,
     repaymentPage,
     accountDetailPage,
+    addAddressPage,
     userAddressPage,
-    walletPage,
-    userOrderPage,
-    updateAddress
-  
+    addAddress,
+    editAddressPage,
+    editAddress,
+    deleteAddress
 }

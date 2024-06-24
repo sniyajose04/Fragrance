@@ -6,15 +6,11 @@ const addressSchema = new mongoose.Schema({
         ref:'User',
         required:true
     },
-    addressType: {
+    userName: {
         type: String,
         required: true
     },
-    name: {
-        type: String,
-        required: true
-    },
-    housename: {
+    houseName: {
         type: String,
         required: true
     },
@@ -26,10 +22,6 @@ const addressSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    district: {
-        type: String,
-        required: true
-    },
     state: {
         type: String,
         required: true
@@ -38,11 +30,7 @@ const addressSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    phonenumber: {
-        type: String,
-        required: true
-    },
-    altPhone: {
+    phoneNumber: {
         type: String,
         required: true
     },
@@ -50,6 +38,10 @@ const addressSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    is_listed:{
+        type:Boolean,
+        default:true
+    }
 })
 
 module.exports = mongoose.model('Address', addressSchema)
