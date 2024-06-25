@@ -11,7 +11,7 @@ const Wallet = require('../models/walletModel')
 const renderhome = async (req, res) => {
     try {
         const pages =req.query.page||1;
-        const sizeOfPage = 8;
+        const sizeOfPage = 10;
         const productSkip = (pages-1)*sizeOfPage;
         const productCount = await Product.find({  is_block: false }).count();
         const numofPage = Math.ceil(productCount/sizeOfPage)
@@ -63,6 +63,7 @@ async function generateUniqueReferralCode() {
 const insertUser = async (req, res) => {
     try {
         const { username, email, mno, password, referralCode } = req.body;
+        console.log(req.body);
         const spassword = await securePassword(password);
         console.log("Secured password:", spassword);
         await createOtp(email);
@@ -102,7 +103,7 @@ const insertUser = async (req, res) => {
         }
     } catch (error) {
         console.error("Error in insertUser:", error.message);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Internal Server Error.................');
     }
 };
 

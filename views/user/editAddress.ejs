@@ -152,51 +152,52 @@
           </div>
       </div>
   </div>
-              <div class="col-md-6">
-
-
-                <section class="content-body p-xl-4">
-                  <form  onsubmit="return validationChecking()">
-                    <div class="row">
-                        <input type="hidden" id="address_id" name="address_id" value="<%=Address._id %>">
-                      <div class="form-group">
-                        <input type="text" id="userName" name="userName" value="<%=addressData.name %>" placeholder="Enter Name" />
-                        <div id="erroruserName" class="ms-2 text-danger"></div>
-                      </div>
-                     <div class="form-group">
-                        <input type="text" id="houseName" name="houseName" value="<%=addressData.houseName %>" placeholder="Enter Housename" />
-                        <div id="errorhouseName" class="ms-2 text-danger"></div>
-                      </div>
-                      <div class="form-group ">
-                        <input type="text" id="street" name="street" value="<%=addressData.street %>" placeholder="Enter street" />
-                        <div id="errorstreet" class="ms-2 text-danger"></div>
-                      </div>
-                      <div class="form-group ">
-                        <input type="text" id="city" name="city" value="<%=addressData.city %>" placeholder="Enter city" />
-                        <div id="errorcity" class="ms-2 text-danger"></div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6">
-                          <input type="text" id="state" name="state"value="<%=addressData.state %>" placeholder="Enter state" />
-                          <div id="errorstate" class="ms-2 text-danger"></div>
-                        </div>
-                        <div class="form-group col-md-6">
-                          <input type="text" id="pincode" name="pincode" value="<%=addressData.pincode %>" placeholder="Enter pincode" />
-                          <div id="errorpincode" class="ms-2 text-danger"></div>
-                        </div>
-                      </div>
-                      <div class="form-group ">
-                        <input type="text" id="phoneNumber" name="phoneNumber"value="<%=addressData.phoneNumber %>" placeholder="Enter phonenumber" />
-                        <div id="errorphoneNumber" class="ms-2 text-danger"></div>
-                      </div>
+  <div class="col-md-6">
+    <section class="content-body p-xl-4">
+        <form onsubmit="return fromSubmitData(event)">
+            <div class="row">
+                <input type="hidden" id="addressData_id" name="addressData_id" value="<%= addressData._id %>">
+                <div class="form-group">
+                    <input type="text" id="name" name="userName" value="<%= addressData.name %>" placeholder="Enter Name" />
+                    <div id="erroruserName" class="ms-2 text-danger"></div>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="houseName" name="houseName" value="<%= addressData.houseName %>" placeholder="Enter Housename" />
+                    <div id="errorhouseName" class="ms-2 text-danger"></div>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="street" name="street" value="<%= addressData.street %>" placeholder="Enter street" />
+                    <div id="errorstreet" class="ms-2 text-danger"></div>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="city" name="city" value="<%= addressData.city %>" placeholder="Enter city" />
+                    <div id="errorcity" class="ms-2 text-danger"></div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" id="state" name="state" value="<%= addressData.state %>" placeholder="Enter state" />
+                        <div id="errorstate" class="ms-2 text-danger"></div>
                     </div>
-                    <br>
-                    <div class="text-center">
-                      <button class="btn btn-primary " onclick="fromSubmitData()">Save changes</button>
+                    <div class="form-group col-md-6">
+                        <input type="text" id="pincode" name="pincode" value="<%= addressData.pincode %>" placeholder="Enter pincode" />
+                        <div id="errorpincode" class="ms-2 text-danger"></div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="phoneNumber" name="phoneNumber" value="<%= addressData.phoneNumber %>" placeholder="Enter phone number" />
+                    <div id="errorphoneNumber" class="ms-2 text-danger"></div>
+                </div>
+            </div>
+            <br>
+            <div class="text-center">
+                <button class="btn btn-primary" type="submit">Save changes</button>
+            </div>
+        </form>
+    </section>
+</div>
 
-                  </form>
-                </section>
+
+              
               </div>
             </div>
           </div>
@@ -209,101 +210,109 @@
 
 
 document.addEventListener('DOMContentLoaded', function () {
-  const userName = document.getElementById("userName")
-  const erroruserName = document.getElementById("erroruserName")
-  const houseName = document.getElementById("houseName");
-  const errorhouseName = document.getElementById("errorhouseName");
-  const street = document.getElementById("street");
-  const errorstreet = document.getElementById("errorstreet");
-  const city = document.getElementById("city");
-  const errorcity = document.getElementById("errorcity");
-  const state = document.getElementById("state");
-  const errorstate = document.getElementById("errorstate");
-  const pincode = document.getElementById("pincode");
-  const errorpincode = document.getElementById("errorpincode");
-  const phoneNumber = document.getElementById("phoneNumber");
-  const errorphoneNumber = document.getElementById("errorphoneNumber");
+    const userName = document.getElementById("name");
+    const erroruserName = document.getElementById("erroruserName");
+    const houseName = document.getElementById("houseName");
+    const errorhouseName = document.getElementById("errorhouseName");
+    const street = document.getElementById("street");
+    const errorstreet = document.getElementById("errorstreet");
+    const city = document.getElementById("city");
+    const errorcity = document.getElementById("errorcity");
+    const state = document.getElementById("state");
+    const errorstate = document.getElementById("errorstate");
+    const pincode = document.getElementById("pincode");
+    const errorpincode = document.getElementById("errorpincode");
+    const phoneNumber = document.getElementById("phoneNumber");
+    const errorphoneNumber = document.getElementById("errorphoneNumber");
 
-  userName.addEventListener('input', function () {
-    erroruserName.innerHTML = userName.value.trim() === "" ? "Please enter user name" : /^[a-zA-Z ]+$/.test(userName.value) == false ? "Please enter alphabets only" : "";
-  });
-  houseName.addEventListener('input', function () {
-    errorhouseName.innerHTML = houseName.value.trim() === "" ? "Please enter home name" : /^[a-zA-Z ]+$/.test(houseName.value) == false ? "Please enter alphabets only" : "";
-  });
-  street.addEventListener('input', function () {
-    errorstreet.innerHTML = street.value.trim() === "" ? "Please enter street name" : /^[a-zA-Z ]+$/.test(street.value) == false ? "Please enter alphabets only" : "";
-  });
-  city.addEventListener('input', function () {
-    errorcity.innerHTML = city.value.trim() === "" ? "Please enter city name" : /^[a-zA-Z ]+$/.test(city.value) == false ? "Please enter alphabets only" : "";
-  });
-  state.addEventListener('input', function () {
-    errorstate.innerHTML = state.value.trim() === "" ? "Please enter state name" : /^[a-zA-Z ]+$/.test(state.value) == false ? "Please enter alphabets only" : "";
-  });
-  pincode.addEventListener('input', function () {
-    errorpincode.innerHTML = pincode.value.trim() === "" ? "Please enter  pincode" : /^\d{6}$/.test(pincode.value) == false ? "Please enter valid  pincode" : "";
-  });
-  phoneNumber.addEventListener('input', function () {
-    errorphoneNumber.innerHTML = phoneNumber.value.trim() === "" ? "Please enter phone number" : /^\d{10}$/.test(phoneNumber.value) == false ? "Please enter valid  phone number" : "";
-  });
-
-
+    userName.addEventListener('input', function () {
+        erroruserName.innerHTML = userName.value.trim() === "" ? "Please enter user name" : /^[a-zA-Z ]+$/.test(userName.value) == false ? "Please enter alphabets only" : "";
+    });
+    houseName.addEventListener('input', function () {
+        errorhouseName.innerHTML = houseName.value.trim() === "" ? "Please enter home name" : /^[a-zA-Z ]+$/.test(houseName.value) == false ? "Please enter alphabets only" : "";
+    });
+    street.addEventListener('input', function () {
+        errorstreet.innerHTML = street.value.trim() === "" ? "Please enter street name" : /^[a-zA-Z ]+$/.test(street.value) == false ? "Please enter alphabets only" : "";
+    });
+    city.addEventListener('input', function () {
+        errorcity.innerHTML = city.value.trim() === "" ? "Please enter city name" : /^[a-zA-Z ]+$/.test(city.value) == false ? "Please enter alphabets only" : "";
+    });
+    state.addEventListener('input', function () {
+        errorstate.innerHTML = state.value.trim() === "" ? "Please enter state name" : /^[a-zA-Z ]+$/.test(state.value) == false ? "Please enter alphabets only" : "";
+    });
+    pincode.addEventListener('input', function () {
+        errorpincode.innerHTML = pincode.value.trim() === "" ? "Please enter pincode" : /^\d{6}$/.test(pincode.value) == false ? "Please enter valid pincode" : "";
+    });
+    phoneNumber.addEventListener('input', function () {
+        errorphoneNumber.innerHTML = phoneNumber.value.trim() === "" ? "Please enter phone number" : /^\d{10}$/.test(phoneNumber.value) == false ? "Please enter valid phone number" : "";
+    });
 });
+
 function validationChecking() {
-  const userName = document.getElementById("userName");
-  const erroruserName = document.getElementById("erroruserName");
-  const houseName = document.getElementById("houseName");
-  const errorhouseName = document.getElementById("errorhouseName");
-  const street = document.getElementById("street");
-  const errorstreet = document.getElementById("errorstreet");
-  const city = document.getElementById("city");
-  const errorcity = document.getElementById("errorcity");
-  const state = document.getElementById("state");
-  const errorstate = document.getElementById("errorstate");
-  const pincode = document.getElementById("pincode");
-  const errorpincode = document.getElementById("errorpincode");
-  const phoneNumber = document.getElementById("phoneNumber");
-  const errorphoneNumber = document.getElementById("errorphoneNumber");
+    const userName = document.getElementById("name");
+    const erroruserName = document.getElementById("erroruserName");
+    const houseName = document.getElementById("houseName");
+    const errorhouseName = document.getElementById("errorhouseName");
+    const street = document.getElementById("street");
+    const errorstreet = document.getElementById("errorstreet");
+    const city = document.getElementById("city");
+    const errorcity = document.getElementById("errorcity");
+    const state = document.getElementById("state");
+    const errorstate = document.getElementById("errorstate");
+    const pincode = document.getElementById("pincode");
+    const errorpincode = document.getElementById("errorpincode");
+    const phoneNumber = document.getElementById("phoneNumber");
+    const errorphoneNumber = document.getElementById("errorphoneNumber");
 
-  let isValid = true;
+    let isValid = true;
 
-  erroruserName.innerHTML = userName.value.trim() === "" ? "Please enter user name" : /^[a-zA-Z ]+$/.test(userName.value) == false ? "Please enter alphabets only" : "";
-  errorhouseName.innerHTML = houseName.value.trim() === "" ? "Please enter home name" : /^[a-zA-Z ]+$/.test(houseName.value) == false ? "Please enter alphabets only" : "";
-  errorstreet.innerHTML = street.value.trim() === "" ? "Please enter street name" : /^[a-zA-Z ]+$/.test(street.value) == false ? "Please enter alphabets only" : "";
-  errorcity.innerHTML = city.value.trim() === "" ? "Please enter city name" : /^[a-zA-Z ]+$/.test(city.value) == false ? "Please enter alphabets only" : "";
-  errorstate.innerHTML = state.value.trim() === "" ? "Please enter state name" : /^[a-zA-Z ]+$/.test(state.value) == false ? "Please enter alphabets only" : "";
-  errorpincode.innerHTML = pincode.value.trim() === "" ? "Please enter pincode" : /^\d{6}$/.test(pincode.value) == false ? "Please enter valid pincode" : "";
-  errorphoneNumber.innerHTML = phoneNumber.value.trim() === "" ? "Please enter phoneNumber" : /^\d{10}$/.test(phoneNumber.value) == false ? "Please enter valid phonenumber" : "";
+    erroruserName.innerHTML = userName.value.trim() === "" ? "Please enter user name" : /^[a-zA-Z ]+$/.test(userName.value) == false ? "Please enter alphabets only" : "";
+    errorhouseName.innerHTML = houseName.value.trim() === "" ? "Please enter home name" : /^[a-zA-Z ]+$/.test(houseName.value) == false ? "Please enter alphabets only" : "";
+    errorstreet.innerHTML = street.value.trim() === "" ? "Please enter street name" : /^[a-zA-Z ]+$/.test(street.value) == false ? "Please enter alphabets only" : "";
+    errorcity.innerHTML = city.value.trim() === "" ? "Please enter city name" : /^[a-zA-Z ]+$/.test(city.value) == false ? "Please enter alphabets only" : "";
+    errorstate.innerHTML = state.value.trim() === "" ? "Please enter state name" : /^[a-zA-Z ]+$/.test(state.value) == false ? "Please enter alphabets only" : "";
+    errorpincode.innerHTML = pincode.value.trim() === "" ? "Please enter pincode" : /^\d{6}$/.test(pincode.value) == false ? "Please enter valid pincode" : "";
+    errorphoneNumber.innerHTML = phoneNumber.value.trim() === "" ? "Please enter phone number" : /^\d{10}$/.test(phoneNumber.value) == false ? "Please enter valid phone number" : "";
 
-  if (
-    erroruserName.innerHTML ||
-    errorhouseName.innerHTML ||
-    errorstreet.innerHTML ||
-    errorcity.innerHTML ||
-    errorstate.innerHTML ||
-    errorpincode.innerHTML ||
-    errorphoneNumber.innerHTML 
-  ) {
-    isValid = false;
-  }
+    if (
+        erroruserName.innerHTML ||
+        errorhouseName.innerHTML ||
+        errorstreet.innerHTML ||
+        errorcity.innerHTML ||
+        errorstate.innerHTML ||
+        errorpincode.innerHTML ||
+        errorphoneNumber.innerHTML 
+    ) {
+        isValid = false;
+    }
 
-  return isValid;
+    return isValid;
 }
 
-function fromSubmitData() {
+function fromSubmitData(event) {
+    event.preventDefault(); // Prevent the default form submission (GET request)
+
+    if (!validationChecking()) {
+        return false;
+    }
+
     // Collect form data
     var formData = {
-        userName: document.getElementById('userName').value,
+        userName: document.getElementById('name').value,
         houseName: document.getElementById('houseName').value,
         street: document.getElementById('street').value,
         city: document.getElementById('city').value,
         state: document.getElementById('state').value,
         pincode: document.getElementById('pincode').value,
-        phoneNumber: document.getElementById('phoneNumber').value
+        phoneNumber: document.getElementById('phoneNumber').value,
+        addressData_id: document.getElementById('addressData_id').value // Include addressData_id
     };
+
+    console.log('Form data to be sent:', formData); // Log the form data
 
     $.ajax({
         url: '/editAddress',
-        type: 'PUT',
+        type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(formData),
         success: function(response) {
@@ -311,15 +320,16 @@ function fromSubmitData() {
             if (response.success) {
                 window.location.href = '/userAddress';
             } else {
-                console.error('Failed to add address:', response.message);
+                console.error('Failed to update address:', response.message);
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error('Error:', textStatus, errorThrown);
         }
     });
-}
 
+    return false;
+}
 
 </script>
 

@@ -45,7 +45,7 @@ user_route.get('/accountDetail',isLogin,profileController.accountDetailPage)
 user_route.get('/userAddress',isLogin,profileController.userAddressPage)
 user_route.get('/addAddress',isLogin,profileController.addAddressPage)
 user_route.post('/addAddress',isLogin,profileController.addAddress)
-user_route.get('/editAddress/:id',isLogin,profileController.editAddressPage)
+user_route.get('/editAddress',isLogin,profileController.editAddressPage)
 user_route.post('/editAddress',isLogin,profileController.editAddress)
 user_route.get('/deleteAddress',isLogin,profileController.deleteAddress)
 
@@ -65,7 +65,7 @@ user_route.post('/applycoupon',isLogin,checkoutController.applyCoupon)
 user_route.post('/checkoutsaveaddress',isLogin,checkoutController.checkoutSaveAddress)
 
 //PRODUCT DETAIL
-user_route.get('/productDetail',isLogin,productdetailController.productDetail )
+user_route.get('/productDetail',productdetailController.productDetail )
 user_route.post('/addToCart',isLogin,productdetailController.addToCart )
 user_route.post('/addWishlist',isLogin,productdetailController.addWishlist )
 

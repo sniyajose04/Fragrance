@@ -192,9 +192,11 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="tab-content dashboard-content">
-                                    <% if (user) { %>
-                                        <div class="tab-pane fade active show" id="dashboard" role="tabpanel"
-                                            aria-labelledby="dashboard-tab">
+                                    <div class="tab-pane fade active show" id="dashboard" role="tabpanel"
+                                        aria-labelledby="dashboard-tab">
+                                        <% if (user) { %>
+
+
                                             <div class="card">
                                                 <div class="card-header">
                                                     <h5 class="mb-0">Hello <%= user.name %>
@@ -207,270 +209,278 @@
                                                             password and account details</a>.</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md">
-                                            <article class="box m-3 bg-light d-flex">
-                                                <h5>Referral Code </h5> :<h5>
-                                                    <%=referralCode%>
-                                                </h5>
-                                            </article>
+                                    </div>
+                                    <div class="col-md">
+                                        <article class="box m-3 bg-light d-flex">
+                                            <h5>Referral Code </h5> :<h5>
+                                                <%=referralCode%>
+                                            </h5>
+                                        </article>
 
-                                        </div>
-                                        <% } %>
-
-                                            <div class="tab-pane fade" id="accountDetail" role="tabpanel"
-                                                aria-labelledby="accountDetail-tab">
-                                                <div class="col-md-8">
+                                    </div>
+                                    <% } %>
+                                        <div class="tab-pane fade" id="accountDetail" role="tabpanel"
+                                            aria-labelledby="accountDetail-tab">
 
 
-                                                    <div class="card">
-                                                        <section class="content-body p-xl-4">
-                                                            <form action="/userDetail" method="post"
-                                                                onsubmit="return validationChecking()">
-                                                                <div class="row">
-                                                                    <div class="col-lg-8">
-                                                                        <div class="row gx-3">
-                                                                            <% if(user){ %>
-                                                                                <input type="hidden" name="user_id"
-                                                                                    value="<%=user._id%>">
-                                                                                <div class="col-12 mb-3">
-                                                                                    <label
-                                                                                        class="form-label">Name</label>
-                                                                                    <input class="form-control"
-                                                                                        name="name"
-                                                                                        value="<%=user.name%>"
-                                                                                        id="fullName" type="text"
-                                                                                        placeholder="Type here">
-                                                                                    <div id="errorName"
-                                                                                        class="ms-2 text-danger"></div>
-                                                                                </div>
-                                                                                <div class="col-lg-12 mb-3">
-                                                                                    <label
-                                                                                        class="form-label">Email</label>
-                                                                                    <input class="form-control"
-                                                                                        type="email" name="email"
-                                                                                        value="<%=user.email%>"
-                                                                                        id="email"
-                                                                                        placeholder="type here"
-                                                                                        disabled>
-                                                                                    <div id="errorMail"
-                                                                                        class="ms-2 text-danger"></div>
-                                                                                </div>
-                                                                                <div class="col-lg-12 mb-3">
-                                                                                    <label
-                                                                                        class="form-label">Phone</label>
-                                                                                    <input class="form-control"
-                                                                                        type="tel" name="mobile"
-                                                                                        value="<%=user.mobile%>"
-                                                                                        id="phoneNumber"
-                                                                                        placeholder="type here">
-                                                                                    <div id="errorMobile"
-                                                                                        class="ms-2 text-danger"></div>
-                                                                                </div>
-                                                                                <% } %>
+                                            <div class="card">
+                                                <section class="content-body p-xl-4">
+                                                    <form action="/userDetail" method="post"
+                                                        onsubmit="return validationChecking()">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="row gx-3">
+                                                                    <% if(user){ %>
+                                                                        <input type="hidden" name="user_id"
+                                                                            value="<%=user._id%>">
+                                                                        <div class="col-12 mb-3">
+                                                                            <label class="form-label">Name</label>
+                                                                            <input class="form-control" name="name"
+                                                                                value="<%=user.name%>" id="fullName"
+                                                                                type="text" placeholder="Type here">
+                                                                            <div id="errorName"
+                                                                                class="ms-2 text-danger">
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
+                                                                        <div class="col-lg-12 mb-3">
+                                                                            <label class="form-label">Email</label>
+                                                                            <input class="form-control" type="email"
+                                                                                name="email" value="<%=user.email%>"
+                                                                                id="email" placeholder="type here"
+                                                                                disabled>
+                                                                            <div id="errorMail"
+                                                                                class="ms-2 text-danger">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-12 mb-3">
+                                                                            <label class="form-label">Phone</label>
+                                                                            <input class="form-control" type="tel"
+                                                                                name="mobile" value="<%=user.mobile%>"
+                                                                                id="phoneNumber"
+                                                                                placeholder="type here">
+                                                                            <div id="errorMobile"
+                                                                                class="ms-2 text-danger">
+                                                                            </div>
+                                                                        </div>
+                                                                        <% } %>
                                                                 </div>
-                                                                <br>
-                                                                <button id="saveChangesButton" class="btn btn-primary"
-                                                                    type="submit">Save changes</button>
-                                                            </form>
-
-                                                            <hr class="my-5">
-                                                            <div class="row" style="max-width:920px">
-                                                                <div class="col-md">
-                                                                    <article class="box mb-3 bg-light">
-                                                                        <button
-                                                                            class="btn float-end btn-light btn-sm rounded font-md"
-                                                                            data-bs-toggle="modal"
-                                                                            data-bs-target="#exampleModal">Change</button>
-                                                                        <h6>Password</h6>
-                                                                        <small class="text-muted d-block"
-                                                                            style="width:70%">You can reset or change
-                                                                            your password by clicking here</small>
-                                                                    </article>
-                                                                </div>
-
                                                             </div>
+                                                        </div>
+                                                        <br>
+                                                        <button id="saveChangesButton" class="btn btn-primary"
+                                                            type="submit">Save
+                                                            changes</button>
+                                                    </form>
 
+                                                    <hr class="my-5">
+                                                    <div class="row" style="max-width:920px">
+                                                        <div class="col-md">
+                                                            <article class="box mb-3 bg-light">
+                                                                <button
+                                                                    class="btn float-end btn-light btn-sm rounded font-md"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModal">Change</button>
+                                                                <h6>Password</h6>
+                                                                <small class="text-muted d-block" style="width:70%">You
+                                                                    can
+                                                                    reset or change
+                                                                    your password by clicking here</small>
+                                                            </article>
+                                                        </div>
 
-                                                        </section>
                                                     </div>
 
 
+                                                </section>
+                                            </div>
 
+
+
+                                        </div>
+                                        <div class="modal fade" id="exampleModal" tabindex="-1"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Reset
+                                                            Password</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="passwordChangeForm" action="/changePassword"
+                                                            onsubmit="return validationPasswordChecking()">
+                                                            <div class="form-group">
+                                                                <input type="password" id="password" name="password"
+                                                                    placeholder="Enter Current Password" />
+                                                                <div id="errorPassword" class="ms-2 text-danger"></div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <input type="password" id="newPassword"
+                                                                    name="newPassword"
+                                                                    placeholder="Enter New Password" />
+                                                                <div id="errornewpassword" class="ms-2 text-danger">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <input type="password" id="confirmPassword"
+                                                                    placeholder="Confirm New Password" />
+                                                                <div id="errorconfirmPassword"
+                                                                    class="mt-0 ms-2 text-danger">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group text-center">
+                                                                <button type="submit"
+                                                                    class="btn btn-fill-out btn-block hover-up">Submit</button>
+                                                            </div>
+                                                        </form>
+
+
+
+                                                    </div>
                                                 </div>
                                             </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Reset Password</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="passwordChangeForm" action="/changePassword"
-                                            onsubmit="return validationPasswordChecking()">
-                                            <div class="form-group">
-                                                <input type="password" id="password" name="password"
-                                                    placeholder="Enter Current Password" />
-                                                <div id="errorPassword" class="ms-2 text-danger"></div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <input type="password" id="newPassword" name="newPassword"
-                                                    placeholder="Enter New Password" />
-                                                <div id="errornewpassword" class="ms-2 text-danger"></div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <input type="password" id="confirmPassword"
-                                                    placeholder="Confirm New Password" />
-                                                <div id="errorconfirmPassword" class="mt-0 ms-2 text-danger"></div>
-                                            </div>
-
-                                            <div class="form-group text-center">
-                                                <button type="submit"
-                                                    class="btn btn-fill-out btn-block hover-up">Submit</button>
-                                            </div>
-                                        </form>
-
-
-
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-
-                            <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="mb-0">Your Orders</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Order</th>
-                                                        <th>Date</th>
-                                                        <th>Total</th>
-                                                        <th>Order status</th>
-                                                        <th>Items</th>
-                                                        <th>Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <% for( let i=order.length-1; i>=0; i--) { %>
-                                                        <% let items=order[i].products.reduce((acc, product)=> acc +
-                                                            product.quantity, 0) %>
-
-
-                                                            <tr>
-                                                                <td>
-                                                                    <%=order[i].orderId %>
-                                                                </td>
-                                                                <td>
-                                                                    <%= order[i].orderDate.toLocaleString() %>
-                                                                </td>
-
-                                                                <td>
-                                                                    <%= order[i].totalAmount%>
-                                                                </td>
-                                                                <td>
-                                                                    <%= order[i].orderStatus%>
-                                                                </td>
-                                                                <td>
-                                                                    <%=items%>
-                                                                </td>
-
-
-                                                                <td>
-                                                                    <a href="/orderdetail?orderId=<%=order[i]._id%>"
-                                                                        class="btn-small d-block">View</a>
-                                                                </td>
-
-                                                            </tr>
-                                                            <% } %>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="wallet" role="tabpanel" aria-labelledby="wallet-tab">
-                                <div class="col-md-8 col-lg-10">
-                                    <div class="tab-content d-flex justify-content-center align-items-center">
-
-
-
-                                        <div class="card" style="width: 50vw; margin-top: 10px;">
-                                            <div
-                                                class="card-body d-flex flex-column align-items-center justify-content-center">
-                                                <i class="fa-solid fa-wallet" style="font-size: 50px;"></i>
-
-
-                                                <h3>Wallet Balance</h3>
-                                                <p style="font-size: 30px; ">₹&nbsp;<%= wallet ? wallet.walletBalance :
-                                                        0 %>
-                                                </p>
-
-                                            </div>
 
                                         </div>
+                                        <div class="tab-pane fade" id="orders" role="tabpanel"
+                                            aria-labelledby="orders-tab">
 
-                                    </div>
-                                    <div
-                                        class="mt-5 card-body d-flex flex-column align-items-center justify-content-center">
-                                        <table class="table" style="width: 38vw;">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Transaction Type</th>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Amount</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <% if (wallet && wallet.transaction && wallet.transaction.length) { %>
-                                                    <% for (let i=0; i < wallet.transaction.length; i++) { %>
-                                                        <tr>
-                                                            <td>
-                                                                <span class="badge badge-pill bg-success">
-                                                                    <%= wallet.transaction[i].type %>
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                <%= wallet.transaction[i].date.toLocaleString() %>
-                                                            </td>
-                                                            <td>
-                                                                <span class="">
-                                                                    <%= wallet.transaction[i].amount %>
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                        <% } %>
-                                                            <% } else { %>
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5 class="mb-0">Your Orders</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            <thead>
                                                                 <tr>
-                                                                    <td colspan="3">No transactions
-                                                                        available.</td>
+                                                                    <th>Order</th>
+                                                                    <th>Date</th>
+                                                                    <th>Total</th>
+                                                                    <th>Order status</th>
+                                                                    <th>Items</th>
+                                                                    <th>Status</th>
                                                                 </tr>
-                                                                <% } %>
-                                            </tbody>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% for( let i=order.length-1; i>=0; i--) { %>
+                                                                    <% let items=order[i].products.reduce((acc,
+                                                                        product)=>
+                                                                        acc +
+                                                                        product.quantity, 0) %>
 
-                                        </table>
-                                    </div>
+
+                                                                        <tr>
+                                                                            <td>
+                                                                                <%=order[i].orderId %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= order[i].orderDate.toLocaleString()
+                                                                                    %>
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <%= order[i].totalAmount%>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= order[i].orderStatus%>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%=items%>
+                                                                            </td>
+
+
+                                                                            <td>
+                                                                                <a href="/orderdetail?orderId=<%=order[i]._id%>"
+                                                                                    class="btn-small d-block">View</a>
+                                                                            </td>
+
+                                                                        </tr>
+                                                                        <% } %>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="wallet" role="tabpanel"
+                                            aria-labelledby="wallet-tab">
+                                            <div class="col-md-8 col-lg-10">
+                                                <div
+                                                    class="tab-content d-flex justify-content-center align-items-center">
+
+
+
+                                                    <div class="card" style="width: 50vw; margin-top: 10px;">
+                                                        <div
+                                                            class="card-body d-flex flex-column align-items-center justify-content-center">
+                                                            <i class="fa-solid fa-wallet" style="font-size: 50px;"></i>
+
+
+                                                            <h3>Wallet Balance</h3>
+                                                            <p style="font-size: 30px; ">₹&nbsp;<%= wallet ?
+                                                                    wallet.walletBalance : 0 %>
+                                                            </p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                                <div
+                                                    class="mt-5 card-body d-flex flex-column align-items-center justify-content-center">
+                                                    <table class="table" style="width: 38vw;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Transaction Type</th>
+                                                                <th scope="col">Date</th>
+                                                                <th scope="col">Amount</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <% if (wallet && wallet.transaction &&
+                                                                wallet.transaction.length) { %>
+                                                                <% for (let i=0; i < wallet.transaction.length; i++) {
+                                                                    %>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <span class="badge badge-pill bg-success">
+                                                                                <%= wallet.transaction[i].type %>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= wallet.transaction[i].date.toLocaleString()
+                                                                                %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="">
+                                                                                <%= wallet.transaction[i].amount %>
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% } %>
+                                                                        <% } else { %>
+                                                                            <tr>
+                                                                                <td colspan="3">No transactions
+                                                                                    available.</td>
+                                                                            </tr>
+                                                                            <% } %>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                 </div>
-
                             </div>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -536,7 +546,7 @@
                         ? "Please enter valid phone number"
                         : "";
 
-           
+
 
             if (errorName.innerHTML || errorMobile.innerHTML) return false;
 
@@ -560,7 +570,7 @@
             }
 
             try {
-               
+
                 const response = await fetch('/changePassword', {
                     method: 'POST',
                     headers: {
@@ -667,63 +677,63 @@
         }
 
         document.getElementById("saveChangesButton").addEventListener("click", async function (event) {
-    event.preventDefault();
+            event.preventDefault();
 
-    const isValid = validationChecking();
+            const isValid = validationChecking();
 
-    if (isValid) {
-        const formData = {
-            user_id: document.querySelector('input[name="user_id"]').value,
-            name: document.querySelector('input[name="name"]').value,
-            mobile: document.querySelector('input[name="mobile"]').value,
-        };
+            if (isValid) {
+                const formData = {
+                    user_id: document.querySelector('input[name="user_id"]').value,
+                    name: document.querySelector('input[name="name"]').value,
+                    mobile: document.querySelector('input[name="mobile"]').value,
+                };
 
-        try {
-            const response = await fetch(`/userDetail`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
+                try {
+                    const response = await fetch(`/userDetail`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify(formData),
+                    });
 
-            const responseData = await response.json();
+                    const responseData = await response.json();
 
-            if (response.ok && responseData.success) {
-                Swal.fire({
-                    title: 'Success!',
-                    text: responseData.message,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
+                    if (response.ok && responseData.success) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: responseData.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        console.error("Error updating profile:", response.status, responseData.message);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: responseData.message || 'Error updating profile.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                } catch (error) {
+                    console.error("An unexpected error occurred:", error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: "An unexpected error occurred. Please try again.",
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
             } else {
-                console.error("Error updating profile:", response.status, responseData.message);
                 Swal.fire({
                     title: 'Error!',
-                    text: responseData.message || 'Error updating profile.',
+                    text: "Please fix the validation errors before submitting.",
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
             }
-        } catch (error) {
-            console.error("An unexpected error occurred:", error);
-            Swal.fire({
-                title: 'Error!',
-                text: "An unexpected error occurred. Please try again.",
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-        }
-    } else {
-        Swal.fire({
-            title: 'Error!',
-            text: "Please fix the validation errors before submitting.",
-            icon: 'error',
-            confirmButtonText: 'OK'
         });
-    }
-});
 
 
 

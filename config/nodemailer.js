@@ -3,12 +3,17 @@ require('dotenv').config();
 
 const sendVerifyMail = async (name, email, otp) => {
   try {
+    console.log(process.env.ADMIN_EMAIL,email);
     const transporter = nodemailer.createTransport({
-      service: 'Gmail',
+  
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      requireTLS: true,
       auth: {
-        user: process.env.ADMIN_EMAIL,
-        pass: process.env.ADMIN_PASS
-      }
+        user: 'pigabo40@gmail.com',
+        pass: 'wvcv tpuo eqzo ghle',
+      },
     });
 
     const emailHtml = `
@@ -21,12 +26,14 @@ const sendVerifyMail = async (name, email, otp) => {
         </div>
     `;
 
+
     const mailOptions = {
-      from: process.env.ADMIN_EMAIL,
+      from: 'pigabo40@gmail.com',
       to: email,
-      subject: 'OTP Verification',
+      subject: 'For verification purpose',
       html: emailHtml
-    };
+        };
+
 
     const info = await transporter.sendMail(mailOptions);
     console.log('Email sent:', info.response);

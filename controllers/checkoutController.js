@@ -264,6 +264,7 @@ const checkoutSaveAddress = async (req, res) => {
 }
 
 
+
 module.exports = {
     checkOutPage,
     placeOrder,
@@ -273,5 +274,6 @@ module.exports = {
     orderSuccess,
     applyCoupon,
     checkoutSaveAddress,
-    repaymentPage
+    repaymentPage,
+    
 }

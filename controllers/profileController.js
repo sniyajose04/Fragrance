@@ -134,7 +134,7 @@ const userAddressPage = async(req,res)=>{
     try {
         const user = await User.findOne({ _id: req.session.user_id });
         const addressData = await Address.find({ userId: req.session.user_id });
-        console.log('Addresses retrieved:', addressData);
+        
         res.render('userAddress',{user,addressData})
     } catch (error) {
         console.log(error.message);
@@ -157,12 +157,12 @@ const addAddressPage = async(req,res)=>{
 
 const addAddress = async (req, res) => {
     try {
-        console.log('Request received:', req.body); // Log incoming request data
+      
         const userId = req.session.user_id;
-        const { name, houseName, street, city, state, pincode, phoneNumber } = req.body;
+        const { userName, houseName, street, city, state, pincode, phoneNumber } = req.body;
         const address = new Address({
             userId,
-            name,
+            name:userName,
             houseName,
             street,
             city,
@@ -172,7 +172,7 @@ const addAddress = async (req, res) => {
             is_listed: true
         });
         const addressData = await address.save();
-        console.log('Address saved:', addressData);
+     
         res.status(200).json({ success: true }); // Updated to send JSON with success key
     } catch (error) {
         console.log(error.message);
@@ -184,71 +184,89 @@ const addAddress = async (req, res) => {
 
 const editAddressPage = async (req, res) => {
     try {
+
         const userId = req.session.user_id;
-        const user = await User.findOne({ _id: userId }); // Assuming userId is correctly set
-        const id = req.query.id;
-        console.log('id :',id)
-        const addressData = await Address.findById(id);
-console.log("////////////////",addressData)
+        const user = await User.findById(userId);
+
+        const addressId = req.query.id;
+        const addressData = await Address.findById(addressId);
         if (!addressData) {
-            return res.status(404).json({ success: false, message: 'Address not found' });
+            return res.status(404).send('Address not found');
         }
+        const isEdit = req.query.edit === 'true';
 
-        res.render("editAddress", { addressData, user }); // Pass addressData and user to the template
+        res.render('editAddress', { addressData, user, isEdit });
     } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ success: false, message: 'Internal Server Error' });
+        console.error('Error fetching address:', error);
+        res.status(500).send('Internal Server Error');
     }
-};
-
+  };
 
 
   
-const editAddress = async (req, res) => {
+  const editAddress = async (req, res) => {
     try {
-        const { name, houseName, street, city, state, pincode, phoneNumber, addressData_id } = req.body;
+        const { userName, houseName, street, city, state, pincode, phoneNumber, addressData_id } = req.body;
+
+        // Log the incoming request body and addressData_id
+        console.log('Incoming request body:', req.body);
+        console.log('Address ID to update:', addressData_id);
+
+        if (!addressData_id) {
+            return res.status(400).json({ success: false, message: "Address ID is required" });
+        }
+
         const updateData = await Address.findByIdAndUpdate(
             addressData_id,
             {
                 $set: {
-                    name,
+                    name: userName, // Ensure proper field mapping
                     houseName,
                     street,
                     city,
                     state,
                     pincode,
-                    phoneNumber,
-                    is_listed: true
+                    phoneNumber
                 }
             },
             { new: true }
         );
 
-        res.status(200).json({ success: true, message: "Updated successfully" });
+        console.log('Updated data:', updateData);
+
+   
+        res.status(200).json({ success: true, message: "Updated successfully", data: updateData });
     } catch (error) {
-        console.log(error.message);
+        console.log('Error:', error.message);
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 };
 
-
-  const deleteAddress = async(req,res)=>{
+const deleteAddress = async (req, res) => {
     try {
-        const id = req.query.id
-        const addressData = await Address.findByIdAndUpdate(
-            {_id:id},
-            {$set:{
-                is_listed:false
-            }}
-        )
-        res.redirect('/userAddress')
+        const addressId = req.query.id;
+        const userId = req.session.user_id;
 
+        if (!userId) {
+            return res.status(401).send('Unauthorized');
+        }
+
+        const address = await Address.findOne({ _id: addressId, userId: userId });
+
+        if (!address) {
+            return res.status(404).send('Address not found');
+        }
+
+        await Address.findByIdAndDelete(addressId);
+
+        return res.redirect('/userAddress');
     } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ success: false, message: 'Internal Server Error' }); 
+        console.error('Error removing address:', error);
+        res.status(500).send('Internal Server Error');
     }
-  }
+};
 
+  
 
 const userPassword = async (req, res) => {
     try {
@@ -306,7 +324,7 @@ const userPassword = async (req, res) => {
 
 const orderDetailPage = async (req, res) => {
     try {
-      const user = await User.findOne({ _id: req.session.user_id })
+        const user = await User.findOne({ _id: req.session.user_id });
         const orderId = req.query.orderId;
         const order = await Order.findById(orderId)
             .populate('userId')
@@ -315,15 +333,20 @@ const orderDetailPage = async (req, res) => {
                 model: 'Product'
             })
             .populate('address');
+
         if (!order) {
             return res.status(404).send('Order not found');
         }
-        res.render('orderDetail', { order ,user});
+
+        console.log(order); 
+
+        res.render('orderDetail', { order, user });
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Internal Server Error');
     }
 };
+
 
 
 const orderCancel = async (req, res) => {

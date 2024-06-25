@@ -143,22 +143,24 @@
                                 <a href="#">View profile</a>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-4  ">
-
+                        <div class="col-lg-4 col-md-4">
                             <div class="text-center">
                                 <h6 class="mb-1">Deliver to</h6>
                                 <p class="mb-1">
-                                    district:<%=order.address.district %>
+                                    <% if (order.address) { %>
+                                        City: <%= order.address.city %>,
                                         <br>
-                                        City:<%=order.address.city %>,
-                                            street:<%=order.address.street %>
-                                                <br>
-                                                pincode:<%=order.address.pincode %>
-
+                                        Street: <%= order.address.street %>,
+                                        <br>
+                                        Pincode: <%= order.address.pincode %>
+                                    <% } else { %>
+                                        Address not available
+                                    <% } %>
                                 </p>
                                 <a href="#">View profile</a>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
 

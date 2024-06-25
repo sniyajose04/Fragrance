@@ -265,12 +265,10 @@
                         </div>
 
                         <div class="row">
-
-                            <!-- Check if addressData is available -->
-                            <% if(locals.addressData) { %>
-                                <div class="col-lg-10">
-                                    <% for(let i=0; i < addressData.length; i++) { %>
-                                        <div class="card mb-3 mb-lg-0">
+                            <% if (locals.addressData && addressData.length > 0) { %>
+                                <% for (let i = 0; i < addressData.length; i++) { %>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card">
                                             <div class="card-header">
                                                 <label class="checkbox-container">
                                                     <!-- Use a unique identifier (like address ID) as the checkbox value -->
@@ -282,175 +280,32 @@
                                             </div>
                                             <div class="card-body">
                                                 <address>
-                                                    <%= addressData[i].name %>,<br>
-                                                        <%= addressData[i].housename %>,<br>
-                                                            <%= addressData[i].street %>,<br>
-                                                                <%= addressData[i].city %>, <%= addressData[i].district
-                                                                        %>,<br>
-                                                                        <%= addressData[i].state %>, <%=
-                                                                                addressData[i].pincode %><br>
+                                                    <strong><%= addressData[i].name %></strong><br>
+                                                    <%= addressData[i].houseName %><br>
+                                                    <%= addressData[i].street %>, <%= addressData[i].city %>, <br>
+                                                    <%= addressData[i].state %>, <%= addressData[i].pincode %><br>
+                                                    Phone: <%= addressData[i].phoneNumber %>
                                                 </address>
-                                                <p>Phone Number: <%= addressData[i].phonenumber %>
-                                                </p>
-                                                <p>Alternate Phone: <%= addressData[i].altPhone %>
-                                                </p>
+                                                <a href="/editAddress?id=<%= addressData[i]._id %>&edit=true" class="btn-small">Edit</a>
+
+                                                <div class="text-end me-4 mt-15 mb-3"></div>
+                                                <a href="/deleteAddress?id=<%= addressData[i]._id %>" class="btn btn-small btn-danger ms-2">Delete</a>
+                                            </div>
                                             </div>
                                         </div>
                                         <% } %>
-                                </div>
-                                <% } %>
-
+                                        <% } else { %>
+                                            <div class="col-12">
+                                                <p>No addresses found</p>
+                                            </div>
+                                        <% } %>
 
                         </div>
                       <br>
-
-                        <a href="#" class="btn btn-primary btn-sm rounded" id="addAddressBtn"
-                        onclick="confirmAddAddress()">
-                        Add New Address
-                    </a>
-                       <div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog"
-                                                    aria-labelledby="addAddressModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="addAddressModalLabel">Add
-                                                                    New Address</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-
-                                                                <form id="addressForms" method="post"
-                                                                    action="/userDetail">
-                                                                    <div class="form-group">
-                                                                        <label for="addressType">Address Type</label>
-                                                                        <style>
-                                                                            .small-radio input[type="radio"] {
-                                                                                transform: scale(0.6);
-                                                                                margin-right: 5px;
-                                                                            }
-                                                                        </style>
-                                                                        <div>
-                                                                            <label class="small-radio"><input
-                                                                                    type="radio" name="addressType"
-                                                                                    value="home" checked> Home</label>
-                                                                            <label class="small-radio"><input
-                                                                                    type="radio" name="addressType"
-                                                                                    value="office"> Office</label>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <label for="name">Name</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="name">
-                                                                        <span class="text-danger" id="nameError"></span>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="housename">House Name</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="housename">
-                                                                        <span class="text-danger"
-                                                                            id="housenameError"></span>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="street">Street</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="street">
-                                                                        <span class="text-danger"
-                                                                            id="streetError"></span>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="city">City</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="city">
-                                                                        <span class="text-danger" id="cityError"></span>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="district">District</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="district">
-                                                                        <span class="text-danger"
-                                                                            id="districtError"></span>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="state">State</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="state">
-                                                                        <span class="text-danger"
-                                                                            id="stateError"></span>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="pincode">Pincode</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="pincode">
-                                                                        <span class="text-danger"
-                                                                            id="pincodeError"></span>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="phonenumber">Phone Number</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="phonenumber">
-                                                                        <span class="text-danger"
-                                                                            id="phonenumberError"></span>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="altPhone">Alternate Phone</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="altPhone">
-                                                                        <span class="text-danger"
-                                                                            id="altPhoneError"></span>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                            <div class="modal-footer">
-
-                                                                <button type="submit" class="btn btn-primary"
-                                                                    onclick="confirmSaveAddress()">Save Address</button>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                    
-                    <div class="row">
-                        <% if(locals.addresses) { %>
-                            <% for(let i=0; i < addresses.length; i++) { %>
-
-                                <div class="col-lg-6">
-                                    <div class="card mb-3 mb-lg-0">
-                                        <div class="card-header">
-                                            <h5 class="mb-0">
-                                                My address
-                                            </h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <address>
-                                                <%= addresses[i].name %>,<br>
-                                                    <%= addresses[i].housename %>,<br>
-                                                        <%= addresses[i].street %>,<br>
-                                                            <%= addresses[i].city %>, <%=
-                                                                    addresses[i].district %>
-                                                                    ,<br>
-                                                                    <%= addresses[i].state
-                                                                        %>, <%=
-                                                                            addresses[i].pincode
-                                                                            %>
-                                                                            <br>
-                                            </address>
-                                            <p>Phone Number: <%= addresses[i].phonenumber %>
-                                            </p>
-                                            <p>Alternate Phone: <%= addresses[i].altPhone %>
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <% } %>
-                                    <% } %>
-                    </div>
+                      <div class="text-end me-5 mt-10">
+                        <a href="/addAddress"><button class="btn float-end btn-success btn-sm rounded font-md">Add Address</button></a>
+                  
+                      </div>     
                 </div>
                     <div class="col-md-6">
                         <div class="order_review">

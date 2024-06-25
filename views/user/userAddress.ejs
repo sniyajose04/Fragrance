@@ -157,6 +157,7 @@
             <a href="/addAddress"><button class="btn float-end btn-success btn-sm rounded font-md">Add Address</button></a>
       
           </div>
+          
           <div class="col-md-9">
             <div class="row">
                 <% if (locals.addressData && addressData.length > 0) { %>
@@ -175,13 +176,12 @@
                                         Phone: <%= addressData[i].phoneNumber %>
                                     </address>
                                    
-                                    <div class="text-end me-4 mt-15 mb-3">
-                                        <a href="/editAddress?id=<%= addressData._id %>" class="btn btn-small btn-primary">Edit</a>
+                                    <a href="/editAddress?id=<%=addressData[i]._id %>&edit=true" class="btn-small">Edit</a>
 
-                                       
-                                    </div>
                                     <div class="text-end me-4 mt-15 mb-3"></div>
-                                    <a href="/deleteAddress?id=<%= addressData[i]._id %>" class="btn btn-small btn-danger ms-2">Delete</a>
+                                    <a href="#" onclick="confirmDelete('<%= addressData[i]._id %>')" class="btn btn-small btn-danger ms-2">Delete</a>
+
+
                                 </div>
                             </div>
                         </div>
@@ -201,4 +201,40 @@
         </div>
         </section>
     </main>
-    
+    <script>
+    function confirmDelete(addressId) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+        });
+
+        swalWithBootstrapButtons.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect to the endpoint to remove the product from the wishlist
+                window.location.href = '/deleteAddress?id=' + addressId;
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // Show cancellation message
+                Swal.fire(
+                    "Cancelled",
+                    "Your item is safe :)",
+                    "error"
+                );
+            }
+        });
+    }
+        </script>
+        
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+        
