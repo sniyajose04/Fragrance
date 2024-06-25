@@ -40,36 +40,45 @@
 
     <script>
 
-        const email = document.getElementById('email')
-        const password = document.getElementById('password')
-        const form = document.getElementById('form')
+document.addEventListener('DOMContentLoaded', () => {
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const form = document.getElementById('form');
 
-        const email_error = document.getElementById('email_error')
-        const password_error = document.getElementById('password_error')
+    const email_error = document.getElementById('email_error');
+    const password_error = document.getElementById('password_error');
 
-        var email_check = /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
-         var pass_check = /^(?=.[a-z])(?=.[A-Z]).{8,}$/;
+    const email_check = /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
 
-        form.addEventListener('submit', (e) => {
+    const validateEmail = () => {
+        if (!email.value.match(email_check)) {
+            email_error.innerHTML = "Valid Email is required";
+        } else {
+            email_error.innerHTML = "";
+        }
+    };
 
-            if (!email.value.match(email_check)) {
-                e.preventDefault();
-                email_error.innerHTML = "Valid Email is required";
-            } else {
-                email_error.innerHTML = "";
-            }
+    const validatePassword = () => {
+        if (password.value.trim() === '') {
+            password_error.innerHTML = "Enter the password";
+        } else {
+            password_error.innerHTML = "";
+        }
+    };
 
-            if (password.value.trim() === '') {
-                e.preventDefault();
-                password_error.innerHTML = "Enter the password";
-            // } else if (!password.value.match(pass_check)) {
-            //     e.preventDefault();
-            //     password_error.innerHTML = "Enter the correct password";
-            } else {
-                password_error.innerHTML = "";
-            }
+    form.addEventListener('submit', (e) => {
+        validateEmail();
+        validatePassword();
 
-        })
+        if (email_error.innerHTML !== "" || password_error.innerHTML !== "") {
+            e.preventDefault();
+        }
+    });
+
+    email.addEventListener('input', validateEmail);
+    password.addEventListener('input', validatePassword);
+});
+
 
     </script>
     <%- include('../user/userLayout/footer') %>

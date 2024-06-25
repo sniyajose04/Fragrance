@@ -5,8 +5,8 @@ const isLogin = async(req,res,next)=>{
         console.log('userId',req.session.user_id);
         if(req.session.user_id){
           next()
-        }else {
-           return res.redirect('/');
+        }else{
+           return res.redirect('/login');
         }
         
     } catch (error) {

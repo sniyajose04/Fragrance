@@ -78,72 +78,94 @@
 
     <script>
 
-        const username = document.getElementById("username");
-        const email = document.getElementById("email");
-        const mno = document.getElementById("mno");
-        const password = document.getElementById("password");
-        const confirmpassword = document.getElementById("confirmpassword");
-        const form = document.getElementById("form");
+document.addEventListener('DOMContentLoaded', () => {
+    const username = document.getElementById("username");
+    const email = document.getElementById("email");
+    const mno = document.getElementById("mno");
+    const password = document.getElementById("password");
+    const confirmpassword = document.getElementById("confirmpassword");
+    const form = document.getElementById("form");
 
-        const username_error = document.getElementById('username_error');
-        const email_error = document.getElementById('email_error');
-        const password_error = document.getElementById('password_error');
-        const mno_error = document.getElementById('mno_error');
-        const confirmpassword_error = document.getElementById('confirmpassword_error');
+    const username_error = document.getElementById('username_error');
+    const email_error = document.getElementById('email_error');
+    const password_error = document.getElementById('password_error');
+    const mno_error = document.getElementById('mno_error');
+    const confirmpassword_error = document.getElementById('confirmpassword_error');
 
-        form.addEventListener('submit', (e) => {
+    const email_check = /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
+    const mno_check = /^\d{10}$/;
 
-            var email_check = /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
-            var mno_check = /^\d{10}$/;
-            // var pass_check = /^(?=.[a-z])(?=.[A-Z]).{8,}$/;
-            var phoneNumber = mno.value.trim();
+    const validateUsername = () => {
+        if (username.value.trim() === '' || username.value === 'null') {
+            username_error.innerHTML = "Name is required";
+        } else {
+            username_error.innerHTML = "";
+        }
+    };
 
-            if (username.value.trim() === '' || username.value === 'null') {
+    const validateEmail = () => {
+        if (!email.value.match(email_check)) {
+            email_error.innerHTML = "Valid Email is required";
+        } else {
+            email_error.innerHTML = "";
+        }
+    };
 
-                e.preventDefault();
-                username_error.innerHTML = "Name is required";
-            }
-            else {
-                username_error.innerHTML = "";
-            }
+    const validatePassword = () => {
+        if (password.value.trim() === '') {
+            password_error.innerHTML = "Enter the password";
+        } else {
+            password_error.innerHTML = "";
+        }
+    };
+
+    const validateConfirmPassword = () => {
+        if (confirmpassword.value.trim() === '') {
+            confirmpassword_error.innerHTML = "Please confirm your password";
+        } else if (confirmpassword.value !== password.value) {
+            confirmpassword_error.innerHTML = "Passwords do not match";
+        } else {
+            confirmpassword_error.innerHTML = "";
+        }
+    };
+
+    const validatePhoneNumber = () => {
+        const phoneNumber = mno.value.trim();
+        if (phoneNumber === '0000000000') {
+            mno_error.innerHTML = "Please enter a valid phone number other than all zeros";
+        } else if (!phoneNumber.match(mno_check)) {
+            mno_error.innerHTML = "Please enter a valid 10-digit phone number";
+        } else {
+            mno_error.innerHTML = "";
+        }
+    };
+
+    form.addEventListener('submit', (e) => {
+        validateUsername();
+        validateEmail();
+        validatePassword();
+        validateConfirmPassword();
+        validatePhoneNumber();
+
+        if (
+            username_error.innerHTML !== "" ||
+            email_error.innerHTML !== "" ||
+            password_error.innerHTML !== "" ||
+            confirmpassword_error.innerHTML !== "" ||
+            mno_error.innerHTML !== ""
+        ) {
+            e.preventDefault();
+        }
+    });
+
+    username.addEventListener('input', validateUsername);
+    email.addEventListener('input', validateEmail);
+    password.addEventListener('input', validatePassword);
+    confirmpassword.addEventListener('input', validateConfirmPassword);
+    mno.addEventListener('input', validatePhoneNumber);
+});
 
 
-            if (!email.value.match(email_check)) {
-
-                e.preventDefault();
-                email_error.innerHTML = "Valid Email is required";
-
-            } else {
-                email_error.innerHTML = "";
-            }
-
-
-            if (password.value.trim() === '') {
-                e.preventDefault();
-                password_error.innerHTML = "Enter the password";
-            } else if (confirmpassword.value.trim() === '') {
-                e.preventDefault();
-                confirmpassword_error.innerHTML = "Please confirm your password";
-            } else if (confirmpassword.value !== password.value) {
-                e.preventDefault();
-                confirmpassword_error.innerHTML = "Passwords do not match";
-            } else {
-
-                password_error.innerHTML = "";
-                confirmpassword_error.innerHTML = "";
-            }
-
-
-
-            if (phoneNumber === '0000000000') {
-                mno_error.innerHTML = "Please enter a valid phone number other than all zeros";
-            } else if (!phoneNumber.match(mno_check)) {
-                e.preventDefault();
-                mno_error.innerHTML = "Please enter a valid 10-digit phone number";
-            } else {
-                mno_error.innerHTML = "";
-            }
-        });
 
         document.addEventListener('DOMContentLoaded', function () {
     const referralToggle = document.getElementById('referral-toggle');

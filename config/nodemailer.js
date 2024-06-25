@@ -11,8 +11,8 @@ const sendVerifyMail = async (name, email, otp) => {
       secure: false,
       requireTLS: true,
       auth: {
-        user: 'pigabo40@gmail.com',
-        pass: 'wvcv tpuo eqzo ghle',
+        user: process.env.ADMIN_EMAIL, 
+        pass: process.env.ADMIN_PASS,
       },
     });
 
@@ -28,7 +28,7 @@ const sendVerifyMail = async (name, email, otp) => {
 
 
     const mailOptions = {
-      from: 'pigabo40@gmail.com',
+      from: process.env.ADMIN_EMAIL,
       to: email,
       subject: 'For verification purpose',
       html: emailHtml
